@@ -1,0 +1,6 @@
+@_4roomforum_HostAddress = http://localhost:5049
+
+GET {{_4roomforum_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

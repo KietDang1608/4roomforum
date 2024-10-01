@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatThreadService", "CatThreadService.csproj", "{EBD2628E-DAE0-4CF7-B665-35A02A80F11D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBD2628E-DAE0-4CF7-B665-35A02A80F11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD2628E-DAE0-4CF7-B665-35A02A80F11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD2628E-DAE0-4CF7-B665-35A02A80F11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD2628E-DAE0-4CF7-B665-35A02A80F11D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB2E5A1D-FB72-4B3C-A0F6-81CBF6D2226C}
+	EndGlobalSection
+EndGlobal
