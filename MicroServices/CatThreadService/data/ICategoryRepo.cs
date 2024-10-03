@@ -8,6 +8,6 @@ public interface  ICategoryRepo
     Category GetCategoryById(int id);
     void CreateCategory(Category category);
     void UpdateCategory(Category category);
-    void DeleteCategory(Category category);
+    void DeleteCategory(int id);
     bool SaveChanges();
 }

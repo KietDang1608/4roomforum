@@ -46,5 +46,22 @@ namespace CatThreadService.Controllers
 
             return CreatedAtRoute(nameof(GetCategoryById), new {id = catDto.CategoryId}, catDto);
         }
+        [HttpDelete("{id}")]
+        public ActionResult<CategoryDTO> DeleteCategory(int id){
+            try{
+                _repo.DeleteCategory(id);
+                return Ok(new {message = "Category delete successfully"});
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {message = "Category not found"});
+            }
+            catch (Exception e){
+                return StatusCode(500, new {message = "An error while deleting category"});
+            }
+
+        }
+
     }
 }

@@ -22,13 +22,14 @@ public class CategoryRepo : ICategoryRepo
         _context.SaveChanges();
     }
 
-    public void DeleteCategory(Category category)
+    public void DeleteCategory(int id)
     {
+        var category = _context.Categories.FirstOrDefault(c => c.CategoryId == id);
         if (category == null){
             throw new ArgumentNullException(nameof(category));
-
         }
         _context.Categories.Remove(category);
+        _context.SaveChanges();
     }
 
     public IEnumerable<Category> GetAllCategories()
