@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wW+6IFkJcNs=",
+  "dgSpecHash": "YSgfbBdyTIE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\PostService.csproj",
+  "projectFilePath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\PostService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KietDang\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
     "C:\\Users\\KietDang\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
