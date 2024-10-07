@@ -2,34 +2,24 @@ version: '3.8'
 
 services:
   catthreadservice:
-    image: mcr.microsoft.com/dotnet/aspnet:8.0 # Replace with your .NET version
+    image: catthreadservice
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./MicroServices/CatThreadService
     ports:
-      - "8080:80"
-    depends_on:
-      - db  # CatThreadService depends on MySQL
-    networks:
-      - app-network
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=forum_cat_thread;User=root;Password=;
 
-  db:
+  mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: forum_cat_thread
     ports:
-      - "3306:3306"
+      - "3036:3306"
     volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
+      - mysql-data:/var/lib/mysql
 
 volumes:
-  dbdata:
+  mysql-data:
