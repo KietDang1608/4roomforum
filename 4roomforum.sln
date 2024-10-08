@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatThreadService", "Microse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService", "Microservices\PostService\PostService.csproj", "{4D33141E-0FDD-4565-B688-CD19B1A5A8E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4roomforum", "4roomforum\4roomforum.csproj", "{4BF8EEAE-4518-45E5-9D5F-58CA24D96AE2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{4D33141E-0FDD-4565-B688-CD19B1A5A8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D33141E-0FDD-4565-B688-CD19B1A5A8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D33141E-0FDD-4565-B688-CD19B1A5A8E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BF8EEAE-4518-45E5-9D5F-58CA24D96AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BF8EEAE-4518-45E5-9D5F-58CA24D96AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BF8EEAE-4518-45E5-9D5F-58CA24D96AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BF8EEAE-4518-45E5-9D5F-58CA24D96AE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
