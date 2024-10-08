@@ -2,7 +2,58 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div class="text-center"</div>>
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to 4Room Forum</h1>
+        <p class="lead">A place to share knowledge and connect with others.</p>
+        <hr class="my-4">
+        <p>Join the conversation and start learning today!</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+
+    <div class="container mt-5">
+    <h2 class="text-center">Top Categories</h2>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var category in ViewBag.Categories){
+                    <tr>
+                        <td>@category.CategoryName</td>
+                        <td>@category.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <h2 class="text-center">Test get all users</h2>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var user in ViewBag.Users){
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
