@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {}
+    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {
+    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
+        "projectUniqueName": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
         "projectName": "UserServices",
-        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
-        "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\UserServices\\obj\\",
+        "projectPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,9 +43,31 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -71,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

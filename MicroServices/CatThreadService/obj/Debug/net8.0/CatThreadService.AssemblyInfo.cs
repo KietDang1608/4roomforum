@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CatThreadService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7555c26a79e014f47f3c420f9a27c8b18d8d6293")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e58a31ec4f6e0e702e9fa817521537b2b3a5d8af")]
 [assembly: System.Reflection.AssemblyProductAttribute("CatThreadService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CatThreadService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

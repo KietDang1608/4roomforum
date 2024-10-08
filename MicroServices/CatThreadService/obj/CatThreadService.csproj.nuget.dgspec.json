@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {}
+    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {
+    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
+        "projectUniqueName": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
         "projectName": "CatThreadService",
-        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
-        "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\obj\\",
+        "projectPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\CatThreadService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -93,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
