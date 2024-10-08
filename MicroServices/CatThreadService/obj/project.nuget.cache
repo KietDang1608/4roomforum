@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SDu6XFywnNk=",
+  "dgSpecHash": "qBaEEAtia0c=",
   "success": true,
-  "projectFilePath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
+  "projectFilePath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\CatThreadService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KietDang\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\KietDang\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

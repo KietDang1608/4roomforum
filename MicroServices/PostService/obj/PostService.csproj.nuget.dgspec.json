@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\PostService.csproj": {}
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\PostService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\PostService.csproj": {
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\PostService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\PostService.csproj",
+        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\PostService.csproj",
         "projectName": "PostService",
-        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\PostService.csproj",
+        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\PostService.csproj",
         "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\PostService\\obj\\",
+        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\PostService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"

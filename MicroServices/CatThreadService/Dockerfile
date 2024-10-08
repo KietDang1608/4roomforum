@@ -1,27 +1,27 @@
-# Use the official ASP.NET Core runtime as a parent image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-
-# Use the SDK image to build the app
+# Stage 1: Build the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy everything into the container's /src directory
+# Copy toàn bộ thư mục hiện tại (.) vào thư mục /src trong container
 COPY . .
 
-# Restore dependencies for the CatThreadService project
+# Restore the dependencies
 RUN dotnet restore "CatThreadService.csproj"
 
-# Build the app
+# Build the application
 RUN dotnet build "CatThreadService.csproj" -c Release -o /app/build
 
-# Publish the app
+# Stage 2: Publish the application
 FROM build AS publish
 RUN dotnet publish "CatThreadService.csproj" -c Release -o /app/publish
 
-# Final stage - build runtime image
-FROM base AS final
+# Stage 3: Create the final runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Expose port 5000
+EXPOSE 5000
+
+# Entry point to run the application
 ENTRYPOINT ["dotnet", "CatThreadService.dll"]

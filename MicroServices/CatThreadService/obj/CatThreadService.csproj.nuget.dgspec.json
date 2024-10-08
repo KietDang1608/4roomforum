@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {}
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\CatThreadService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj": {
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\CatThreadService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
+        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\CatThreadService.csproj",
         "projectName": "CatThreadService",
-        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.csproj",
+        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\CatThreadService.csproj",
         "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\MicroServices\\CatThreadService\\obj\\",
+        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\CatThreadService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"
