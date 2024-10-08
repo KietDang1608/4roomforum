@@ -1,37 +1,58 @@
-using UserServices.Data;
-using MicroServices.UserServices.Data;
-using Microsoft.EntityFrameworkCore;
+//using UserServices.Data;
+//using MicroServices.UserServices.Data;
+//using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppDBContext>(options =>
+//// Add services to the container.
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+//builder.Services.AddDbContext<AppDBContext>(options =>
+//{
+//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+//});
+//builder.Services.AddScoped<IRoleRepo, RoleRepo>();
+//builder.Services.AddScoped<IUserRepo, UserRepo>();
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddControllers(); // Register controllers
+
+//var app = builder.Build();
+
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+//app.UseHttpsRedirection();
+
+//app.UseRouting(); // Enable routing
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllers(); // Map controller routes
+//});
+
+//app.Run();
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using UserServices;
+namespace UserServices;
+public class Program
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
-builder.Services.AddScoped<IUserRepo, UserRepo>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddControllers(); // Register controllers
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                //webBuilder.UseUrls("http://localhost:5001");
+            });
 }
-
-app.UseHttpsRedirection();
-
-app.UseRouting(); // Enable routing
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers(); // Map controller routes
-});
-
-app.Run();
