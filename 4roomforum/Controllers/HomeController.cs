@@ -34,25 +34,25 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        using (var client = new HttpClient())
-        {
-            client.BaseAddress = new Uri("http://localhost:5000/");
-            var responseTask = client.GetAsync("api/category");
-            responseTask.Wait();
+        // using (var client = new HttpClient())
+        // {
+        //     client.BaseAddress = new Uri("http://localhost:5000/");
+        //     var responseTask = client.GetAsync("api/category");
+        //     responseTask.Wait();
 
-            var result = responseTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                var categories = result.Content.ReadFromJsonAsync<IList<Category>>().Result;
-                ViewBag.Categories = categories;
-            }
-            else
-            {
-                ViewBag.Categories = new List<Category>();
-                _logger.LogError("Server error. Please contact administrator.");
-            }
-        }
-        GetAllUser();
+        //     var result = responseTask.Result;
+        //     if (result.IsSuccessStatusCode)
+        //     {
+        //         var categories = result.Content.ReadFromJsonAsync<IList<Category>>().Result;
+        //         ViewBag.Categories = categories;
+        //     }
+        //     else
+        //     {
+        //         ViewBag.Categories = new List<Category>();
+        //         _logger.LogError("Server error. Please contact administrator.");
+        //     }
+        // }
+        // GetAllUser();
         return View();
     }
 
