@@ -1,59 +1,61 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Forum Page";
 }
 
-<div class="text-center"</div>>
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
 <div class="container mt-5">
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to 4Room Forum</h1>
-        <p class="lead">A place to share knowledge and connect with others.</p>
-        <hr class="my-4">
-        <p>Join the conversation and start learning today!</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    <!-- General Introduction Section -->
+    <div class="jumbotron text-center bg-light p-5" style="background-image: url('/imgs/wallpaper.jpg'); background-size: cover; background-position: center;">
+        <h1 class="display-4 text-white">Welcome to _4roomforum</h1>
+        <p class="lead text-white">A place to discuss and share your thoughts on various topics.</p>
     </div>
 
-    <div class="container mt-5">
-    <h2 class="text-center">Top Categories</h2>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Category Name</th>
-                    <th scope="col">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var category in ViewBag.Categories){
-                    <tr>
-                        <td>@category.CategoryName</td>
-                        <td>@category.Description</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <!-- Prompt to Log In -->
+    <div class="alert alert-info text-center mt-4">
+        <h4>Hãy đăng nhập để tạo bài viết và tham gia cộng đồng của chúng tôi</h4>
+        <a href="#" class="btn btn-primary">Đăng nhập</a>
+        <a href="#" class="btn btn-secondary">Đăng ký</a>
     </div>
-    <h2 class="text-center">Test get all users</h2>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">User Name</th>
-                    <th scope="col">Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var user in ViewBag.Users){
-                    <tr>
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+    <div class="row mt-4">
+        <!-- Categories Sidebar -->
+        <div class="col-md-3">
+            <h2 class="text-center text-primary">Các Rooms</h2>
+            <ul class="list-group">
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 1</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 2</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 3</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 4</li></a>
+            </ul>
+        </div>
+
+        <!-- Topics Main Content -->
+        <div class="col-md-6">
+            <h2 class="text-center text-success">Top Chủ Đề</h2>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action bg-light">
+                    <h5 class="mb-1">Topic 1</h5>
+                    <p class="mb-1">Description of Topic 1</p>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">
+                    <h5 class="mb-1">Topic 2</h5>
+                    <p class="mb-1">Description of Topic 2</p>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">
+                    <h5 class="mb-1">Topic 3</h5>
+                    <p class="mb-1">Description of Topic 3</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Top Posts Sidebar -->
+        <div class="col-md-3">
+            <h2 class="text-center text-danger">Top Bài Viết</h2>
+            <ul class="list-group">
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Bài viết 1</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Bài viết 2</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Bài viết 3</li></a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Bài viết 4</li></a>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
