@@ -1,0 +1,7 @@
+
+/.vs
+/4roomforum/obj
+/MicroServices/PostService/obj
+/MicroServices/UserServices/obj
+/MicroServices/CatThreadService/obj
+*.user
