@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,7 +33,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Thread" asp-action="Index">Chủ đề</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Bài viết</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Bài viết</a>
                         </li>
                     </ul>
                     <form class="d-flex">
@@ -41,8 +41,8 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <div class="d-flex">
-                        <a class="btn btn-outline-primary me-2" href="#" role="button">Đăng nhập</a>
-                        <a class="btn btn-primary" href="#" role="button">Đăng ký</a>
+                        <a class="btn btn-outline-primary me-2" asp-action="Signin" asp-controller="Home" role="button">Đăng nhập</a>
+                        <a class="btn btn-primary"  asp-action="Signup" asp-controller="Home"  role="button">Đăng ký</a>
                     </div>
                 </div>
             </div>
