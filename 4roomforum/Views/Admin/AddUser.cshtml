@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-5">
+    <h2>Add User</h2>
+    <form method="post" action="/Admin/AddUser">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-control" id="role" name="role" required>
+                <option>Admin</option>
+                <option>User</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add User</button>
+    </form>
+</div>
