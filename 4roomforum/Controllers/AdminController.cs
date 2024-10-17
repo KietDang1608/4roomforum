@@ -7,10 +7,10 @@ namespace _4roomforum.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-            return View("Dashboard");
+            return View("~/Views/Admin/Dashboard/Index.cshtml");
         }
         public ActionResult Dashboard(){
-            return View();
+            return View("~/Views/Admin/Dashboard/Index.cshtml");
         }
         public ActionResult Users(){
             return View();
