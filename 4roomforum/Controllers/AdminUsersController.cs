@@ -4,6 +4,7 @@ using _4roomforum.Models;
 
 namespace _4roomforum.Controllers
 {
+    [Route("admin/[controller]")]
     public class AdminUsersController : Controller
     
     {
@@ -19,7 +20,7 @@ namespace _4roomforum.Controllers
         {
             var users = GetAllUser();
             
-            return View("~/Views/Admin/Users.cshtml",users);
+            return View("~/Views/Admin/Users/Index.cshtml",users);
         }
         private List<User> GetAllUser(){
            
