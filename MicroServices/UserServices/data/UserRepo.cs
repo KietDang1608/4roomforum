@@ -1,6 +1,6 @@
 using System;
 using MicroServices.UserServices.Data;
-
+using UserServices.DTOs;
 namespace UserServices.Data;
 
 public class UserRepo : IUserRepo
@@ -49,5 +49,17 @@ public class UserRepo : IUserRepo
     }
     public bool SaveChanges(){
         return(_context.SaveChanges() >= 0);
+    }
+    public User Login(UserLoginDTO userLogin)
+    {
+        try{
+        var user = _context.Users.FirstOrDefault(c => 
+        c.Email == userLogin.Email && c.Password == userLogin.Password);
+        return user;
+        }
+        catch (ArgumentException e){
+            throw new ArgumentException("Invalid email or password");
+        }
+        
     }
 }

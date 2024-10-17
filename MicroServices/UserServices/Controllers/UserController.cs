@@ -84,6 +84,15 @@ namespace UserServices.Controllers
             }
         }
 
-
+        [HttpPost("login")]
+        public ActionResult<UserDTO> Login(UserLoginDTO userLoginDto)
+        {
+            var user = _repo.Login(userLoginDto);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Invalid email or password" });
+            }
+            return Ok(_mapper.Map<UserDTO>(user));
+        }
     }
 }
