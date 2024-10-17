@@ -13,7 +13,7 @@
                     <h4 class="card-title">Đăng ký tài khoản</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="/Account/Signup">
+                    <form method="post" action="/Login/SignUp">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -32,6 +32,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Đăng ký</button>
                     </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="SignIn" asp-controller="Login" class="text-primary">Đã có tài khoản? Đăng nhập ngay!</a>
                 </div>
             </div>
         </div>
