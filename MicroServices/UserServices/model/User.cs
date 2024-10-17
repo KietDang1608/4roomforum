@@ -9,7 +9,7 @@ public class User
     [Required]
     public string UserName { get; set; }
     public string Email { get; set; }
-     public string PassWord { get; set; }
+     public string Password { get; set; }
 
     public string Avatar { get; set; }
     
@@ -20,7 +20,7 @@ public class User
 
     public override string ToString()
     {
-        return "User [UserId=" + UserId + ", UserName=" + UserName + ", Email=" + Email + ", PassWord=" + PassWord + 
+        return "User [UserId=" + UserId + ", UserName=" + UserName + ", Email=" + Email + ", PassWord=" + Password + 
             ", Avatar=" + Avatar + ", RoleId=" + RoleId + ", JoinDate=" + JoinDate + 
             ", LastLogin=" + LastLogin + ", Status=" + Status + "]";
     }
