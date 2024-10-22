@@ -9,17 +9,27 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql;Database=forum_cat_thread;User=root;Password=;
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=forum_cat_thread;User=root;Password=;
+
+  userservice:
+    image: userservice
+    build:
+      context: ./MicroServices/UserServices
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=forum_user_role;User=root;Password=;
 
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: yourpassword
-      MYSQL_DATABASE: forum_cat_thread
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes  # Cho phép MySQL không yêu cầu mật khẩu root
     ports:
-      - "3036:3306"
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      
 
 volumes:
   mysql-data:

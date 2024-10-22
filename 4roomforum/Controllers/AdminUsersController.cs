@@ -27,7 +27,7 @@ namespace _4roomforum.Controllers
             using (var client = new HttpClient())
             {   
                 try{
-                    client.BaseAddress = new Uri("http://localhost:5043/");
+                    client.BaseAddress = new Uri("http://localhost:5001/");
                     var responseTask = client.GetAsync("api/user");
                     responseTask.Wait();
 
