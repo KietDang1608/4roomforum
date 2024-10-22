@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PostService.Models;
+using System.Collections.Generic;
 
 namespace PostService.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDBContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
         }
 
-        public DbSet<Reply> Replies { get; set; }
+        public DbSet<Post> Posts{ get; set; }
     }
 }
