@@ -12,10 +12,10 @@ namespace PostService.Controllers
     [ApiController]
     public class ReplyController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDBContext _context;
         private readonly IMapper _mapper;
 
-        public ReplyController(AppDbContext context, IMapper mapper)
+        public ReplyController(AppDBContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
