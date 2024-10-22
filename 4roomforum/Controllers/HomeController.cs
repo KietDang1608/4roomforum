@@ -65,17 +65,7 @@ namespace _4roomforum.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Signin()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Signup()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

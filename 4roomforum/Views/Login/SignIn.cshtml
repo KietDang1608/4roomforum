@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model _4roomforum.Models.User
 @{
     ViewData["Title"] = "Đăng nhập";
 }
@@ -13,20 +14,17 @@
                     <h4 class="card-title">Đăng nhập</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="/Account/Signin">
+                    <form method="post" asp-action="SignIn" asp-controller="Login">
                         <div class="mb-3">
-                            <label for="usernameEmail" class="form-label">Username hoặc Email</label>
-                            <input type="text" class="form-control" id="usernameEmail" name="usernameEmail" required>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="Email" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="Password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
                     </form>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="/Account/Signup" class="text-primary">Chưa có tài khoản? Đăng kí ngay</a>
                 </div>
             </div>
         </div>
