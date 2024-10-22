@@ -56,5 +56,11 @@ namespace _4roomforum.Controllers
         {
             return RedirectToAction("SignIn");
         }
+        [HttpGet]
+    public async Task<IActionResult> SignOut()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
+    }
     }
 }
