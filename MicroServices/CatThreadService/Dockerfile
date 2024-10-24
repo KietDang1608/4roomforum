@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Expose port 5000
-EXPOSE 5000
+EXPOSE 5001
 
 # Entry point to run the application
 ENTRYPOINT ["dotnet", "CatThreadService.dll"]

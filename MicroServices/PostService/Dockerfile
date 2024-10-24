@@ -6,14 +6,14 @@ WORKDIR /src
 COPY . .
 
 # Restore the dependencies
-RUN dotnet restore "UserServices.csproj"
+RUN dotnet restore "PostService.csproj"
 
 # Build the application
-RUN dotnet build "UserServices.csproj" -c Release -o /app/build
+RUN dotnet build "PostService.csproj" -c Release -o /app/build
 
 # Stage 2: Publish the application
 FROM build AS publish
-RUN dotnet publish "UserServices.csproj" -c Release -o /app/publish
+RUN dotnet publish "PostService.csproj" -c Release -o /app/publish
 
 # Stage 3: Create the final runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
@@ -24,4 +24,4 @@ COPY --from=publish /app/publish .
 EXPOSE 5002
 
 # Entry point to run the application
-ENTRYPOINT ["dotnet", "UserServices.dll"]
+ENTRYPOINT ["dotnet", "PostService.dll"]

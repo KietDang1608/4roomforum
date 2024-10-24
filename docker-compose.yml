@@ -1,14 +1,14 @@
 version: '3.8'
-
 services:
   catthreadservice:
     image: catthreadservice
     build:
       context: ./MicroServices/CatThreadService
     ports:
-      - "5000:5000"
+      - "5001:5001"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - HTTP_PORTS=5001
       - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=forum_cat_thread;User=root;Password=;
 
   userservice:
@@ -16,20 +16,31 @@ services:
     build:
       context: ./MicroServices/UserServices
     ports:
-      - "5001:5001"
+      - "5002:5002"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - HTTP_PORTS=5002
       - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=forum_user_role;User=root;Password=;
+
+  postservice:
+    image: postservice
+    build:
+      context: ./MicroServices/PostService
+    ports:
+      - "5003:5003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - HTTP_PORTS=5003
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=forum_post_reply;User=root;Password=;
 
   mysql:
     image: mysql:8.0
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes  # Cho phép MySQL không yêu cầu mật khẩu root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       
-
 volumes:
   mysql-data:

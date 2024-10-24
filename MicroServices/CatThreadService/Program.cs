@@ -1,57 +1,41 @@
-// using CatThreadService.Data;
-// using MicroServices.CatThreadService.Data;
-// using Microsoft.EntityFrameworkCore;
+using System;
+using MicroServices.CatThreadService.Data;
+using Microsoft.EntityFrameworkCore;
 
-// var builder = WebApplication.CreateBuilder(args);
+using CatThreadService.Data;
 
-// // Add services to the container.
-// builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
-// builder.Services.AddDbContext<AppDBContext>(options =>
-// {
-//     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-// });
-// builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
-// builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-// builder.Services.AddControllers(); // Register controllers
+var builder = WebApplication.CreateBuilder(args);
 
-// var app = builder.Build();
-
-// // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-
-// app.UseHttpsRedirection();
-
-// app.UseRouting(); // Enable routing
-
-// app.UseEndpoints(endpoints =>
-// {
-//     endpoints.MapControllers(); // Map controller routes
-// });
-
-// app.Run();
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-namespace CatThreadService;
-public class Program
+// Cấu hình DbContext với MySQL
+builder.Services.AddDbContext<AppDBContext>(options =>
 {
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls("http://localhost:5000"); 
-            });
+// Thêm các service cần thiết
+builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(Program)); // Sử dụng typeof(Program) thay cho typeof(Startup)
+builder.Services.AddScoped<IThreadRepo, ThreadRepo>();
+builder.Services.AddScoped<ICategoryRepo, CategoryRepo>(); // Đăng ký CategoryRepo
+builder.WebHost.UseUrls("http://*:5001");
+
+var app = builder.Build();
+
+// Cấu hình middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
 
+app.UseHttpsRedirection();
+app.UseRouting();
 
+// Cấu hình API endpoints
+app.UseEndpoints( endpoints=>
+{
+    endpoints.MapControllers();
+    // Định nghĩa các endpoint ở đây
+}); ;
+
+app.Run();
