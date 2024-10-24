@@ -1,58 +1,36 @@
-//using UserServices.Data;
-//using MicroServices.UserServices.Data;
-//using Microsoft.EntityFrameworkCore;
+using System;
+using MicroServices.UserServices.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using UserServices.Data;
+var builder = WebApplication.CreateBuilder(args);
 
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<AppDBContext>(options =>
-//{
-//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-//});
-//builder.Services.AddScoped<IRoleRepo, RoleRepo>();
-//builder.Services.AddScoped<IUserRepo, UserRepo>();
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddControllers(); // Register controllers
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseRouting(); // Enable routing
-
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllers(); // Map controller routes
-//});
-
-//app.Run();
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using UserServices;
-namespace UserServices;
-public class Program
+// Cấu hình DbContext với MySQL
+builder.Services.AddDbContext<AppDBContext>(options =>
 {
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls("http://localhost:5001");
-            });
+// Thêm các service cần thiết
+builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(Program)); // Sử dụng typeof(Program) thay cho typeof(Startup)
+
+builder.Services.AddScoped<IUserRepo, UserRepo>(); // Đăng ký CategoryRepo
+builder.Services.AddScoped<IRoleRepo, RoleRepo>();
+var app = builder.Build();
+
+// Cấu hình middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+// Cấu hình API endpoints
+app.MapControllers();
+
+app.Run();

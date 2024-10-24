@@ -20,7 +20,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Expose port 5000
+
 EXPOSE 5002
 
 # Entry point to run the application
