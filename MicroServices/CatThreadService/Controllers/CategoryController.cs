@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using AutoMapper;
 using CatThreadService.Data;
 using CatThreadService.DTOs;
@@ -12,12 +13,14 @@ namespace CatThreadService.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _repo;
+        private readonly IThreadRepo _threadRepo;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryRepo repo, IMapper mapper)
+        public CategoryController(ICategoryRepo repo,IThreadRepo threadRepo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
+            _threadRepo = threadRepo;
         }
         [HttpGet]
         public ActionResult<IEnumerable<CategoryDTO>> GetAllCategories()
@@ -62,6 +65,35 @@ namespace CatThreadService.Controllers
             }
 
         }
+        [HttpGet("hot-categories")]
+        public ActionResult<IEnumerable<CategoryViewDTO>> GetHotCategories(){
+            var threads = _threadRepo.GetAllThread();
 
+            var hotCategories = threads.GroupBy(thread => thread.CategoryID)
+                .Select(group => new 
+                    {
+                        CategoryId = group.Key, 
+                        TotalViewCount = group.Sum(thread => thread.ViewCount)
+                    })
+                .OrderByDescending(g => g.TotalViewCount)
+                .ToList();
+            var categoriesDto = new List<CategoryViewDTO>();
+            foreach (var hotCategory in hotCategories)
+            {
+                var category = _repo.GetCategoryById(hotCategory.CategoryId);
+                if (category != null)
+                {
+                    CategoryViewDTO categoryDto = new CategoryViewDTO();
+                    categoryDto.CategoryId = category.CategoryId;
+                    categoryDto.CategoryName = category.CategoryName;
+                    categoryDto.Description = category.Description;
+                    categoryDto.CreatedBy = category.CreatedBy;
+                    categoryDto.ViewCount = hotCategory.TotalViewCount;
+                    categoriesDto.Add(categoryDto);
+                }
+            }
+            
+            return Ok(categoriesDto)    ;
+        }
     }
 }

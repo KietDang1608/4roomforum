@@ -41,6 +41,10 @@ public class CategoryRepo : ICategoryRepo
     {
         return _context.Categories.FirstOrDefault(c => c.CategoryId == id);
     }
+    public  IEnumerable<Category> GetCategoriesById( int id)
+    {
+        return _context.Categories.Where(c => c.CategoryId == id).ToList();
+    }
 
     public void UpdateCategory(Category category)
     {
