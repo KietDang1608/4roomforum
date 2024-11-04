@@ -11,6 +11,5 @@ namespace PostService.Data
         }
 
         public DbSet<Post> Posts{ get; set; }
-        public DbSet<Reply> Replies { get; set; }
     }
 }
