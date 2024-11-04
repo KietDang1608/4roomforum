@@ -1,6 +1,10 @@
 using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using _4roomforum.Models;
+using _4roomforum.DTOs;
+using _4roomforum.Services.Implements;
+using _4roomforum.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +13,13 @@ namespace _4roomforum.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly IUserService _userService;
+
+    // Constructor nhận IUserService từ Dependency Injection
+        public LoginController(IUserService userService)
+        {
+            _userService = userService;
+        }
         // GET: LoginController
         [HttpGet]
         public ActionResult SignIn()
@@ -28,14 +39,17 @@ namespace _4roomforum.Controllers
             {
                 return RedirectToAction("Index", "Admin");
             }
-            else if (user.Email == "user" && user.Password == "user")
+            var userDTO = await _userService.Login(user.Email, user.Password);
+            if (userDTO != null) // Đăng nhập thành công
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, "User")
+                    new Claim(ClaimTypes.Name, userDTO.Email),
+                    new Claim(ClaimTypes.Email, userDTO.Email),
+                    new Claim(ClaimTypes.Role, "User"),// Hoặc lấy từ userDTO.Role nếu có
+                    new Claim("UserId", userDTO.UserId.ToString()) 
                 };
+                
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
                 {
@@ -43,12 +57,14 @@ namespace _4roomforum.Controllers
                     ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                     IsPersistent = true,
                 };
+
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                 return RedirectToAction("Index", "Home");
             }
-            else
+            else // Đăng nhập thất bại
             {
-                return RedirectToAction("SignIn");
+                ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
+                return View("SignIn"); // Trả về lại trang đăng nhập với lỗi
             }
         }
         [HttpPost]
@@ -57,10 +73,32 @@ namespace _4roomforum.Controllers
             return RedirectToAction("SignIn");
         }
         [HttpGet]
-    public async Task<IActionResult> SignOut()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Index", "Home");
-    }
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            // Lấy UserId từ claims
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+            {
+                return Unauthorized(); // Hoặc xử lý lỗi theo ý bạn
+            }
+
+            var userId = int.Parse(userIdClaim.Value); // Chuyển đổi thành int hoặc kiểu dữ liệu phù hợp
+            var userProfile = await _userService.GetUserProfile(userId);
+
+            if (userProfile == null)
+            {
+                return NotFound(); // Hoặc xử lý theo cách bạn muốn
+            }
+
+            return View(userProfile); // Trả về view với thông tin người dùng
+        }
+
     }
 }
