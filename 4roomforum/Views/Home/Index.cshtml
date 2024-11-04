@@ -1,5 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Forum Page";
+    ViewData["Title"] = "Home";
+    var categories = ViewBag.Categories as IEnumerable<_4roomforum.DTOs.CategoryDTO>;
+        int countCategories = 1;
 }
 
 <div class="container mt-5">
@@ -19,13 +21,19 @@
     <div class="row mt-4">
         <!-- Categories Sidebar -->
         <div class="col-md-3">
-            <h2 class="text-center text-primary">Các Rooms</h2>
+            <h2 class="text-center text-primary">Các chuyên mục</h2>
             <ul class="list-group">
-                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 1</li></a>
-                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 2</li></a>
-                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 3</li></a>
-                <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">Category 4</li></a>
+                @foreach (var category in categories)
+                {
+                    if (countCategories++ > 4)
+                    {
+                        break;
+                    }
+                    <a href="#" class="list-group-item list-group-item-action bg-light"><li class="list-group-item">@category.CategoryName</li></a>
+                }
+                
             </ul>
+            <a asp-action="Index" asp-controller="Category" class="list-group-item list-group-item-action bg-light">Xem thêm ...</a>
         </div>
 
         <!-- Topics Main Content -->
