@@ -29,6 +29,7 @@
 
     public class UpdateReplyDTO {
         public string ReplyContent { get; set; }
+        public DateTime ReplyDate { get; set; } = DateTime.Now;
     }
 
 }
