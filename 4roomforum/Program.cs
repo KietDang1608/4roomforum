@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using _4roomforum.Services.Implements;
+using _4roomforum.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
+builder.Services.AddHttpClient<CategoryServiceImpl>();
+builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

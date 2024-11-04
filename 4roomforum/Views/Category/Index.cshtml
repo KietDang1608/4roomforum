@@ -3,6 +3,9 @@
 *@
 @{
     ViewData["Title"] = "Chuyên mục";
+    var categories = ViewBag.Categories as IEnumerable<_4roomforum.DTOs.CategoryDTO>;
+    var hotCategories = ViewBag.HotCategories as IEnumerable<_4roomforum.DTOs.CategoryViewDTO>;
+    int i  = 1;
 }
 
 <div class="container mt-5">
@@ -10,11 +13,25 @@
         <!-- Hot Categories Sidebar -->
         <div class="col-md-3">
             <h2 class="text-center text-primary">Chuyên mục Hot</h2>
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage2))
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage2</div>
+}
             <ul class="list-group">
-                <li class="list-group-item list-group-item-action bg-light">Chuyên mục 1</li>
-                <li class="list-group-item list-group-item-action bg-light">Chuyên mục 2</li>
-                <li class="list-group-item list-group-item-action bg-light">Chuyên mục 3</li>
-                <li class="list-group-item list-group-item-action bg-light">Chuyên mục 4</li>
+                @foreach (var category in hotCategories)
+                {
+                    @if (i ++ > 4){
+                    break;
+                    }
+                <li class="list-group-item list-group-item-action bg-light">
+                    <a href="#" class="list-group-item list-group-item-action bg-light">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@category.CategoryName</h5>
+                        <small>@category.ViewCount lượt views</small>
+                    </div>
+                </a>
+                </li>
+                }
             </ul>
         </div>
 
@@ -22,38 +39,20 @@
         <div class="col-md-9">
             <h2 class="text-center text-success">Danh sách Chuyên mục</h2>
             <div class="list-group">
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}                @foreach (var category in categories)
+                {
                 <a href="#" class="list-group-item list-group-item-action bg-light">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Chuyên mục 1</h5>
-                        <small>Ngày tạo: 01/01/2024</small>
+                        <h5 class="mb-1">@category.CategoryName</h5>
+                        <small>@category.CreatedDate</small>
                     </div>
-                    <p class="mb-1">Mô tả của Chuyên mục 1</p>
+                    <p class="mb-1">@category.Description</p>
                     <small>Được tạo bởi: User1</small>
                 </a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Chuyên mục 2</h5>
-                        <small>Ngày tạo: 02/01/2024</small>
-                    </div>
-                    <p class="mb-1">Mô tả của Chuyên mục 2</p>
-                    <small>Được tạo bởi: User2</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Chuyên mục 3</h5>
-                        <small>Ngày tạo: 03/01/2024</small>
-                    </div>
-                    <p class="mb-1">Mô tả của Chuyên mục 3</p>
-                    <small>Được tạo bởi: User3</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Chuyên mục 4</h5>
-                        <small>Ngày tạo: 04/01/2024</small>
-                    </div>
-                    <p class="mb-1">Mô tả của Chuyên mục 4</p>
-                    <small>Được tạo bởi: User4</small>
-                </a>
+                }
             </div>
         </div>
     </div>
