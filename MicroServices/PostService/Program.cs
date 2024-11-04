@@ -12,6 +12,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 builder.Services.AddScoped<IPostRepo, PostRepo>();
+builder.Services.AddScoped<IReplyRepo, ReplyRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers(); // Register controllers
 

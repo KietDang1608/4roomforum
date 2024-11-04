@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,45 +13,37 @@ namespace PostService.Controllers
     [ApiController]
     public class ReplyController : ControllerBase
     {
-        private readonly AppDBContext _context;
-        private readonly IMapper _mapper;
 
-        public ReplyController(AppDBContext context, IMapper mapper)
+        private readonly IReplyRepo _replyRepo;
+
+        public ReplyController(IReplyRepo replyRepo)
         {
-            _context = context;
-            _mapper = mapper;
+            _replyRepo = replyRepo;
         }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReplyDTO>>> GetReplies()
-        {
-            var replies = await _context.Replies.ToListAsync();    
-            return Ok(_mapper.Map<IEnumerable<ReplyDTO>>(replies));
+        {    
+            return Ok(await _replyRepo.GetAllRepliesAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ReplyDTO>> GetReply(int id)
         {
-            var reply = await _context.Replies.FindAsync(id);
-            if (reply == null)
-            {
-                return NotFound("Reply" + id + " was not found!");
-            }
-
-            return Ok(_mapper.Map<ReplyDTO>(reply));
+            return Ok(await _replyRepo.GetReplyByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ReplyDTO>> CreateReplyForPost(CreateReplyDTO1 createReplyDTO1)
+        public async Task<IActionResult> CreateReplyForPost(CreateReplyDTO1 createReplyDTO1)
         {
             try
             {
-                var reply = _mapper.Map<Reply>(createReplyDTO1);
-                _context.Replies.Add(reply);
-                await _context.SaveChangesAsync();
-
-                var replyDTO = _mapper.Map<ReplyDTO>(reply);
-                return CreatedAtAction(nameof(GetReply), new { id = reply.ReplyId }, replyDTO);
+                if (await _replyRepo.CreateReplyAsync(createReplyDTO1))
+                {
+                    return Ok("Reply is created");
+                }
+                return BadRequest("Cannot create reply!");
             }
             catch (DbUpdateException dbEx)
             {
@@ -66,17 +59,16 @@ namespace PostService.Controllers
             }           
         }
 
-        [HttpPost("/forReply")]
-        public async Task<ActionResult<ReplyDTO>> CreateReplyForReply(CreateReplyDTO2 createReplyDTO2)
+        [HttpPost("/to-reply")]
+        public async Task<IActionResult> CreateReplyForReply(CreateReplyDTO2 createReplyDTO2)
         {
             try
             {
-                var reply = _mapper.Map<Reply>(createReplyDTO2);
-                _context.Replies.Add(reply);
-                await _context.SaveChangesAsync();
-
-                var replyDTO = _mapper.Map<ReplyDTO>(reply);
-                return CreatedAtAction(nameof(GetReply), new { id = reply.ReplyId }, replyDTO);
+                if (await _replyRepo.CreateReplyToReplyAsync(createReplyDTO2))
+                {
+                    return Ok($"Reply to reply {createReplyDTO2.ReplyToReply} is created");
+                }
+                return BadRequest("Cannot create reply!");
             }
             catch (DbUpdateException dbEx)
             {
@@ -97,16 +89,11 @@ namespace PostService.Controllers
         {
             try
             {
-                var reply = await _context.Replies.FindAsync(id);
-                if (reply == null)
+                if (await _replyRepo.UpdateReplyAsync(id, updateReplyDTO))
                 {
-                    return NotFound("Reply" + id + " was not found!");
+                    return Ok($"Reply {id} is updated!");
                 }
-
-                _mapper.Map(updateReplyDTO, reply);
-                await _context.SaveChangesAsync();
-
-                return Ok("Reply got updated!");
+                return BadRequest("Cannot update reply");
             }
             catch (DbUpdateException dbEx)
             {
@@ -127,23 +114,11 @@ namespace PostService.Controllers
         {
             try
             {
-                var reply = await _context.Replies.FindAsync(id);
-                if (reply == null)
+                if (await _replyRepo.ChangeVoteReply(id, option))
                 {
-                    return NotFound("Reply" + id + " was not found!");
+                    return Ok($"Reply {id} is updated!");
                 }
-                if (option.Equals("upvote"))
-                {
-                    reply.UpvoteAmount++;
-                }
-                else
-                {
-                    reply.UpvoteAmount--;
-                }
-
-                await _context.SaveChangesAsync();
-
-                return Ok("Reply got updated!");
+                return BadRequest("Cannot change vote reply");
             }
             catch (DbUpdateException dbEx)
             {
@@ -164,16 +139,11 @@ namespace PostService.Controllers
         {
             try
             {
-                var reply = await _context.Replies.FindAsync(id);
-                if (reply == null)
+                if (await _replyRepo.DeleteReplyAsync(id))
                 {
-                    return NotFound("Reply" + id + " was not found!");
+                    return Ok($"Reply {id} is delete!");
                 }
-
-                _context.Replies.Remove(reply);
-                await _context.SaveChangesAsync();
-
-                return Ok("Reply is deleted!");
+                return BadRequest("Cannot delete reply");
             }
             catch (DbUpdateException dbEx)
             {
