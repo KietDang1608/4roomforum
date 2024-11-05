@@ -9,16 +9,16 @@ public class ThreadRepo : IThreadRepo
     public ThreadRepo (AppDBContext context)
     {  _context = context; }
 
-    public IEnumerable<Thread> GetAllThread()
+    public IEnumerable<Threads> GetAllThread()
     {  
         return _context.Threads.ToList(); 
     }
-    Thread IThreadRepo.GetThreadById(int id)
+    Threads IThreadRepo.GetThreadById(int id)
     {
         return _context.Threads.FirstOrDefault(h => h.ThreadId == id);
     }
 
-    void IThreadRepo.CreateThread(Thread thread)
+    void IThreadRepo.CreateThread(Threads thread)
     {
         if (thread == null)
         {
@@ -28,7 +28,7 @@ public class ThreadRepo : IThreadRepo
         _context.SaveChanges();
     }
 
-    void IThreadRepo.UpdateThread(Thread thread)
+    void IThreadRepo.UpdateThread(Threads thread)
     {
         throw new NotImplementedException();
     }

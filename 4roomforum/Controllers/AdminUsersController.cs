@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.Models;
 
-
 namespace _4roomforum.Controllers
 {
     [Route("admin/[controller]")]
