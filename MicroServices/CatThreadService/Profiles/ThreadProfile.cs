@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CatThreadService.DTOs;
 
 namespace CatThreadService.Profiles
 {
@@ -6,8 +7,8 @@ namespace CatThreadService.Profiles
     {
         public  ThreadProfile()
         {
-            CreateMap<ThreadDTO,Thread>();
-            CreateMap<Thread, ThreadDTO>();
+            CreateMap<ThreadDTO, Threads>();
+            CreateMap<Threads, ThreadDTO>();
         }
     }
 }

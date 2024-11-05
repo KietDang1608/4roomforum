@@ -95,5 +95,36 @@ namespace CatThreadService.Controllers
             
             return Ok(categoriesDto)    ;
         }
+        [HttpPut("{id}")]
+        public ActionResult<CategoryDTO> UpdateCategory(int id,Category category)
+        {
+            try
+            {
+                
+                var cat = _repo.GetCategoryById(id);
+                if (cat == null)
+                {
+                    return NotFound(new { message = "Category not found" });
+                }
+                cat.CategoryName = category.CategoryName;
+                cat.Description = category.Description;
+                cat.CreatedBy = category.CreatedBy;
+                cat.CreatedDate = category.CreatedDate;
+                _repo.UpdateCategory(cat);
+                return Ok(new { message = "Category Update successfully" });
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new { message = "Category not found" });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = "An error while update category" });
+            }
+
+        }
+
+
     }
 }

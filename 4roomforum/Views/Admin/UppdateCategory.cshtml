@@ -1,0 +1,32 @@
+﻿@model _4roomforum.Models.Category
+
+@{
+    ViewData["Title"] = "Update Category";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-5">
+    <h1>@ViewBag.Message</h1>
+    <h2>Edit Category</h2>
+    <form method="post" action="@Url.Action("UpdateCategory", "AdminCategories")">
+        <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+
+        <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="categoryName" name="categoryName" value="@Model.CategoryName" placeholder="Enter category name" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" value="@Model.Description" placeholder="Enter description" required>
+        </div>
+        <div class="mb-3">
+            <label for="createdBy" class="form-label">Created By</label>
+            <input type="text" class="form-control" id="createdBy" name="createdBy" value="@Model.CreatedBy" placeholder="Enter created by" required>
+        </div>
+        <div class="mb-3">
+            <label for="createdDate">Created Date</label>
+            <input type="date" id="createdDate" class="form-control" name="createdDate" value="@Model.CreatedDate.ToString("yyyy-MM-dd")" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Update Category</button>
+    </form>
+</div>

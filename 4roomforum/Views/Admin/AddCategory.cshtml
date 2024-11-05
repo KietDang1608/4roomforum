@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Add Category";
+    Layout = "_AdminLayout";
+}
+<div class="container mt-5">
+    <h1>@ViewBag.Message</h1>
+    <h2>Add Category</h2>
+    <form method="post" action="@Url.Action("CreateCategory","AdminCategories")">
+        <div class="mb-3">
+            <label for="username" class="form-label">CategoryName</label>
+            <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Enter categoryName" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" required>
+        </div>
+        <div class="mb-3">
+            <label for="createdBy" class="form-label">Created By</label>
+            <input type="text" class="form-control" id="createdBy" name="createdBy" placeholder="Enter createdBy" required>
+        </div>
+        <div class="mb-3">
+            <label for="CreatedDate">Created Date</label>
+            <input type="text" id="createdDate" class="form-control" placeholder="Select createdDate" name="createdDate" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Category</button>
+    </form>
+</div>

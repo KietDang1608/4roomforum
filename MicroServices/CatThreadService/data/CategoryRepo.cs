@@ -48,8 +48,31 @@ public class CategoryRepo : ICategoryRepo
 
     public void UpdateCategory(Category category)
     {
-        throw new NotImplementedException();
+     
+        if (category == null)
+        {
+            throw new ArgumentNullException(nameof(category));
+        }
+
+      
+        var existingCategory = _context.Categories.Find(category.CategoryId);
+
+       
+        if (existingCategory == null)
+        {
+            throw new InvalidOperationException("Category not found");
+        }
+
+       
+        existingCategory.CategoryName = category.CategoryName;
+        existingCategory.Description = category.Description;
+        existingCategory.CreatedBy = category.CreatedBy;
+        existingCategory.CreatedDate = category.CreatedDate;
+
+      
+        _context.SaveChanges();
     }
+
     public bool SaveChanges(){
         return(_context.SaveChanges() >= 0);
     }
