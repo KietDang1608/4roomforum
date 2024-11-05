@@ -6,14 +6,14 @@ namespace PostService.Models
     public class Reply
     {
         [Key]
-        [Column("reply_id")]  // Tên cột là "reply_id"
+        [Column("reply_id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Tên cột là "reply_id"
         public int ReplyId { get; set; }
 
-        [Column("post_id")]  // Tên cột là "post_id"
+        [Column("post_id"), ForeignKey("Post")]  // Tên cột là "post_id"
         public int PostId { get; set; }
 
-        [Column("reply_by")]  // Tên cột là "reply_by"
-        public int ReplyBy { get; set; }
+        [Column("replied_by")]  // Tên cột là "reply_by"
+        public int RepliedBy { get; set; }
 
         [Column("reply_content")]  // Tên cột là "reply_content"
         public string ReplyContent { get; set; }
@@ -27,7 +27,16 @@ namespace PostService.Models
         [Column("downvote_amount")]  // Tên cột là "downvote_amount"
         public int DownvoteAmount { get; set; } = 0;
 
-        [Column("reply_to_reply")]  // Tên cột là "reply_to_reply"
+        [Column("reply_to_reply"), ForeignKey("ReplyToReply2")]  // Tên cột là "reply_to_reply"
         public int? ReplyToReply { get; set; }
+
+        [InverseProperty("Replies")]
+        public Post? Post { get; set; }
+
+        [InverseProperty("ReplyToReplies")]
+        public Reply? ReplyToReply2 { get; set; }
+
+        [InverseProperty("ReplyToReply2")]
+        public ICollection<Reply>? ReplyToReplies { get; set; }
     }
 }
