@@ -10,5 +10,6 @@ namespace MicroServices.CatThreadService.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Threads> Threads { get; set; }
     }
 }

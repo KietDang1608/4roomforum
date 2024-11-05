@@ -1,12 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-public class Thread
+public class Threads
 {
     [Key]
     [Required]
     public int ThreadId { get; set; }
-    [Required]
     public int CategoryID { get; set; }
     public string ThreadTitle { get; set; }
     public string ThreadContent { get; set; }

@@ -28,7 +28,8 @@ public class Startup
         services.AddControllers();  // Thêm hỗ trợ Web API
         services.AddAutoMapper(typeof(Startup));
 
-        services.AddScoped<ICategoryRepo, CategoryRepo>();  // Đăng ký CategoryRepo
+        services.AddScoped<ICategoryRepo, CategoryRepo>();
+        services.AddScoped<IThreadRepo, ThreadRepo>(); // Đăng ký ThreadRepo
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)

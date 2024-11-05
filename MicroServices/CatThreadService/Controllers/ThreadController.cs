@@ -42,7 +42,7 @@ namespace CatThreadService.Controllers
         [HttpPost]
         public ActionResult<ThreadDTO> CreateThread(ThreadDTO thread)
         {
-            var catModel = _mapper.Map<Thread>(thread);
+            var catModel = _mapper.Map<Threads>(thread);
 
             _repo.CreateThread(catModel);
 

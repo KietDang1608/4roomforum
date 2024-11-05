@@ -3,9 +3,8 @@
     "",
     "\\4roomforum",
     "\\MicroServices",
-    "\\MicroServices\\UserServices",
     "\\MicroServices\\UserServices\\data"
   ],
-  "SelectedNode": "\\MicroServices\\UserServices\\UserServices.sln",
+  "SelectedNode": "\\4roomforum.sln",
   "PreviewInSolutionExplorer": false
 }

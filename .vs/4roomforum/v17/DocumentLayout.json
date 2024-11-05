@@ -1,10 +1,134 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\DELL\\Desktop\\clone\\4roomforum\\",
+  "WorkspaceRootPath": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\DELL\\Desktop\\clone\\4roomforum\\MicroServices\\UserServices\\data\\AppDBContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MicroServices\\UserServices\\data\\AppDBContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\admincategoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\admincategoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\data\\threadrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\data\\threadrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\uppdatecategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\uppdatecategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\categories.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\categories.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\data\\icategoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\data\\icategoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\data\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\data\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\addcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\addcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\controllers\\threadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\controllers\\threadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\adduser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\adduser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\model\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\model\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\adminuserscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\adminuserscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\data\\ithreadrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\data\\ithreadrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\dtos\\threaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\dtos\\threaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\profiles\\threadprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\profiles\\threadprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\model\\threads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\model\\threads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\models\\threads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\models\\threads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\adminthreads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\adminthreads.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\dtos\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\dtos\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\profiles\\categoryprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\profiles\\categoryprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\catthreadservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\catthreadservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\microservices\\catthreadservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B1DF59C4-AF09-4B12-B8EE-D95E15E9DC16}|Microservices\\CatThreadService\\CatThreadService.csproj|solutionrelative:microservices\\catthreadservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|c:\\users\\minh huu\\desktop\\4roomforum\\4roomforum\\views\\admin\\threads.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A7718FF-5CC1-437C-8FA8-7AD571905CE4}|4roomforum\\4roomforum.csproj|solutionrelative:4roomforum\\views\\admin\\threads.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,20 +138,404 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AppDBContext.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Desktop\\clone\\4roomforum\\MicroServices\\UserServices\\data\\AppDBContext.cs",
-              "RelativeDocumentMoniker": "MicroServices\\UserServices\\data\\AppDBContext.cs",
-              "ToolTip": "C:\\Users\\DELL\\Desktop\\clone\\4roomforum\\MicroServices\\UserServices\\data\\AppDBContext.cs",
-              "RelativeToolTip": "MicroServices\\UserServices\\data\\AppDBContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAUAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "UppdateCategory.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\UppdateCategory.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\UppdateCategory.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\UppdateCategory.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\UppdateCategory.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-19T16:25:19.293Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Controllers\\CategoryController.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAgwDAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-08T01:43:48.774Z",
+              "WhenOpened": "2024-10-16T09:20:44.685Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdminCategoriesController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminCategoriesController.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\AdminCategoriesController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminCategoriesController.cs*",
+              "RelativeToolTip": "4roomforum\\Controllers\\AdminCategoriesController.cs*",
+              "ViewState": "AgIAAKkAAAAAAAAAAAApwN0AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:33:40.159Z",
+              "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAEQAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-29T09:32:19.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ThreadRepo.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\ThreadRepo.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\data\\ThreadRepo.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\ThreadRepo.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\data\\ThreadRepo.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAUwBIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:01:46.391Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CategoryRepo.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\CategoryRepo.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\data\\CategoryRepo.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\CategoryRepo.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\data\\CategoryRepo.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAA1wD4AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:07:07.446Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Models\\Category.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Models\\Category.cs",
+              "RelativeToolTip": "4roomforum\\Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-19T14:20:48.854Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "categories.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\categories.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\categories.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\categories.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\categories.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAgwC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-19T15:51:16.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ICategoryRepo.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\ICategoryRepo.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\data\\ICategoryRepo.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\ICategoryRepo.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\data\\ICategoryRepo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:08:18.059Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "4roomforum\\Controllers\\CategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:33:28.459Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AddCategory.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\AddCategory.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\AddCategory.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\AddCategory.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\AddCategory.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-19T15:13:08.914Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\Dashboard.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\Dashboard.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-19T17:34:38.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ThreadController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Controllers\\ThreadController.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Controllers\\ThreadController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Controllers\\ThreadController.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Controllers\\ThreadController.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAswEkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:03:15.442Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AddUser.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\AddUser.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\AddUser.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\AddUser.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\AddUser.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAB1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-19T14:21:08.503Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Startup.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Startup.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Startup.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Startup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:21:38.283Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\model\\Category.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\model\\Category.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\model\\Category.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\model\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:02:35.366Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AdminUsersController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminUsersController.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\AdminUsersController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminUsersController.cs",
+              "RelativeToolTip": "4roomforum\\Controllers\\AdminUsersController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAgwBcAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:35:18.012Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "4roomforum\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:33:38.828Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AppDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\AppDBContext.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\data\\AppDBContext.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\AppDBContext.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\data\\AppDBContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:07:09.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IThreadRepo.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\IThreadRepo.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\data\\IThreadRepo.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\data\\IThreadRepo.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\data\\IThreadRepo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:01:27.839Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ThreadProfile.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Profiles\\ThreadProfile.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Profiles\\ThreadProfile.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Profiles\\ThreadProfile.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Profiles\\ThreadProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:02:09.839Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ThreadDTO.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\DTOs\\ThreadDTO.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\DTOs\\ThreadDTO.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\DTOs\\ThreadDTO.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\DTOs\\ThreadDTO.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAzwAwAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:02:02.626Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Threads.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\model\\Threads.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\model\\Threads.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\model\\Threads.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\model\\Threads.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:02:06.141Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Program.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Program.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Program.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:18:47.573Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Threads.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Models\\Threads.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Models\\Threads.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Models\\Threads.cs",
+              "RelativeToolTip": "4roomforum\\Models\\Threads.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:16:00.226Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "AdminThreads.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminThreads.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\AdminThreads.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\AdminThreads.cs",
+              "RelativeToolTip": "4roomforum\\Controllers\\AdminThreads.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAYwBoAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:20:11.684Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "CategoryDTO.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\DTOs\\CategoryDTO.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\DTOs\\CategoryDTO.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\DTOs\\CategoryDTO.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\DTOs\\CategoryDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:02:44.887Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "CategoryProfile.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Profiles\\CategoryProfile.cs",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Profiles\\CategoryProfile.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Profiles\\CategoryProfile.cs",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Profiles\\CategoryProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T09:10:09.806Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "CatThreadService.http",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.http",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\CatThreadService.http",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\CatThreadService.http",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\CatThreadService.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-10-16T09:04:51.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "4roomforum\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "4roomforum\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAgwEEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T08:59:07.293Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "MicroServices\\CatThreadService\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\MicroServices\\CatThreadService\\Properties\\launchSettings.json",
+              "RelativeToolTip": "MicroServices\\CatThreadService\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-10-16T08:53:55.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "threads.cshtml",
+              "DocumentMoniker": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\threads.cshtml",
+              "RelativeDocumentMoniker": "4roomforum\\Views\\Admin\\threads.cshtml",
+              "ToolTip": "C:\\Users\\MINH HUU\\Desktop\\4roomforum\\4roomforum\\Views\\Admin\\threads.cshtml",
+              "RelativeToolTip": "4roomforum\\Views\\Admin\\threads.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABIAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-16T08:14:56.063Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
             }
           ]
         }

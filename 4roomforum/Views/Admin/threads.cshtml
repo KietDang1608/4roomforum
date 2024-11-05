@@ -1,0 +1,54 @@
+﻿@model List<_4roomforum.Models.Threads>
+@{
+    ViewData["Title"] = "Thread";
+    Layout = "_AdminLayout";
+}
+<h1>@ViewBag.Message</h1>
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col">
+            <h2>Thread Management</h2>
+        </div>
+        <div class="col text-end">
+            <a class="btn btn-primary" href="@Url.Action("CreateCategory", "AdminCategories")">Add Thread</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">CategoryID</th>
+                    <th scope="col">ThreadTitle</th>
+                    <th scope="col">ThreadContent</th>
+                    <th scope="col">CreatedBy</th>
+                    <th scope="col">CreadtedDate</th>
+                    <th scope="col">ViewCount</th>
+                    <th scope="col">IsPinned</th>
+                    <th scope="col">IsClosed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var thread in Model)
+                {
+                    <tr>
+                        <th scope="row">@thread.ThreadId</th>
+                        <td>@thread.CategoryID</td>
+                        <td>@thread.ThreadTitle</td>
+                        <td>@thread.ThreadContent</td>
+                        <td>@thread.CreatedBy</td>
+                        <td>@thread.CreadtedDate</td>
+                        <td>@thread.ViewCount</td>
+                        <td>@thread.IsPinned</td>
+                        <td>@thread.IsClosed</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="">Edit</button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

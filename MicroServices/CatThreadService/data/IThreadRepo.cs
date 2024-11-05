@@ -4,10 +4,10 @@ namespace CatThreadService.Data;
 
 public interface IThreadRepo
 {
-    IEnumerable<Thread> GetAllThread();
-    Thread GetThreadById(int id);
-    void CreateThread(Thread thread);
-    void UpdateThread(Thread thread);
+    IEnumerable<Threads> GetAllThread();
+    Threads GetThreadById(int id);
+    void CreateThread(Threads thread);
+    void UpdateThread(Threads thread);
     void DeleteThread(int id);
     bool SaveChanges();
 }
