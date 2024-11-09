@@ -6,5 +6,8 @@ namespace _4roomforum.Services.Interfaces
     {
         Task<UserDTO> Login(string username, string password);
         Task<UserDTO> GetUserProfile(int userId);
+        Task<bool> UpdateUser(int userId,UserDTO userUpdateDto);
+
+        Task<UserDTO> GetUserById(int userId);
     }
 }

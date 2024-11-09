@@ -1,0 +1,66 @@
+@model _4roomforum.DTOs.UserDTO
+@{
+    ViewData["Title"] = "đổi mật khẩu";
+}
+
+<h2>Change Password</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<form id="userForm" method="post" action="/Login/ChangePass">
+    <div class="form-group">
+        <label for="CurrentPassword" class="control-label">Current Password</label>
+        <div class="input-group">
+        <input name="CurrentPassword" class="form-control" id="currentPassword" type="password" required />
+        <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('currentPassword','togglePasswordIcon1')">
+                <i class="fas fa-eye" id="togglePasswordIcon1"></i>
+            </button>
+            </div>
+    </div>
+    <div class="form-group">
+        <label for="NewPassword" class="control-label">New Password</label>
+        <div class="input-group">
+        <input name="NewPassword" class="form-control" id="newPassword" type="password" required />
+        <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('newPassword','togglePasswordIcon2')">
+                <i class="fas fa-eye" id="togglePasswordIcon2"></i>
+            </button>
+            </div>
+    </div>
+    <div class="form-group">
+        <label for="ConfirmPassword" class="control-label">Confirm Password</label>
+        <div class="input-group">
+        <input name="ConfirmPassword" class="form-control" id="confirmPassword" type ="password" required />
+        <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('confirmPassword','togglePasswordIcon3')">
+                <i class="fas fa-eye" id="togglePasswordIcon3"></i>
+            </button>
+            </div>
+    </div>
+    <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;">Change Password</button>
+</form>
+
+
+
+<a class="btn btn-secondary" href="@Url.Action("Profile", "Login")">Back</a>
+
+<script>
+    function togglePasswordVisibility(passwordFieldId, toggleIconId) {
+    const passwordField = document.getElementById(passwordFieldId);
+    const toggleIcon = document.getElementById(toggleIconId);
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';  
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';  
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+
+</script>
+
