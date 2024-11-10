@@ -28,6 +28,7 @@ namespace UserServices.Controllers
 
             return Ok(_mapper.Map<IEnumerable<UserDTO>>(users));
         }
+       
         [HttpGet("{id}", Name ="GetUserById")]
         public ActionResult<UserDTO> GetUserById(int id){
             var cat = _repo.GetUserById(id);
