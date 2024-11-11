@@ -4,8 +4,14 @@
 }
 
 <h2>Profile</h2>
-
-<form>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<form id="userForm" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="UserName" class="control-label"></label>
         <input asp-for="UserName" class="form-control" readonly />
@@ -16,11 +22,16 @@
     </div>
     <div class="form-group">
         <label asp-for="Password" class="control-label"></label>
-        <input asp-for="Password" class="form-control" readonly />
+        <div class="input-group">
+            <input asp-for="Password" class="form-control" id="password" readonly />
+            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">
+                <i class="fas fa-eye" id="togglePasswordIcon"></i>
+            </button>
+        </div>
     </div>
     <div class="form-group">
         <label asp-for="JoinDate" class="control-label"></label>
-        <input asp-for="JoinDate" class="form-control" readonly />
+        <input asp-for="JoinDate" class="form-control" type="date" readonly />
     </div>
     <div class="form-group">
         <label asp-for="Status" class="control-label"></label>
@@ -28,8 +39,67 @@
     </div>
     <div class="form-group">
         <label>Avatar</label><br />
-        <img src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" width="100px"  />
+        <input asp-for="Avatar" class="form-control" hidden />
+        <img id="avatarPreview" src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" width="100px" />
+        <input type="file" id="avatarInput" name="AvatarFile" class="form-control mt-2" style="display: none;" accept="image/*" onchange="previewAvatar(event)" />
     </div>
 </form>
 
 <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Back to Home</a>
+<a class="btn btn-primary" id="editButton" onclick="toggleEditMode()">Update Information</a>
+<a class="btn btn-warning" href="@Url.Action("ChangePass", "Login")">Change Password</a>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.getElementById('togglePasswordIcon');
+        
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+    function toggleEditMode() {
+        const editButton = document.getElementById('editButton');
+        const form = document.getElementById('userForm');
+        const inputs = form.querySelectorAll('input[readonly]:not([id="password"])');
+        const avatarInput = document.getElementById('avatarInput');
+
+        if (editButton.textContent === "Update Information") {
+            editButton.textContent = "Save";
+            inputs.forEach(input => {
+                input.removeAttribute('readonly');
+                input.classList.add('editable');  
+            });
+            avatarInput.style.display = 'block';
+        } else {
+            editButton.textContent = "Update Information";
+            avatarInput.style.display = 'none';
+        
+             form.action = '@Url.Action("UpdateUser", "Login")';
+            form.method = "post";
+            form.submit();
+        }
+    }
+    function previewAvatar(event) {
+        const avatarPreview = document.getElementById('avatarPreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarPreview.src = e.target.result; // Update img src to the chosen file's data URL
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+
+
+
