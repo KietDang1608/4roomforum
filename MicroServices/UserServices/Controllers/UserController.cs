@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using UserServices.Data;
 using UserServices.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -95,5 +95,35 @@ namespace UserServices.Controllers
             }
             return Ok(_mapper.Map<UserDTO>(user));
         }
+
+        [HttpPost("register")]
+        public ActionResult<UserDTO> Register(UserDTO user)
+        {
+            // Kiểm tra nếu người dùng đã tồn tại
+            var existingUser = _repo.GetUserByEmail(user.Email);
+            if (existingUser != null)
+            {
+                return BadRequest(new { message = "User already exists" });
+            }
+
+            // Chuyển đổi từ DTO sang model
+            var userModel = _mapper.Map<User>(user);
+
+            // Tạo người dùng mới
+            _repo.CreateUser(userModel);
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            if (!_repo.SaveChanges())
+            {
+                return StatusCode(500, new { message = "An error occurred while registering the user" });
+            }
+
+            // Chuyển đổi lại thành DTO để trả về
+            var userDto = _mapper.Map<UserDTO>(userModel);
+
+            // Trả về kết quả với HTTP 201 Created và dữ liệu người dùng mới
+            return CreatedAtRoute(nameof(GetUserById), new { id = userDto.UserId }, userDto);
+        }
+
     }
 }

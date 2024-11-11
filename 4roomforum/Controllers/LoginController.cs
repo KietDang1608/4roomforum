@@ -68,8 +68,32 @@ namespace _4roomforum.Controllers
             }
         }
         [HttpPost]
-        public IActionResult SignUp(User user)
+        public async Task<IActionResult> SignUp(string userName, string email, string password, string confirmPassword)
         {
+            if(password != confirmPassword)
+            {
+                ModelState.AddModelError(string.Empty, "Mật khẩu không trùng khớp");
+                return View();
+            }
+            UserDTO newUser = new UserDTO
+            {
+                UserName = userName,
+                Email = email,
+                Password = password,
+                Avatar = "",
+                RoleId = 2,
+                JoinDate = DateOnly.FromDateTime(DateTime.Now),
+                LastLogin = DateOnly.FromDateTime(DateTime.Now),
+                Status = 1
+            };
+            var result = await _userService.RegisterUserAsync(newUser);
+            if (result == null)
+            {
+                
+                ModelState.AddModelError(string.Empty, "Email đã được sử dụng");
+                return View();
+            }
+            TempData["SignUpSuccess"] = "Tài khoản đã được tạo thành công!";
             return RedirectToAction("SignIn");
         }
         [HttpGet]

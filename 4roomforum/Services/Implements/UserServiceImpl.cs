@@ -3,7 +3,7 @@ using _4roomforum.Services.Interfaces;
 
 namespace _4roomforum.Services.Implements
 {
-    public class UserServiceImpl: IUserService
+    public class UserServiceImpl : IUserService
     {
         private readonly ILogger<UserServiceImpl> _logger;
         private readonly HttpClient _client;
@@ -72,6 +72,36 @@ namespace _4roomforum.Services.Implements
             }
         }
 
+        public async Task<UserDTO?> RegisterUserAsync(UserDTO userDTO)
+        {
+            try
+            {
+                var response = await _client.PostAsJsonAsync("api/user/register", userDTO);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var newUser = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    return newUser;
+                }
+                else
+                {
+                    _logger.LogError($"Register failed. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in RegisterUserAsync: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in RegisterUserAsync: {ex.Message}");
+                return null;
+            }
+        }
+
+
         public async Task<bool> UpdateUser(int userId, UserDTO userUpdateDto)
         {
             try
@@ -103,10 +133,10 @@ namespace _4roomforum.Services.Implements
         {
             try
             {
-                var response= await _client.GetAsync($"api/user/{userId}");
-                if(response.IsSuccessStatusCode)
+                var response = await _client.GetAsync($"api/user/{userId}");
+                if (response.IsSuccessStatusCode)
                 {
-                    var user= await response.Content.ReadFromJsonAsync<UserDTO>();
+                    var user = await response.Content.ReadFromJsonAsync<UserDTO>();
                     return user;
                 }
                 else
@@ -124,9 +154,8 @@ namespace _4roomforum.Services.Implements
             catch (Exception ex)
             {
                 _logger.LogError($"Unexpected error in GetUserById: {ex.Message}");
-                return null; 
+                return null;
             }
         }
-
     }
 }
