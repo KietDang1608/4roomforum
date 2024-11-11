@@ -11,7 +11,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+
 <form id="userForm" enctype="multipart/form-data">
+<div class="row">
+<div class="col-md-6">
+
     <div class="form-group">
         <label asp-for="UserName" class="control-label"></label>
         <input asp-for="UserName" class="form-control" readonly />
@@ -37,13 +41,18 @@
         <label asp-for="Status" class="control-label"></label>
         <input asp-for="Status" class="form-control" readonly />
     </div>
-    <div class="form-group">
-        <label>Avatar</label><br />
+        </div>
+    <div class="form-group col-md-6 d-flex justify-content-start text-right">
+        <label class="control-label">Avatar</label>
         <input asp-for="Avatar" class="form-control" hidden />
-        <img id="avatarPreview" src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" width="100px" />
+        <div style=" width="auto" height="284px">
+            <img id="avatarPreview" style="border: none;" src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" />
+        </div>
         <input type="file" id="avatarInput" name="AvatarFile" class="form-control mt-2" style="display: none;" accept="image/*" onchange="previewAvatar(event)" />
     </div>
+</div>
 </form>
+<br>
 
 <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Back to Home</a>
 <a class="btn btn-primary" id="editButton" onclick="toggleEditMode()">Update Information</a>
