@@ -71,5 +71,34 @@ namespace _4roomforum.Services.Implements
                 return null;
             }
         }
+        public async Task<UserDTO?> RegisterUserAsync(UserDTO userDTO)
+        {
+            try
+            {
+                var response = await _client.PostAsJsonAsync("api/user/register", userDTO);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var newUser = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    return newUser;
+                }
+                else
+                {
+                    _logger.LogError($"Register failed. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in RegisterUserAsync: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in RegisterUserAsync: {ex.Message}");
+                return null;
+            }
+        }
+
     }
 }
