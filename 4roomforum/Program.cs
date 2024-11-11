@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
+builder.Services.AddScoped<IPostService, PostServiceImpl>();
 builder.Services.AddHttpClient<CategoryServiceImpl>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>

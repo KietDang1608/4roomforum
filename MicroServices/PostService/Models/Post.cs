@@ -17,9 +17,9 @@ namespace PostService.Models
         [Column("post_content")]
         public required string PostContent { get; set; }
         [Column("post_date")]
-        public DateTime PostDate { get; set; }
+        public DateTime PostDate { get; set; } = DateTime.UtcNow;
         [Column("is_edited")]
-        public bool IsEdited { get; set; }
+        public bool IsEdited { get; set; } = false;
 
         [InverseProperty("Post")]
         public ICollection<Reply>? Replies { get; set; }

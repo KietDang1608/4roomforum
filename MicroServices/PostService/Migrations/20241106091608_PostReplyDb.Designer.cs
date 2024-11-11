@@ -12,8 +12,8 @@ using PostService.Data;
 namespace PostService.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20241105071319_PostServiceCreateDb")]
-    partial class PostServiceCreateDb
+    [Migration("20241106091608_PostReplyDb")]
+    partial class PostReplyDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
