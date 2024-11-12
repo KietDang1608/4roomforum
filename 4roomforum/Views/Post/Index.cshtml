@@ -1,127 +1,63 @@
-﻿@*
+﻿@using _4roomforum.DTOs
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Danh sách Bài viết";
+    var posts = ViewBag.Posts as List<PostDTO>;
 }
 
 <div class="container mt-5">
-    
-
-    <!-- "Bạn đang nghĩ gì?" Input and Create Post Button -->
+    <!-- Input and Create Post Button -->
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="card-title">Bạn đang nghĩ gì?</h5>
-            
             <button class="btn btn-primary">Tạo bài viết</button>
         </div>
     </div>
 
     <h2 class="text-center text-success">Danh sách Bài viết</h2>
     <div class="row">
-        <!-- Post 1 -->
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Tên chủ đề: Chủ đề 1</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Người đăng: User1</h6>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Nội dung của bài post 1</p>
-                    <small class="text-muted">Ngày đăng: 01/01/2024</small>
-                    <small class="text-muted d-block">Được chỉnh sửa: Có</small>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <span class="badge bg-info text-dark">Lượt like: 100</span>
-                        <div>
-                            <button class="btn btn-outline-primary btn-sm me-2">Like</button>
-                            <button class="btn btn-outline-secondary btn-sm">Bình luận</button>
+        @if (posts != null && posts.Count > 0)
+        {
+            foreach (var post in posts)
+            {
+                <div class="col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Tên chủ đề: Chủ đề @post.ThreadId</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Người đăng: User@post.PostedBy</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@post.PostContent</p>
+                            <small class="text-muted">Ngày đăng: @post.PostDate.ToString("dd/MM/yyyy")</small>
+                            <small class="text-muted d-block">Được chỉnh sửa: @(post.IsEdited ? "Có" : "Không")</small>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="badge bg-info text-dark">Lượt like: @post.Like</span>
+                                <div>
+                                    <button class="btn btn-outline-primary btn-sm me-2">Like</button>
+                                    <button class="btn btn-outline-secondary btn-sm">Bình luận</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h6>Bình luận</h6>
+                            <div class="list-group">
+                                <!-- Bình luận mẫu -->
+                                <div class="list-group-item">
+                                    <p class="mb-1"><strong>User:</strong> Bình luận mẫu</p>
+                                    <small class="text-muted">Ngày bình luận: 01/01/2024</small>
+                                </div>
+                                <!-- Có thể thêm các bình luận khác ở đây -->
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <h6>Bình luận</h6>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User2:</strong> Bình luận của User2</p>
-                            <small class="text-muted">Ngày bình luận: 02/01/2024</small>
-                        </div>
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User3:</strong> Bình luận của User3</p>
-                            <small class="text-muted">Ngày bình luận: 03/01/2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Post 2 -->
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Tên chủ đề: Chủ đề 2</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Người đăng: User2</h6>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Nội dung của bài post 2</p>
-                    <small class="text-muted">Ngày đăng: 02/01/2024</small>
-                    <small class="text-muted d-block">Được chỉnh sửa: Không</small>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <span class="badge bg-info text-dark">Lượt like: 200</span>
-                        <div>
-                            <button class="btn btn-outline-primary btn-sm me-2">Like</button>
-                            <button class="btn btn-outline-secondary btn-sm">Bình luận</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <h6>Bình luận</h6>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User4:</strong> Bình luận của User4</p>
-                            <small class="text-muted">Ngày bình luận: 04/01/2024</small>
-                        </div>
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User5:</strong> Bình luận của User5</p>
-                            <small class="text-muted">Ngày bình luận: 05/01/2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Post 3 -->
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Tên chủ đề: Chủ đề 3</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Người đăng: User3</h6>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Nội dung của bài post 3</p>
-                    <small class="text-muted">Ngày đăng: 03/01/2024</small>
-                    <small class="text-muted d-block">Được chỉnh sửa: Có</small>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <span class="badge bg-info text-dark">Lượt like: 300</span>
-                        <div>
-                            <button class="btn btn-outline-primary btn-sm me-2">Like</button>
-                            <button class="btn btn-outline-secondary btn-sm">Bình luận</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <h6>Bình luận</h6>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User6:</strong> Bình luận của User6</p>
-                            <small class="text-muted">Ngày bình luận: 06/01/2024</small>
-                        </div>
-                        <div class="list-group-item">
-                            <p class="mb-1"><strong>User7:</strong> Bình luận của User7</p>
-                            <small class="text-muted">Ngày bình luận: 07/01/2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            }
+        }
+        else
+        {
+            <p class="text-center text-muted">Không có bài viết nào.</p>
+        }
     </div>
 </div>
