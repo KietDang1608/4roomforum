@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PostService.Data;
 using PostService.DTOs;
 using PostService.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PostService.Controllers
 {
@@ -14,32 +15,35 @@ namespace PostService.Controllers
     public class ReplyController : ControllerBase
     {
 
+        private readonly IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> _repository;
         private readonly IReplyRepo _replyRepo;
 
-        public ReplyController(IReplyRepo replyRepo)
+        public ReplyController(IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> repository, IReplyRepo replyRepo)
         {
+            _repository = repository;
             _replyRepo = replyRepo;
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReplyDTO>>> GetReplies()
-        {    
-            return Ok(await _replyRepo.GetAllRepliesAsync());
+        [HttpGet("get-all-by-{PostId}")]
+        public async Task<IActionResult> GetReplies(int PostId, int pageNumber = 1, int pageSize = 10)
+        {
+            var pagedResult = await _replyRepo.GetPagedAsync(pageNumber, pageSize, PostId);
+            return Ok(pagedResult);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ReplyDTO>> GetReply(int id)
         {
-            return Ok(await _replyRepo.GetReplyByIdAsync(id));
+            return Ok(await _repository.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReplyForPost(CreateReplyDTO1 createReplyDTO1)
+        public async Task<IActionResult> CreateReply(CreateReplyDTO createReplyDTO)
         {
             try
             {
-                if (await _replyRepo.CreateReplyAsync(createReplyDTO1))
+                if (await _repository.AddAsync(createReplyDTO))
                 {
                     return Ok("Reply is created");
                 }
@@ -56,43 +60,48 @@ namespace PostService.Controllers
                 // Bắt các lỗi chung khác
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   $"An error occurred: {ex.Message}");
-            }           
+            }
         }
 
-        [HttpPost("/to-reply")]
-        public async Task<IActionResult> CreateReplyForReply(CreateReplyDTO2 createReplyDTO2)
+        [HttpPut("{id}-{option}")]
+        public async Task<IActionResult> UpdateReply(int id, UpdateReplyDTO? updateReplyDTO, string option)
         {
             try
             {
-                if (await _replyRepo.CreateReplyToReplyAsync(createReplyDTO2))
+                switch (option)
                 {
-                    return Ok($"Reply to reply {createReplyDTO2.ReplyToReply} is created");
+                    case "edit":
+                        if (await _repository.UpdateAsync(id, updateReplyDTO, CustomUpdate: null))
+                        {
+                            return Ok($"Reply {id} is updated!");
+                        }
+                        break;
+                    case "upvote":
+                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.UpvoteAmount++))
+                        {
+                            return Ok($"Reply {id} is updated!");
+                        }
+                        break;
+                    case "downvote":
+                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.DownvoteAmount++))
+                        {
+                            return Ok($"Reply {id} is updated!");
+                        }
+                        break;
+                    case "unupvote":
+                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.UpvoteAmount--))
+                        {
+                            return Ok($"Reply {id} is updated!");
+                        }
+                        break;
+                    case "undownvote":
+                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.DownvoteAmount--))
+                        {
+                            return Ok($"Reply {id} is updated!");
+                        }
+                        break;
                 }
-                return BadRequest("Cannot create reply!");
-            }
-            catch (DbUpdateException dbEx)
-            {
-                // Xử lý các lỗi liên quan đến việc cập nhật cơ sở dữ liệu (vd: lỗi khóa, lỗi ràng buộc,...)
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  $"Database update failed: {dbEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                // Bắt các lỗi chung khác
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  $"An error occurred: {ex.Message}");
-            }         
-        }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReply(int id, UpdateReplyDTO updateReplyDTO)
-        {
-            try
-            {
-                if (await _replyRepo.UpdateReplyAsync(id, updateReplyDTO))
-                {
-                    return Ok($"Reply {id} is updated!");
-                }
                 return BadRequest("Cannot update reply");
             }
             catch (DbUpdateException dbEx)
@@ -106,32 +115,7 @@ namespace PostService.Controllers
                 // Bắt các lỗi chung khác
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   $"An error occurred: {ex.Message}");
-            }          
-        }
-
-        [HttpPut("/{option}/{id}")]
-        public async Task<IActionResult> ChangeVoteReply(int id, string option)
-        {
-            try
-            {
-                if (await _replyRepo.ChangeVoteReply(id, option))
-                {
-                    return Ok($"Reply {id} is updated!");
-                }
-                return BadRequest("Cannot change vote reply");
             }
-            catch (DbUpdateException dbEx)
-            {
-                // Xử lý các lỗi liên quan đến việc cập nhật cơ sở dữ liệu (vd: lỗi khóa, lỗi ràng buộc,...)
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  $"Database update failed: {dbEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                // Bắt các lỗi chung khác
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  $"An error occurred: {ex.Message}");
-            }           
         }
 
         [HttpDelete("{id}")]
@@ -139,7 +123,7 @@ namespace PostService.Controllers
         {
             try
             {
-                if (await _replyRepo.DeleteReplyAsync(id))
+                if (await _repository.DeleteAsync(id))
                 {
                     return Ok($"Reply {id} is delete!");
                 }
@@ -156,7 +140,7 @@ namespace PostService.Controllers
                 // Bắt các lỗi chung khác
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   $"An error occurred: {ex.Message}");
-            }            
+            }
         }
     }
 }

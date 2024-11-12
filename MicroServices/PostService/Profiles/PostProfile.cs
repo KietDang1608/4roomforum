@@ -10,7 +10,8 @@ namespace PostService.Profiles
         public PostProfile()
         {
             CreateMap<Post, PostDTO>();
-            CreateMap<PostDTO, Post>();
+            CreateMap<CreatePostDTO, Post>();
+            CreateMap<UpdatePostDTO, Post>();
         }
     }
 }

@@ -8,8 +8,7 @@ namespace PostService.Profiles
     {
         public ReplyProfile() {
             CreateMap<Reply, ReplyDTO>();
-            CreateMap<CreateReplyDTO1, Reply>();
-            CreateMap<CreateReplyDTO2, Reply>();              
+            CreateMap<CreateReplyDTO, Reply>();
             CreateMap<UpdateReplyDTO, Reply>();
         }
     }

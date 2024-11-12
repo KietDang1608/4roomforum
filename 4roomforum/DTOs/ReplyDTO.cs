@@ -1,4 +1,4 @@
-﻿namespace PostService.DTOs
+﻿namespace _4roomforum.DTOs
 {
     public class ReplyDTO
     {
