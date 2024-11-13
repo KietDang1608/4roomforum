@@ -80,7 +80,7 @@ namespace _4roomforum.Controllers
                 UserName = userName,
                 Email = email,
                 Password = password,
-                Avatar = "",
+                Avatar = "voi.png",
                 RoleId = 2,
                 JoinDate = DateOnly.FromDateTime(DateTime.Now),
                 LastLogin = DateOnly.FromDateTime(DateTime.Now),
@@ -93,7 +93,7 @@ namespace _4roomforum.Controllers
                 ModelState.AddModelError(string.Empty, "Email đã được sử dụng");
                 return View();
             }
-            TempData["SignUpSuccess"] = "Tài khoản đã được tạo thành công!";
+            TempData["SuccessMessage"] = "Tài khoản đã được tạo thành công!";
             return RedirectToAction("SignIn");
         }
         [HttpGet]
