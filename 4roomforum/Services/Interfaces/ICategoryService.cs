@@ -14,5 +14,6 @@ namespace _4roomforum.Services.Interfaces
         Task<bool> EditCategory(Category category);
         Task<bool> RemoveCategory(int id);
         Category getCategoryById(int id);
+
     }
 }

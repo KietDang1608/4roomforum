@@ -9,7 +9,7 @@ namespace _4roomforum.Services.Implements
     {
         private readonly ILogger<CategoryServiceImpl> _logger;
         private readonly HttpClient _client;
-        public CategoryServiceImpl(HttpClient httpClient,ILogger<CategoryServiceImpl> logger)
+        public CategoryServiceImpl(HttpClient httpClient, ILogger<CategoryServiceImpl> logger)
         {
             _logger = logger;
             _client = httpClient;
@@ -127,7 +127,8 @@ namespace _4roomforum.Services.Implements
             }
         }
 
-        public Category getCategoryById(int id){
+        public Category getCategoryById(int id)
+        {
             try
             {
                 var response = _client.GetAsync($"api/category/{id}").Result;
@@ -180,8 +181,6 @@ namespace _4roomforum.Services.Implements
                 return new List<Category>();
             }
         }
-
-
+        
     }
-
 }
