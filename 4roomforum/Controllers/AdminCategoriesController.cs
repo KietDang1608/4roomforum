@@ -1,4 +1,4 @@
-﻿
+﻿using _4roomforum.Services.Interfaces;
 using _4roomforum.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +7,10 @@ namespace _4roomforum.Controllers
 {
     public class AdminCategoriesController : Controller
     {
-        private ILogger<HomeController> _logger;
+        private readonly ICategoryService _categoryService;
       
-        public AdminCategoriesController(ILogger<HomeController> logger) {
-            _logger = logger;
+        public AdminCategoriesController(ICategoryService categoryService) {
+            _categoryService = categoryService;
         }
         public async Task<ActionResult>Index()
         {
@@ -19,42 +19,13 @@ namespace _4roomforum.Controllers
         }
         private List<Category> getAllCategory()
         {
-            using (var client = new HttpClient()) 
-            {
-                try
-                {
-                    client.BaseAddress = new Uri("http://localhost:5000/");
-                    var reponseTask = client.GetAsync("api/category");
-                    reponseTask.Wait();
-
-                    var result = reponseTask.Result;
-
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var categories = result.Content.ReadFromJsonAsync<IList<Category>>().Result;
-                        if (categories == null)
-                        {
-                            ViewBag.Message = "No category";
-                        }
-                        return categories?.ToList() ?? new List<Category>();
-                    }
-                    else
-                    {
-                        _logger.LogError("Server error. Please contact administrator.");
-                        return new List<Category>();
-                    }
-                }
-                catch (AggregateException ex)
-                {
-                    ViewBag.Message = "Category service is not available";
-                    return new List<Category>();
-                }
-                catch (HttpRequestException ex)
-                {
-                    ViewBag.Message = "category service is not available";
-                    return new List<Category>();
-                }
-            }
+           try{
+                var categories = _categoryService.getAllCategory();
+                return categories;
+           }catch(Exception ex){
+               
+               return new List<Category>();
+           }
         }
         public IActionResult CreateCategory()
         {
@@ -65,7 +36,7 @@ namespace _4roomforum.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool issSuccess = await AddCategory(category);
+                bool issSuccess = await _categoryService.AddCategory(category);
                 if (issSuccess){
                     ViewBag.Message = "Category add successfully!";
                     var categories = getAllCategory();
@@ -78,32 +49,7 @@ namespace _4roomforum.Controllers
             ViewBag.Message = "Error while adding Add Category!";
             return View("~/Views/Admin/AddCategory.cshtml");
         }
-        private async Task<bool> AddCategory(Category newCategory)
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    client.BaseAddress = new Uri("http://localhost:5000/");
-                    var response = await client.PostAsJsonAsync("api/category", newCategory);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        _logger.LogError("Error while adding Category");
-                        return false;
-                    }
-                   
-                }
-                catch (HttpRequestException ex)
-                {   
-                    _logger.LogError(ex,"Error in AddCategory");
-                    return false;
-                }
-            }
-        }
+
         public IActionResult UppdateCategory(int id)
         {
             var category = getCategoryById(id);
@@ -111,37 +57,11 @@ namespace _4roomforum.Controllers
         }
         private Category getCategoryById(int id)
         {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    client.BaseAddress = new Uri("http://localhost:5000/");
-                    var responseTask = client.GetAsync($"api/category/{id}"); //truyền id qua bên kia ok? 
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var category = result.Content.ReadFromJsonAsync<Category>().Result;
-                        return category;
-                    }
-                    else
-                    {
-                        _logger.LogError($"Error fetching category with ID {id}."); 
-                        return null;
-                    }
-                }
-                catch (AggregateException ex)
-                {
-                    ViewBag.Message = "Category service is not available"; 
-                    return null;
-                }
-                catch (HttpRequestException ex)
-                {
-                    ViewBag.Message = "Category service is not available"; 
-                    return null;
-                }
+            try{
+                var category = _categoryService.getCategoryById(id);
+                return category;
+            }catch(Exception ex){
+                return new Category();
             }
         }
         [HttpPost]
@@ -149,7 +69,7 @@ namespace _4roomforum.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool issSuccess = await EditCategory(category);
+                bool issSuccess = await _categoryService.EditCategory(category);
                 if (issSuccess)
                 {
                     ViewBag.Message = "Category edit successfully!";
@@ -159,7 +79,7 @@ namespace _4roomforum.Controllers
                 else
                 {
                     ViewBag.Message = "Edit Category Errorr!";
-                    var categories = getAllCategory();
+                    var categories = _categoryService.getAllCategory();
                     return View("~/Views/Admin/categories.cshtml", categories);
                 }
             }  
@@ -167,35 +87,10 @@ namespace _4roomforum.Controllers
             ViewBag.Message = "Error while  edit Category!";
             return View("~/Views/Admin/categories.cshtml", categories1);
         }
-        private async Task<bool> EditCategory(Category updateCategory)
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    client.BaseAddress = new Uri("http://localhost:5000/");
-                    var response = await client.PutAsJsonAsync($"api/category/{updateCategory.CategoryId}", updateCategory);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        _logger.LogError("Error while Edit Category");
-                        return false;
-                    }
-                }
-                catch (HttpRequestException ex)
-                {
-                    _logger.LogError(ex, "Error in EditCategory");
-                    return false;
-                }
-
-            }
-        }
+    
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            bool isSuccess = await RemoveCategory(id);
+            bool isSuccess = await _categoryService.RemoveCategory(id);
 
             if (isSuccess)
             {
@@ -208,35 +103,7 @@ namespace _4roomforum.Controllers
             var categories = getAllCategory();
             return View("~/Views/Admin/categories.cshtml", categories);
         }
-
-        private async Task<bool> RemoveCategory(int id)
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    client.BaseAddress = new Uri("http://localhost:5000/");
-                    var response = await client.DeleteAsync($"api/category/{id}");
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        _logger.LogError($"Error while deleting category with ID {id}");
-                        return false;
-                    }
-                }
-                catch (HttpRequestException ex)
-                {
-                    _logger.LogError(ex, $"Error in RemoveCategory for ID {id}");
-                    return false;
-                }
-            }
-        }
-
-
-
+    
+        
     }
 }
