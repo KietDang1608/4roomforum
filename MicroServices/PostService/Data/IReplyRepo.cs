@@ -5,12 +5,7 @@ namespace PostService.Data
 {
     public interface IReplyRepo
     {
-        Task<IEnumerable<ReplyDTO>> GetAllRepliesAsync();
-        Task<ReplyDTO> GetReplyByIdAsync(int id);
-        Task<bool> CreateReplyAsync(CreateReplyDTO1 createReplyDTO1);
-        Task<bool> CreateReplyToReplyAsync(CreateReplyDTO2 createReplyDTO2);
-        Task<bool> UpdateReplyAsync(int id, UpdateReplyDTO updateReplyDTO);
-        Task<bool> ChangeVoteReply(int id, string option);
-        Task<bool> DeleteReplyAsync(int id);
+        Task<IEnumerable<ReplyDTO>> GetAllRepliesAsync(int PostId);
+        Task<PagedResult<ReplyDTO>> GetPagedAsync(int pageNumber, int pageSize, int PostId);
     }
 }

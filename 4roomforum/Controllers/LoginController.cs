@@ -63,13 +63,37 @@ namespace _4roomforum.Controllers
             }
             else // Đăng nhập thất bại
             {
-                ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
+                TempData["SuccessMessage"] = "Email or Password is incorrect"; 
                 return View("SignIn"); // Trả về lại trang đăng nhập với lỗi
             }
         }
         [HttpPost]
-        public IActionResult SignUp(User user)
+        public async Task<IActionResult> SignUp(string userName, string email, string password, string confirmPassword)
         {
+            if(password != confirmPassword)
+            {
+                ModelState.AddModelError(string.Empty, "Mật khẩu không trùng khớp");
+                return View();
+            }
+            UserDTO newUser = new UserDTO
+            {
+                UserName = userName,
+                Email = email,
+                Password = password,
+                Avatar = "voi.png",
+                RoleId = 2,
+                JoinDate = DateOnly.FromDateTime(DateTime.Now),
+                LastLogin = DateOnly.FromDateTime(DateTime.Now),
+                Status = 1
+            };
+            var result = await _userService.RegisterUserAsync(newUser);
+            if (result == null)
+            {
+                
+                ModelState.AddModelError(string.Empty, "Email đã được sử dụng");
+                return View();
+            }
+            TempData["SuccessMessage"] = "Tài khoản đã được tạo thành công!";
             return RedirectToAction("SignIn");
         }
         [HttpGet]
@@ -86,7 +110,7 @@ namespace _4roomforum.Controllers
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
             if (userIdClaim == null)
             {
-                return Unauthorized(); // Hoặc xử lý lỗi theo ý bạn
+                return Unauthorized(); 
             }
 
             var userId = int.Parse(userIdClaim.Value); // Chuyển đổi thành int hoặc kiểu dữ liệu phù hợp
@@ -94,11 +118,127 @@ namespace _4roomforum.Controllers
 
             if (userProfile == null)
             {
-                return NotFound(); // Hoặc xử lý theo cách bạn muốn
+                return NotFound(); 
             }
 
-            return View(userProfile); // Trả về view với thông tin người dùng
+            return View(userProfile); 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(User updatedUser,IFormFile AvatarFile)
+        {
+            // Lấy thông tin người dùng hiện tại từ Claims
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
+            {
+                return RedirectToAction("SignIn", "Login"); // Điều hướng tới trang đăng nhập nếu không tìm thấy UserId
+            }
+            if (AvatarFile != null && AvatarFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine("wwwroot", "imgs");
+                var uniqueFileName = AvatarFile.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // save file lên sever
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await AvatarFile.CopyToAsync(fileStream);
+                }
+
+                updatedUser.Avatar = uniqueFileName;
+            }
+            
+            var userUpdateDto = new UserDTO
+            {
+                UserId = userId,
+                Email = updatedUser.Email,
+                UserName = updatedUser.UserName,
+                Password=updatedUser.Password,
+                JoinDate = updatedUser.JoinDate,
+                Status = updatedUser.Status,
+                Avatar = updatedUser.Avatar
+            };
+
+            var isUpdated = await _userService.UpdateUser(userId, userUpdateDto);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, updatedUser.Email),
+                new Claim(ClaimTypes.Email, updatedUser.Email),
+                new Claim(ClaimTypes.Role, "User"), // Giữ nguyên hoặc lấy từ updatedUser nếu có thay đổi
+                new Claim("UserId", userId.ToString())
+            };
+            
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                IsPersistent = true,
+            };
+
+            // Đăng nhập lại để làm mới claims
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+            TempData["SuccessMessage"] = "Update successfully."; // Gửi thông báo thành công
+            return RedirectToAction("Profile", "Login"); 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangePass()
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+            {
+                return Unauthorized(); 
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+            var userProfile = await _userService.GetUserProfile(userId);
+
+            if (userProfile == null)
+            {
+                return NotFound(); 
+            }
+
+            return View(userProfile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePass(User updatedUser)
+        {
+            var currentPassword = Request.Form["CurrentPassword"];
+            var newPassword = Request.Form["NewPassword"];
+            var confirmPassword = Request.Form["ConfirmPassword"];
+            var userIdClaim =User.FindFirst("UserId")?.Value;
+
+            if(userIdClaim ==null || !int.TryParse(userIdClaim,out int userId))
+            {
+                return RedirectToAction("SignIn","Login");
+            }
+            var user =await _userService.GetUserById(userId);
+            if(user ==null || user.Password != currentPassword )
+            {
+                TempData["SuccessMessage"] = "Incorrect Password";
+                return View();
+            }
+
+            if(newPassword !=confirmPassword)
+            {
+                TempData["SuccessMessage"] = "NewPassword and ConfirmPassword are different";
+                return View();
+            }
+
+            user.Password=newPassword;
+            var isUpdated= await _userService.UpdateUser(userId,user);
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Password updated successfully."; // Success message
+                return RedirectToAction("Profile", "Login");
+            }
+            return View();
+        }
+
 
     }
 }

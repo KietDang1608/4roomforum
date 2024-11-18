@@ -26,28 +26,35 @@ namespace PostService.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsEdited")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_edited");
 
                     b.Property<int>("Like")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("like");
 
                     b.Property<string>("PostContent")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("post_content");
 
                     b.Property<DateTime>("PostDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("post_date");
 
                     b.Property<int>("PostedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("posted_by");
 
                     b.Property<int>("ThreadId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("thread_id");
 
                     b.HasKey("Id");
 
@@ -71,9 +78,9 @@ namespace PostService.Migrations
                         .HasColumnType("int")
                         .HasColumnName("post_id");
 
-                    b.Property<int>("ReplyBy")
+                    b.Property<int>("RepliedBy")
                         .HasColumnType("int")
-                        .HasColumnName("reply_by");
+                        .HasColumnName("replied_by");
 
                     b.Property<string>("ReplyContent")
                         .IsRequired()
@@ -94,7 +101,39 @@ namespace PostService.Migrations
 
                     b.HasKey("ReplyId");
 
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("ReplyToReply");
+
                     b.ToTable("Replies");
+                });
+
+            modelBuilder.Entity("PostService.Models.Reply", b =>
+                {
+                    b.HasOne("PostService.Models.Post", "Post")
+                        .WithMany("Replies")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PostService.Models.Reply", "ReplyToReply2")
+                        .WithMany("ReplyToReplies")
+                        .HasForeignKey("ReplyToReply")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Post");
+
+                    b.Navigation("ReplyToReply2");
+                });
+
+            modelBuilder.Entity("PostService.Models.Post", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("PostService.Models.Reply", b =>
+                {
+                    b.Navigation("ReplyToReplies");
                 });
 #pragma warning restore 612, 618
         }

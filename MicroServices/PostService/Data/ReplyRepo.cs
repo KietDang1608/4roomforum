@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using PostService.DTOs;
-using PostService.ExceptionHandler;
 using PostService.Models;
+using System.Collections.Generic;
 
 namespace PostService.Data
 {
@@ -17,80 +16,22 @@ namespace PostService.Data
             _context = context;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ReplyDTO>> GetAllRepliesAsync()
+
+        public async Task<IEnumerable<ReplyDTO>> GetAllRepliesAsync(int PostId)
         {
-            var replies = await _context.Replies.ToListAsync();
-            return _mapper.Map<IEnumerable<ReplyDTO>>(replies);
+            var List = await _context.Replies.Where(r => r.PostId == PostId).ToListAsync();
+            return _mapper.Map<IEnumerable<ReplyDTO>>(List);
         }
 
-        public async Task<ReplyDTO> GetReplyByIdAsync(int id)
+        public async Task<PagedResult<ReplyDTO>> GetPagedAsync(int pageNumber, int pageSize, int PostId)
         {
-            var reply = await _context.Replies.FindAsync(id);
-            if (reply == null)
-            {
-                throw new DataNotFoundException($"Data with ID {id} was not found.");
-            }
-            return _mapper.Map<ReplyDTO>(reply);
-        }
-
-        public async Task<bool> CreateReplyAsync(CreateReplyDTO1 createReplyDTO1)
-        {
-            var reply = _mapper.Map<Reply>(createReplyDTO1);
-            await _context.Replies.AddAsync(reply);
-
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> CreateReplyToReplyAsync(CreateReplyDTO2 createReplyDTO2)
-        {
-            var reply = _mapper.Map<Reply>(createReplyDTO2);
-            await _context.Replies.AddAsync(reply);
-
-            return await _context.SaveChangesAsync() > 0;
-        }       
-
-        public async Task<bool> UpdateReplyAsync(int id, UpdateReplyDTO updateReplyDTO)
-        {
-            var reply = await _context.Replies.FindAsync(id);
-            if (reply == null)
-            {
-                throw new DataNotFoundException("Reply" + id + " was not found!");
-            }
-
-            _mapper.Map(updateReplyDTO, reply);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> ChangeVoteReply(int id, string option)
-        {
-            var reply = await _context.Replies.FindAsync(id);
-            if (reply == null)
-            {
-                throw new DataNotFoundException("Reply" + id + " was not found!");
-            }
-            if (option.Equals("upvote"))
-            {
-                reply.UpvoteAmount++;
-            }
-            else
-            {
-                reply.UpvoteAmount--;
-            }
-
-            return await _context.SaveChangesAsync() > 0;
-
-        }
-
-        public async Task<bool> DeleteReplyAsync(int id)
-        {
-            var reply = await _context.Replies.FindAsync(id);
-            if (reply == null)
-            {
-                throw new DataNotFoundException("Reply" + id + " was not found!");
-            }
-
-            _context.Replies.Remove(reply);
-            return await _context.SaveChangesAsync() > 0;
+            var count = await _context.Replies.Where(r => r.PostId == PostId).CountAsync();
+            var items = await _context.Replies.Where(r => r.PostId == PostId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var List = _mapper.Map<IEnumerable<ReplyDTO>>(items);
+            return new PagedResult<ReplyDTO>(List, count, pageNumber, pageSize);
         }
     }
 }
