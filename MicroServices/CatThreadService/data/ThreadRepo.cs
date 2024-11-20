@@ -13,10 +13,11 @@ public class ThreadRepo : IThreadRepo
     {  
         return _context.Threads.ToList(); 
     }
-    Threads IThreadRepo.GetThreadById(int id)
+    public Threads GetThreadById(int id)
     {
         return _context.Threads.FirstOrDefault(h => h.ThreadId == id);
     }
+
 
     void IThreadRepo.CreateThread(Threads thread)
     {

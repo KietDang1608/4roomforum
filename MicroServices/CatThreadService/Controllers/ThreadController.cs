@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CatThreadService.Data;
 using CatThreadService.DTOs;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace CatThreadService.Controllers
     {
         private readonly IThreadRepo _repo;
         private readonly IMapper _mapper;
+       
         public ThreadController(IThreadRepo repo, IMapper mapper)
         {
             _repo = repo;
@@ -26,18 +28,23 @@ namespace CatThreadService.Controllers
             System.Console.WriteLine("Getting threads");
 
             var threads = _repo.GetAllThread();
+           
 
             return Ok(_mapper.Map<IEnumerable<ThreadDTO>>(threads));
         }
         [HttpGet("{id}", Name = "GetThreadById")]
         public ActionResult<ThreadDTO> GetThreadById(int id)
         {
-            var cat = _repo.GetThreadById(id);
-            if (cat != null)
+            var thread = _repo.GetThreadById(id);
+
+            if (thread != null)
             {
-                return Ok(_mapper.Map<ThreadDTO>(cat));
+                return Ok(_mapper.Map<ThreadDTO>(thread));
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
         [HttpPost]
         public ActionResult<ThreadDTO> CreateThread(ThreadDTO thread)
@@ -68,6 +75,30 @@ namespace CatThreadService.Controllers
                 return StatusCode(500, new { message = "An error while deleting Thread" });
             }
 
+        }
+
+
+        [HttpGet("hotThread")]
+        public ActionResult<IEnumerable<ThreadDTO>> GetHotThreads()
+        {
+            var threads = _repo.GetAllThread();
+
+            var hotThreads = threads
+                .OrderByDescending(thread => thread.ViewCount)
+                .Take(4)
+                .Select( thread => new ThreadDTO
+                {
+                    ThreadId = thread.ThreadId,
+                    CategoryID = thread.CategoryID,
+                    ThreadTitle = thread.ThreadTitle,
+                    ThreadContent = thread.ThreadContent,
+                    ViewCount = thread.ViewCount,
+                    CreatedBy = thread.CreatedBy,
+                    CreatedDate =  thread.CreatedDate
+                })
+                .ToList();
+
+            return Ok(_mapper.Map<IEnumerable<ThreadDTO>>(hotThreads));
         }
     }
 }
