@@ -155,11 +155,11 @@ namespace PostService.Controllers
                 if (existingLike == null)
                 {
                     await _likeOfReplyRepoBase.AddAsync(new CreateLikeOfReplyDTO(replyId, userId));
-                    
+                    existingLike = await _likeOfReplyRepo.GetLikeOfReplyAndUser(replyId, userId);
                 }
                 UpdateLikeOfReplyDTO likeOfReplyDTO = new UpdateLikeOfReplyDTO(userId, vote);
 
-                if (await _likeOfReplyRepoBase.UpdateAsync(replyId, likeOfReplyDTO, CustomUpdate: null))
+                if (await _likeOfReplyRepoBase.UpdateAsync(existingLike.Id, likeOfReplyDTO, CustomUpdate: null))
                     return Ok($"Liked reply {replyId}");
             }
             catch (Exception ex)
