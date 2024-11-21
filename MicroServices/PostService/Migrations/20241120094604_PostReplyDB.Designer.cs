@@ -12,8 +12,8 @@ using PostService.Data;
 namespace PostService.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20241106091608_PostReplyDb")]
-    partial class PostReplyDb
+    [Migration("20241120094604_PostReplyDB")]
+    partial class PostReplyDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,58 @@ namespace PostService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("PostService.Models.LikeOfPost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int")
+                        .HasColumnName("post_id");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("LikeOfPosts");
+                });
+
+            modelBuilder.Entity("PostService.Models.LikeOfReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ReplyId")
+                        .HasColumnType("int")
+                        .HasColumnName("reply_id");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.Property<int>("vote")
+                        .HasColumnType("int")
+                        .HasColumnName("vote");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReplyId");
+
+                    b.ToTable("LikeOfReplies");
+                });
 
             modelBuilder.Entity("PostService.Models.Post", b =>
                 {
@@ -111,6 +163,28 @@ namespace PostService.Migrations
                     b.ToTable("Replies");
                 });
 
+            modelBuilder.Entity("PostService.Models.LikeOfPost", b =>
+                {
+                    b.HasOne("PostService.Models.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("PostService.Models.LikeOfReply", b =>
+                {
+                    b.HasOne("PostService.Models.Reply", "Reply")
+                        .WithMany("Likes")
+                        .HasForeignKey("ReplyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reply");
+                });
+
             modelBuilder.Entity("PostService.Models.Reply", b =>
                 {
                     b.HasOne("PostService.Models.Post", "Post")
@@ -131,11 +205,15 @@ namespace PostService.Migrations
 
             modelBuilder.Entity("PostService.Models.Post", b =>
                 {
+                    b.Navigation("Likes");
+
                     b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("PostService.Models.Reply", b =>
                 {
+                    b.Navigation("Likes");
+
                     b.Navigation("ReplyToReplies");
                 });
 #pragma warning restore 612, 618

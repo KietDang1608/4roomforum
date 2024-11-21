@@ -12,6 +12,8 @@ namespace PostService.Data
 
         public DbSet<Post> Posts{ get; set; }
         public DbSet<Reply> Replies { get; set; }
+        public DbSet<LikeOfPost> LikeOfPosts { get; set; }
+        public DbSet<LikeOfReply> LikeOfReplies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -43,6 +43,16 @@ namespace PostService.Data
             return await _context.Posts.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize)
+        {
+            return await _context.Posts
+            .Where(p => p.ThreadId == threadId)
+            .OrderBy(p => p.Id) // Adjust ordering as needed
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() > 0);

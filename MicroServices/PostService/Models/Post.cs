@@ -24,6 +24,9 @@ namespace PostService.Models
         [InverseProperty("Post")]
         public ICollection<Reply>? Replies { get; set; }
 
+        [InverseProperty("Post")]
+        public ICollection<LikeOfPost>? Likes { get; set; }
+
 
     }
 }

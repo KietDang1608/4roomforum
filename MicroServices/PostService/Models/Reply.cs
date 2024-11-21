@@ -38,5 +38,8 @@ namespace PostService.Models
 
         [InverseProperty("ReplyToReply2")]
         public ICollection<Reply>? ReplyToReplies { get; set; }
+
+        [InverseProperty("Reply")]
+        public ICollection<LikeOfReply>? Likes { get; set; }
     }
 }
