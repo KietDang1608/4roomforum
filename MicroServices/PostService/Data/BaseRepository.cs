@@ -26,6 +26,12 @@ namespace PostService.Data
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<D1>> GetAllAsync()
+        {
+            var List = await _dbSet.ToListAsync();
+            return _mapper.Map<IEnumerable<D1>>(List);
+        }
+
         public async Task<D1> GetByIdAsync(int id)
         {
             var Item = await _dbSet.FindAsync(id);
