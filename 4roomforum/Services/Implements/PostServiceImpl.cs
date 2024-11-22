@@ -41,5 +41,33 @@ namespace _4roomforum.Services.Implements
                 return new List<PostDTO>();
             }
         }
+
+        public async Task<PostDTO> GetPostById(int id)
+        {
+            try
+            {
+                var response = await _client.GetAsync($"api/post/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var post = await response.Content.ReadFromJsonAsync<PostDTO>();
+                    return post;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get post. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in getapost: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in getapost: {ex.Message}");
+                return null;
+            }
+        }
     }
 }

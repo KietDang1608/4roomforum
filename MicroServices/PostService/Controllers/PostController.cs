@@ -99,15 +99,15 @@ namespace PostService.Controllers
 
         // GET: api/post
         [HttpGet("get-all-by-{ThreadId}")]
-        public async Task<IActionResult> GetAllPosts(int ThreadId, int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPosts(int ThreadId)
         {
-            var pagedResult = await _postRepo1.GetPagedAsync(pageNumber, pageSize, ThreadId);
+            var pagedResult = await _postRepo1.GetAllPostsAsync(ThreadId);
             return Ok(pagedResult);
         }
 
         // GET: api/post/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPostById(int id)
+        public async Task<ActionResult<PostDTO>> GetPostById(int id)
         {
             var post = await _postRepo.GetByIdAsync(id);
             return Ok(post);

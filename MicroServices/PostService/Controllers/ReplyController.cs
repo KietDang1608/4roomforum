@@ -25,10 +25,10 @@ namespace PostService.Controllers
         }
 
 
-        [HttpGet("get-all-by-{PostId}")]
-        public async Task<IActionResult> GetReplies(int PostId, int pageNumber = 1, int pageSize = 10)
+        [HttpGet("get-all-by-post/{id}")]
+        public async Task<IActionResult> GetAllReplies(int id)
         {
-            var pagedResult = await _replyRepo.GetPagedAsync(pageNumber, pageSize, PostId);
+            var pagedResult = await _replyRepo.GetAllRepliesAsync(id);
             return Ok(pagedResult);
         }
 
