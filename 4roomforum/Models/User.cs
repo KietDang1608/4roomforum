@@ -1,8 +1,9 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace _4roomforum.Models;
 
-public class User
+public class User : IdentityUser
 {public int UserId { get; set; }
 
     public string UserName { get; set; }
