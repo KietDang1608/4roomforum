@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {}
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj": {}
   },
   "projects": {
-    "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj": {
+    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
+        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj",
         "projectName": "UserServices",
-        "projectPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\UserServices.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\Hoc\\dot_net\\4roomforum\\MicroServices\\UserServices\\obj\\",
+        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj",
+        "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -46,6 +46,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
@@ -99,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.307/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
