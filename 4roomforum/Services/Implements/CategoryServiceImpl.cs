@@ -1,5 +1,7 @@
 
+using System.Security.Cryptography.X509Certificates;
 using _4roomforum.DTOs;
+using _4roomforum.Models;
 using _4roomforum.Services.Interfaces;
 namespace _4roomforum.Services.Implements
 {
@@ -7,7 +9,7 @@ namespace _4roomforum.Services.Implements
     {
         private readonly ILogger<CategoryServiceImpl> _logger;
         private readonly HttpClient _client;
-        public CategoryServiceImpl(HttpClient httpClient,ILogger<CategoryServiceImpl> logger)
+        public CategoryServiceImpl(HttpClient httpClient, ILogger<CategoryServiceImpl> logger)
         {
             _logger = logger;
             _client = httpClient;
@@ -68,5 +70,117 @@ namespace _4roomforum.Services.Implements
             }
         }
 
+        public async Task<bool> AddCategory(Category category)
+        {
+            try
+            {
+                var response = await _client.PostAsJsonAsync("api/category", category);
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in AddCategory: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in AddCategory: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> EditCategory(Category category)
+        {
+            try
+            {
+                var response = await _client.PutAsJsonAsync($"api/category/{category.CategoryId}", category);
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in EditCategory: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in EditCategory: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveCategory(int id)
+        {
+            try
+            {
+                var response = await _client.DeleteAsync($"api/category/{id}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in RemoveCategory: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in RemoveCategory: {ex.Message}");
+                return false;
+            }
+        }
+
+        public Category getCategoryById(int id)
+        {
+            try
+            {
+                var response = _client.GetAsync($"api/category/{id}").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var category = response.Content.ReadFromJsonAsync<Category>().Result;
+                    return category;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get category. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in getCategoryById: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in getCategoryById: {ex.Message}");
+                return null;
+            }
+        }
+        public List<Category> getAllCategory()
+        {
+            try
+            {
+                var response = _client.GetAsync("api/category").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var categories = response.Content.ReadFromJsonAsync<IEnumerable<Category>>().Result;
+                    return categories.ToList();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get categories. Status Code: {response.StatusCode}");
+                    return new List<Category>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in getAllCategory: {ex.Message}");
+                return new List<Category>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in getAllCategory: {ex.Message}");
+                return new List<Category>();
+            }
+        }
+        
     }
 }

@@ -1,126 +1,64 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 08, 2024 lúc 03:33 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.0.30
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               8.0.40 - MySQL Community Server - GPL
+-- Server OS:                    Linux
+-- HeidiSQL Version:             12.4.0.6659
+-- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Cơ sở dữ liệu: `forum_user_role`
---
 
--- --------------------------------------------------------
+-- Dumping database structure for forum_user_role
+CREATE DATABASE IF NOT EXISTS `forum_user_role` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `forum_user_role`;
 
---
--- Cấu trúc bảng cho bảng `user`
---
+-- Dumping structure for table forum_user_role.Roles
+CREATE TABLE IF NOT EXISTS `Roles` (
+  `RoleId` int NOT NULL AUTO_INCREMENT,
+  `RoleName` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`RoleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `user` (
-  `UID` int(11) NOT NULL,
-  `UserName` varchar(20) NOT NULL,
-  `PassWord` varchar(100) NOT NULL,
-  `Avatar` varchar(20) NOT NULL,
-  `RoleId` int(11) NOT NULL,
+-- Dumping data for table forum_user_role.Roles: ~0 rows (approximately)
+
+-- Dumping structure for table forum_user_role.Users
+CREATE TABLE IF NOT EXISTS `Users` (
+  `UserId` int NOT NULL AUTO_INCREMENT,
+  `UserName` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `PassWord` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Avatar` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `RoleId` int NOT NULL,
   `JoinDate` date NOT NULL,
   `LastLogin` date NOT NULL,
-  `Status` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `Status` int NOT NULL,
+  PRIMARY KEY (`UserId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
+-- Dumping data for table forum_user_role.Users: ~0 rows (approximately)
+REPLACE INTO `Users` (`UserId`, `UserName`, `Email`, `PassWord`, `Avatar`, `RoleId`, `JoinDate`, `LastLogin`, `Status`) VALUES
+	(1, 'adminkiet', 'kiet@gmail.com', 'admin', 'doraemon.png', 1, '2024-11-05', '2024-11-05', 1);
 
---
--- Cấu trúc bảng cho bảng `users`
---
+-- Dumping structure for table forum_user_role.__EFMigrationsHistory
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+  `MigrationId` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ProductVersion` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`MigrationId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `users` (
-  `UserId` int(11) NOT NULL,
-  `UserName` longtext NOT NULL,
-  `Email` longtext NOT NULL,
-  `PassWord` longtext NOT NULL,
-  `Avatar` longtext NOT NULL,
-  `RoleId` int(11) NOT NULL,
-  `JoinDate` date NOT NULL,
-  `LastLogin` date NOT NULL,
-  `Status` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Dumping data for table forum_user_role.__EFMigrationsHistory: ~1 rows (approximately)
+REPLACE INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`) VALUES
+	('20241008020158_InitialCreate', '8.0.8');
 
---
--- Đang đổ dữ liệu cho bảng `users`
---
-
-INSERT INTO `users` (`UserId`, `UserName`, `Email`, `PassWord`, `Avatar`, `RoleId`, `JoinDate`, `LastLogin`, `Status`) VALUES
-(1, 'tuan dat', 'test1@gmail.com', 'hungbinoi', 'doraemon', 1, '2023-10-03', '2024-10-01', 1),
-(3, 'hung do', 'test3@gmail.com', 'hungbinoi33', 'suneo', 1, '2023-10-03', '2024-10-01', 1);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `__efmigrationshistory`
---
-
-CREATE TABLE `__efmigrationshistory` (
-  `MigrationId` varchar(150) NOT NULL,
-  `ProductVersion` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `__efmigrationshistory`
---
-
-INSERT INTO `__efmigrationshistory` (`MigrationId`, `ProductVersion`) VALUES
-('20241007141524_InitialCreate', '8.0.8');
-
---
--- Chỉ mục cho các bảng đã đổ
---
-
---
--- Chỉ mục cho bảng `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`UID`);
-
---
--- Chỉ mục cho bảng `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`UserId`);
-
---
--- Chỉ mục cho bảng `__efmigrationshistory`
---
-ALTER TABLE `__efmigrationshistory`
-  ADD PRIMARY KEY (`MigrationId`);
-
---
--- AUTO_INCREMENT cho các bảng đã đổ
---
-
---
--- AUTO_INCREMENT cho bảng `user`
---
-ALTER TABLE `user`
-  MODIFY `UID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `users`
---
-ALTER TABLE `users`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
-
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

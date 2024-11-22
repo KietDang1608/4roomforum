@@ -1,0 +1,110 @@
+﻿using _4roomforum.DTOs;
+using _4roomforum.Services.Interfaces;
+using System.Threading;
+
+namespace _4roomforum.Services.Implements
+{
+    public class ThreadServiceImpl : IThreadService
+    {
+        private readonly ILogger<ThreadServiceImpl> _logger;
+        private readonly HttpClient _client;
+
+        public ThreadServiceImpl(HttpClient httpClient, ILogger<ThreadServiceImpl> logger)
+        {
+            _logger = logger;
+            _client = httpClient;
+            _client.BaseAddress = new Uri("http://localhost:5001/");
+        }
+
+        public async Task<IEnumerable<ThreadDTO>> GetAllThreads()
+        {
+            try
+            {
+                var response = await _client.GetAsync("api/thread");
+                if (response.IsSuccessStatusCode)
+                {
+                    var threads = await response.Content.ReadFromJsonAsync<IEnumerable<ThreadDTO>>();
+                    return threads ?? new List<ThreadDTO>();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get threads. Status Code: {response.StatusCode}");
+                    return new List<ThreadDTO>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetAllThreads: {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetAllThreads : {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<ThreadDTO>> GetHotThreads()
+        {
+            try
+            {
+                var response = await _client.GetAsync("api/thread/hotThread");
+                if (response.IsSuccessStatusCode)
+                {
+                    var hotthreads = await response.Content.ReadFromJsonAsync<IEnumerable<ThreadDTO>>();
+                    return hotthreads ?? new List<ThreadDTO>();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get hot threads. Status Code: {response.StatusCode}");
+                    return new List<ThreadDTO>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetHotCategories: {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetHotCategories: {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+        }
+
+        public async Task<ThreadDTO> GetThreadById(int threadID)
+        {
+            try
+            {
+                var url = $"api/thread/{threadID}";
+                var response = await _client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var thread = await response.Content.ReadFromJsonAsync<ThreadDTO>();
+                    if (thread == null)
+                    {
+                        _logger.LogWarning($"Thread with ID {threadID} returned null.");
+                    }
+                    return thread;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get thread with ID {threadID}. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetThreadById for thread ID {threadID}: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetThreadById for thread ID {threadID}: {ex.Message}");
+                return null;
+            }
+        }
+
+    }
+}

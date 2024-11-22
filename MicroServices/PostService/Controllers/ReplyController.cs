@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using PostService.Data;
 using PostService.DTOs;
 using PostService.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PostService.Controllers
 {
@@ -16,12 +15,17 @@ namespace PostService.Controllers
     {
 
         private readonly IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> _repository;
-        private readonly IReplyRepo _replyRepo;
+        private readonly IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> _likeOfReplyRepoBase;
+        private readonly ILikeOfReplyRepo _likeOfReplyRepo;
 
-        public ReplyController(IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> repository, IReplyRepo replyRepo)
+        public ReplyController(
+            IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> repository,
+            ILikeOfReplyRepo likeOfReplyRepo,
+            IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> likeOfReplyRepoBase)
         {
             _repository = repository;
-            _replyRepo = replyRepo;
+            _likeOfReplyRepo = likeOfReplyRepo;
+            _likeOfReplyRepoBase = likeOfReplyRepoBase;
         }
 
 
@@ -30,6 +34,7 @@ namespace PostService.Controllers
         {
             var pagedResult = await _replyRepo.GetAllRepliesAsync(id);
             return Ok(pagedResult);
+
         }
 
         [HttpGet("{id}")]
@@ -141,6 +146,29 @@ namespace PostService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   $"An error occurred: {ex.Message}");
             }
+        }
+
+        [HttpPut("likereply/{replyId}/{userId}/{vote}")]
+        public async Task<ActionResult> LikeOrUnlike(int replyId, int userId, int vote)
+        {
+            try
+            {
+                var existingLike = await _likeOfReplyRepo.GetLikeOfReplyAndUser(replyId, userId);
+                if (existingLike == null)
+                {
+                    await _likeOfReplyRepoBase.AddAsync(new CreateLikeOfReplyDTO(replyId, userId));
+                    existingLike = await _likeOfReplyRepo.GetLikeOfReplyAndUser(replyId, userId);
+                }
+                UpdateLikeOfReplyDTO likeOfReplyDTO = new UpdateLikeOfReplyDTO(userId, vote);
+
+                if (await _likeOfReplyRepoBase.UpdateAsync(existingLike.Id, likeOfReplyDTO, CustomUpdate: null))
+                    return Ok($"Liked reply {replyId}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return BadRequest("Failed to interact with reply.");
         }
     }
 }

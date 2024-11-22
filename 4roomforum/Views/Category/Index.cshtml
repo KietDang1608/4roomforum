@@ -3,7 +3,7 @@
 *@
 @{
     ViewData["Title"] = "Chuyên mục";
-    var categories = ViewBag.Categories as IEnumerable<_4roomforum.DTOs.CategoryDTO>;
+    var categories = ViewBag.Categories as IEnumerable<_4roomforum.DTOs.CategoryDetailDTO>;
     var hotCategories = ViewBag.HotCategories as IEnumerable<_4roomforum.DTOs.CategoryViewDTO>;
     int i  = 1;
 }
@@ -42,7 +42,9 @@
 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
 {
     <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-}                @foreach (var category in categories)
+}                
+                
+                @foreach (var category in categories)
                 {
                 <a href="#" class="list-group-item list-group-item-action bg-light">
                     <div class="d-flex w-100 justify-content-between">
@@ -50,7 +52,7 @@
                         <small>@category.CreatedDate</small>
                     </div>
                     <p class="mb-1">@category.Description</p>
-                    <small>Được tạo bởi: User1</small>
+                    <small>@category.CreatedBy.UserName</small>
                 </a>
                 }
             </div>
