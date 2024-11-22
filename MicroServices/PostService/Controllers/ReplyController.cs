@@ -29,10 +29,12 @@ namespace PostService.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReplyDTO>>> GetReplies()
+        [HttpGet("get-all-by-post/{id}")]
+        public async Task<IActionResult> GetAllReplies(int id)
         {
-            return Ok(await _repository.GetAllAsync());
+            var pagedResult = await _replyRepo.GetAllRepliesAsync(id);
+            return Ok(pagedResult);
+
         }
 
         [HttpGet("{id}")]

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -32,17 +32,18 @@ namespace PostService.Controllers
             _mapper = mapper;
         }
 
-         //GET: api/post
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts()
+        // GET: api/post
+        [HttpGet("get-all-by-{ThreadId}")]
+        public async Task<IActionResult> GetAllPosts(int ThreadId)
         {
-            var posts = await _basePostRepo.GetAllAsync();
-            return Ok(posts);
+            var pagedResult = await _postRepo1.GetAllPostsAsync(ThreadId);
+            return Ok(pagedResult);
+
         }
 
         // GET: api/post/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPostById(int id)
+        public async Task<ActionResult<PostDTO>> GetPostById(int id)
         {
             var post = await _basePostRepo.GetByIdAsync(id);
             return Ok(post);

@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "Forum Post Details";
+    var PaginationReplies = ViewBag.PaginationReplies as IEnumerable<ReplyDTO>;
+    var replies = ViewBag.AllReplies as IEnumerable<ReplyDTO>;
+    var CurrentPage = ViewBag.CurrentPage;
+    var TotalPages = ViewBag.TotalPages;
+
+    var post = ViewBag.Post as PostDTO;
+    var users = ViewBag.Users as IEnumerable<UserDTO>;
+    var TotalReplies = ViewBag.TotalReplies;
+    var PostedBy = ViewBag.UserPost as UserDTO;
+}
+
+<div class="container mt-4">
+    <!-- Tiêu đề bài viết -->
+    <div class="border-bottom mb-3 pb-2">
+        <h1 class="fw-bold">[Tiêu đề bài viết]</h1>
+        <p class="text-muted">
+            Được đăng bởi
+            <span class="text-primary fw-semibold">@PostedBy.UserName</span>
+            vào <span>@post.PostDate</span>
+            @if (post.IsEdited)
+            {
+                <span>(Đã chỉnh sửa)</span>
+            }
+        </p>
+    </div>
+
+    <!-- Nội dung bài viết -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="fs-5">@post.PostContent</p>
+        </div>
+    </div>
+
+    <div class="border-bottom mb-4">
+        <div class="d-flex flex-row justify-content-end">
+            <div class="p-2">
+                <i class="fa-solid fa-heart"><a href="#"></a></i>
+                <!--<i class="fa-regular fa-heart"></i>-->
+                <span>1000</span>
+            </div>      
+            <div class="p-2">
+                <i class="fa-solid fa-comment"></i>
+                <!--<i class="fa-regular fa-comment"></i>-->
+                <span>@TotalReplies</span>
+            </div>
+            <div class="p-2">
+                <i class="fa-solid fa-share"><a href="#"></a></i>
+            </div>            
+        </div>
+    </div>
+     
+    @if (PaginationReplies != null && TotalReplies > 0)
+    {
+        foreach (ReplyDTO r in PaginationReplies)
+        {
+            <!-- Bình luận -->
+            <div class="row mb-4">
+                <div class="col-md-2 text-center">
+                    @foreach (UserDTO u in users)
+                    {
+                        if (r.RepliedBy == u.UserId)
+                        {
+                            <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center mx-auto" style="width: 60px; height: 60px;">
+                                <strong>KCC</strong>
+                            </div>
+                            <p class="mt-2 fw-bold">@u.UserName</p>
+                        }
+                    }
+                </div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <strong>@r.ReplyDate</strong>
+                        </div>
+                        <div class="card-body">
+                            <!-- Bình luận được phản hồi -->
+                            @if (r.ReplyToReply != null)
+                            {
+                                foreach (ReplyDTO innerR in replies)
+                                {
+                                    if (innerR.ReplyId == r.ReplyToReply)
+                                    {
+                                        <blockquote class="p-2 bg-light border rounded">
+
+                                            @foreach (UserDTO u in users)
+                                            {
+                                                if (innerR.RepliedBy == u.UserId)
+                                                {
+                                                    <p>
+                                                        <strong class="text-primary">@u.UserName said:</strong>
+                                                        <br>
+                                                        @innerR.ReplyContent
+                                                    </p>
+                                                }
+                                            }
+                                        </blockquote>
+                                    }
+                                }
+                            }
+                            <!-- Bình luận chính -->
+                            <p class="mt-3">@r.ReplyContent</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex flex-row justify-content-start">
+                                <div class="p-2">
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                    <!--<i class="fa-regular fa-thumbs-up"></i>-->
+                                    <span>10</span>
+                                </div>
+                                <div class="p-2">
+                                    <i class="fa-regular fa-thumbs-down"></i>
+                                    <!--<i class="fa-solid fa-thumbs-down"></i>-->
+                                    <span>-10</span>
+                                </div>
+                                <div class="p-2">
+                                    <i class="fa-solid fa-comment"></i>
+                                    <!--<i class="fa-regular fa-comment"></i>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Không có bình luận nào.</p>
+    }
+</div>
+
+@if (TotalPages > 0)
+{
+    <div class="d-flex justify-content-center align-items-center">
+        <nav aria-label="Reply Pagination">
+            <ul class="pagination">
+
+                <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="?PostId=@post.Id&page=@(CurrentPage - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                
+                @for (int i = 1; i <= TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?PostId=@(post.Id)&page=@i">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="?PostId=@post.Id&page=@(CurrentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>  
+}

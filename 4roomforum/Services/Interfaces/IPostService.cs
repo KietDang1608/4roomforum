@@ -6,5 +6,6 @@ namespace _4roomforum.Services.Interfaces
     public interface IPostService
     {
         Task<IEnumerable<PostDTO>> GetAllPost();
+        Task<PostDTO> GetPostById(int id);
     }
 }
