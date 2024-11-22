@@ -1,39 +1,74 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using PostService.DTOs;
 using PostService.Models;
-using System.Threading;
 
 namespace PostService.Data
 {
     public class PostRepo : IPostRepo
     {
         private readonly AppDBContext _context;
-        private readonly IMapper _mapper;
 
-        public PostRepo(AppDBContext context, IMapper mapper)
+        public PostRepo(AppDBContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        
-        public async Task<IEnumerable<PostDTO>> GetAllPostsAsync(int ThreadId) 
+        public async Task CreatePostAsync(Post post)
         {
-            var List = await _context.Posts.Where(p => p.ThreadId == ThreadId).ToListAsync(); 
-            return _mapper.Map<IEnumerable<PostDTO>>(List);
+            if (post == null)
+            {
+                throw new ArgumentNullException(nameof(post));
+            }
+            await _context.Posts.AddAsync(post);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<PostDTO>> GetPagedAsync(int pageNumber, int pageSize, int ThreadId)
+        public async Task DeletePostAsync(int id)
         {
-            var count = await _context.Posts.Where(r => r.ThreadId == ThreadId).CountAsync();
-            var items = await _context.Posts.Where(r => r.ThreadId == ThreadId)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-            var List = _mapper.Map<IEnumerable<PostDTO>>(items);
-            return new PagedResult<PostDTO>(List, count, pageNumber, pageSize);
+            var post = await _context.Posts.FindAsync(id);
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Post>> GetAllPostsAsync() 
+        {
+            return await _context.Posts.ToListAsync(); 
+        }
+
+        public async Task<Post?> GetPostByIdAsync(int id)
+        {
+            return await _context.Posts.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize)
+        {
+            return await _context.Posts
+            .Where(p => p.ThreadId == threadId)
+            .OrderBy(p => p.Id) // Adjust ordering as needed
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() > 0);
+        }
+
+        public async Task UpdatePostAsync(Post post)
+        {
+            var existingPost = await _context.Posts.FindAsync(post.Id);
+            if (existingPost != null)
+            {
+                existingPost.PostContent = post.PostContent;
+                existingPost.IsEdited = post.IsEdited;
+
+                _context.Posts.Update(existingPost);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 

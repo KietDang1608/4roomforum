@@ -17,11 +17,20 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 builder.Services.AddScoped<IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO>,
     BaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO>>();
 
-builder.Services.AddScoped<IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO>,
-    BaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO>>();
+builder.Services.AddScoped<ILikeOfPostRepo, LikeOfPostRepo>();
 
 builder.Services.AddScoped<IPostRepo, PostRepo>();
-builder.Services.AddScoped<IReplyRepo, ReplyRepo>();
+
+builder.Services.AddScoped<ILikeOfReplyRepo, LikeOfReplyRepo>();
+
+builder.Services.AddScoped<IBaseRepository<LikeOfPost, LikeOfPostDTO, CreateLikeOfPostDTO, UpdateLikeOfPostDTO>,
+    BaseRepository<LikeOfPost, LikeOfPostDTO, CreateLikeOfPostDTO, UpdateLikeOfPostDTO>>();
+
+builder.Services.AddScoped<IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO>,
+    BaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO>>();
+
+builder.Services.AddScoped<IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO>,
+    BaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO>>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers(); // Register controllers

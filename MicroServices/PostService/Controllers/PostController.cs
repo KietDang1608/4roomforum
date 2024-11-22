@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+using AutoMapper;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using PostService.Data;
@@ -11,106 +12,61 @@ namespace PostService.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        //private readonly IPostRepo _postRepo;
+        private readonly IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> _basePostRepo;
+        private readonly IBaseRepository<LikeOfPost, LikeOfPostDTO, CreateLikeOfPostDTO, UpdateLikeOfPostDTO> _likeOfPostRepoBase;
+        private readonly IPostRepo _postRepo;
+        private readonly ILikeOfPostRepo _likeOfPostRepo;
+        private readonly IMapper _mapper;
 
-        //public PostController(IPostRepo postRepo)
-        //{
-        //    _postRepo = postRepo;
-        //}
-
-        //// GET: api/post
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Post>>> GetAllPosts()
-        //{
-        //    var posts = await _postRepo.GetAllPostsAsync();
-        //    return Ok(posts);
-        //}
-
-        //// GET: api/post/{id}
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Post>> GetPostById(int id)
-        //{
-        //    var post = await _postRepo.GetPostByIdAsync(id);
-
-        //    if (post == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(post);
-        //}
-
-        //// POST: api/post
-        //[HttpPost]
-        //public async Task<ActionResult> CreatePost([FromBody] Post post)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    await _postRepo.CreatePostAsync(post);
-
-        //    return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
-        //}
-
-        //// PUT: api/post/{id}
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> UpdatePost(int id, [FromBody] Post post)
-        //{
-        //    if (id != post.Id || !ModelState.IsValid)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var existingPost = await _postRepo.GetPostByIdAsync(id);
-        //    if (existingPost == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    await _postRepo.UpdatePostAsync(post);
-
-        //    return Ok();
-        //}
-
-        //// DELETE: api/post/{id}
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> DeletePost(int id)
-        //{
-        //    var post = await _postRepo.GetPostByIdAsync(id);
-        //    if (post == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    await _postRepo.DeletePostAsync(id);
-        //    return NoContent();
-        //}
-
-        private readonly IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> _postRepo;
-        private readonly IPostRepo _postRepo1;
-
-        public PostController(IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> postRepo, IPostRepo postRepo1)
+        public PostController(
+            IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> basePostRepo, 
+            IPostRepo postRepo,
+            ILikeOfPostRepo likeOfPostRepo,
+            IBaseRepository<LikeOfPost, LikeOfPostDTO, CreateLikeOfPostDTO, UpdateLikeOfPostDTO> likeOfPostRepoBase,
+            IMapper mapper)
         {
+            _basePostRepo = basePostRepo;
             _postRepo = postRepo;
-            _postRepo1 = postRepo1;
+            _likeOfPostRepo = likeOfPostRepo;
+            _likeOfPostRepoBase = likeOfPostRepoBase;
+            _mapper = mapper;
         }
 
         // GET: api/post
         [HttpGet("get-all-by-{ThreadId}")]
-        public async Task<IActionResult> GetAllPosts(int ThreadId, int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPosts(int ThreadId)
         {
-            var pagedResult = await _postRepo1.GetPagedAsync(pageNumber, pageSize, ThreadId);
+            var pagedResult = await _postRepo1.GetAllPostsAsync(ThreadId);
             return Ok(pagedResult);
+
         }
 
         // GET: api/post/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPostById(int id)
+        public async Task<ActionResult<PostDTO>> GetPostById(int id)
         {
-            var post = await _postRepo.GetByIdAsync(id);
+            var post = await _basePostRepo.GetByIdAsync(id);
             return Ok(post);
+        }
+
+        [HttpGet("with_thread/{threadId}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostsByThreadId(
+            int threadId, 
+            int page = 1, 
+            int pageSize = 5
+            )
+        {
+            if (page <= 0 || pageSize <= 0)
+            {
+                return BadRequest("Page and pageSize must be greater than 0.");
+            }
+
+            var posts = await _postRepo.getPostsByThreadIdAsync(threadId, page, pageSize);
+
+            var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(posts);
+
+
+            return Ok(postDTOs);
         }
 
         // POST: api/post
@@ -122,7 +78,7 @@ namespace PostService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(await _postRepo.AddAsync(createPostDTO))
+            if(await _basePostRepo.AddAsync(createPostDTO))
             {
                 return Ok("Post is created");
             }
@@ -131,32 +87,14 @@ namespace PostService.Controllers
         }
 
         // PUT: api/post/{id}
-        [HttpPut("{id}-{option}")]
-        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO, string option)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO)
         //updatePostDTO bo trong khi chon option la like hoac unlike
         {
-            if (option.Equals("edit"))
+            if(await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
             {
-                if(await _postRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
-                {
-                    return Ok($"Post {id} is updated!");
-                }               
-            }
-            else if (option.Equals("like"))
-            {
-                if(await _postRepo.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.Like++))
-                {
-                    return Ok($"Post {id} is updated!");
-                }               
-
-            }
-            else
-            {
-                if(await _postRepo.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.Like--))
-                {
-                    return Ok($"Post {id} is updated!");
-                }              
-            }
+                return Ok($"Post {id} is updated!");
+            }               
             return BadRequest("Cannot create post!");
         }
 
@@ -164,14 +102,41 @@ namespace PostService.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePost(int id)
         {
-            if (await _postRepo.DeleteAsync(id))
+            if (await _basePostRepo.DeleteAsync(id))
             {
                 return Ok($"Post {id} is delete!");
             }
             return BadRequest("Cannot delete post");
         }
 
-
+        // http://localhost:5003/api/post/like/{post_id}/{user_id}
+        [HttpPut("like/{postId}/{userId}")]
+        public async Task<ActionResult> LikeOrUnlike(int postId, int userId)
+        {
+            try
+            {
+                var existingLike = await _likeOfPostRepo.GetFromPostAndUser(postId, userId);
+                if (existingLike == null)
+                {
+                    if (await _likeOfPostRepoBase.AddAsync(new CreateLikeOfPostDTO(postId, userId)))
+                    {
+                        return Ok($"Liked post {postId}");
+                    }
+                }
+                else
+                {
+                    if (await _likeOfPostRepoBase.DeleteAsync(existingLike.Id))
+                    {
+                        return Ok($"Unliked post {postId}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return BadRequest("Failed to interact with post."); 
+        }
     }
 
 }
