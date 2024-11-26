@@ -1,5 +1,7 @@
 ﻿using _4roomforum.Services.Interfaces;
 using _4roomforum.DTOs;
+using PostService.DTOs;
+using System.Diagnostics;
 //using PostService.DTOs;
 namespace _4roomforum.Services.Implements
 {
@@ -14,31 +16,33 @@ namespace _4roomforum.Services.Implements
             _client = httpClient;
             _client.BaseAddress = new Uri("http://localhost:5003/");
         }
-        public async Task<IEnumerable<PostDTO>> GetAllPost()
+        public async Task<PagedResult<PostDTO>> GetPostsByThreadId(int id, int page, int pageSize)
         {
             try
             {
-                var response = await _client.GetAsync("api/post");
+                var response = await _client.GetAsync($"api/post/with_thread/{id}/{page}");
                 if (response.IsSuccessStatusCode)
                 {
-                    var posts = await response.Content.ReadFromJsonAsync<IEnumerable<PostDTO>>();
-                    return posts ?? new List<PostDTO>();
+                    var posts = await response.Content.ReadFromJsonAsync<PagedResult<PostDTO>>();
+                    return posts ?? new PagedResult<PostDTO>();
                 }
                 else
                 {
                     _logger.LogError($"Failed to get posts. Status Code: {response.StatusCode}");
-                    return new List<PostDTO>();
+                    return new PagedResult<PostDTO>();
+
                 }
             }
             catch (HttpRequestException ex)
             {
                 _logger.LogError($"Request error in GetAllPost: {ex.Message}");
-                return new List<PostDTO>();
+                return new PagedResult<PostDTO>();
+
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Unexpected error in GetAllPost: {ex.Message}");
-                return new List<PostDTO>();
+                return new PagedResult<PostDTO>();
             }
         }
 
