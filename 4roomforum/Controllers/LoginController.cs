@@ -35,10 +35,6 @@ namespace _4roomforum.Controllers
         public async Task<IActionResult> SignIn(User user)
         {
 
-            if (user.Email == "admin" && user.Password == "admin")
-            {
-                return RedirectToAction("Index", "Admin");
-            }
             var userDTO = await _userService.Login(user.Email, user.Password);
             if (userDTO != null) // Đăng nhập thành công
             {
@@ -46,7 +42,7 @@ namespace _4roomforum.Controllers
                 {
                     new Claim(ClaimTypes.Name, userDTO.Email),
                     new Claim(ClaimTypes.Email, userDTO.Email),
-                    new Claim(ClaimTypes.Role, "User"),// Hoặc lấy từ userDTO.Role nếu có
+                    new Claim(ClaimTypes.Role, userDTO.RoleId.ToString()),// Hoặc lấy từ userDTO.Role nếu có
                     new Claim("UserId", userDTO.UserId.ToString()) 
                 };
                 
@@ -59,7 +55,12 @@ namespace _4roomforum.Controllers
                 };
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                if (userDTO.RoleId == 1)
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
                 return RedirectToAction("Index", "Home");
+                
             }
             else // Đăng nhập thất bại
             {
