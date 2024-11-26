@@ -19,7 +19,7 @@ namespace PostService.Controllers
         private readonly IMapper _mapper;
 
         public PostController(
-            IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> basePostRepo, 
+            IBaseRepository<Post, PostDTO, CreatePostDTO, UpdatePostDTO> basePostRepo,
             IPostRepo postRepo,
             ILikeOfPostRepo likeOfPostRepo,
             IBaseRepository<LikeOfPost, LikeOfPostDTO, CreateLikeOfPostDTO, UpdateLikeOfPostDTO> likeOfPostRepoBase,
@@ -32,41 +32,40 @@ namespace PostService.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/post
-        [HttpGet("get-all-by-{ThreadId}")]
-        public async Task<IActionResult> GetAllPosts(int ThreadId)
+        //GET: api/post
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts()
         {
-            var pagedResult = await _postRepo1.GetAllPostsAsync(ThreadId);
-            return Ok(pagedResult);
-
+            var posts = await _basePostRepo.GetAllAsync();
+            return Ok(posts);
         }
 
         // GET: api/post/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostDTO>> GetPostById(int id)
+        public async Task<ActionResult<Post>> GetPostById(int id)
         {
             var post = await _basePostRepo.GetByIdAsync(id);
             return Ok(post);
         }
 
-        [HttpGet("with_thread/{threadId}")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostsByThreadId(
-            int threadId, 
-            int page = 1, 
-            int pageSize = 5
-            )
+        [HttpGet("with_thread/{threadId}/{page}")]
+        public async Task<ActionResult<PagedResult<PostDTO>>> GetPostsByThreadId(
+            int threadId,
+            int page,
+            int pageSize = 5)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest("Page and pageSize must be greater than 0.");
             }
 
-            var posts = await _postRepo.getPostsByThreadIdAsync(threadId, page, pageSize);
+            var pagedPosts = await _postRepo.getPostsByThreadIdAsync(threadId, page, pageSize);
 
-            var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(posts);
+            var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(pagedPosts.Items);
 
+            var pagedResult = new PagedResult<PostDTO>(postDTOs, pagedPosts.TotalCount, pagedPosts.CurrentPage, pagedPosts.PageSize);
 
-            return Ok(postDTOs);
+            return Ok(pagedResult);
         }
 
         // POST: api/post
@@ -78,7 +77,7 @@ namespace PostService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(await _basePostRepo.AddAsync(createPostDTO))
+            if (await _basePostRepo.AddAsync(createPostDTO))
             {
                 return Ok("Post is created");
             }
@@ -91,10 +90,10 @@ namespace PostService.Controllers
         public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO)
         //updatePostDTO bo trong khi chon option la like hoac unlike
         {
-            if(await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
+            if (await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
             {
                 return Ok($"Post {id} is updated!");
-            }               
+            }
             return BadRequest("Cannot create post!");
         }
 
@@ -135,7 +134,7 @@ namespace PostService.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return BadRequest("Failed to interact with post."); 
+            return BadRequest("Failed to interact with post.");
         }
     }
 

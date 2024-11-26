@@ -17,14 +17,16 @@ namespace PostService.Controllers
         private readonly IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> _repository;
         private readonly IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> _likeOfReplyRepoBase;
         private readonly ILikeOfReplyRepo _likeOfReplyRepo;
-
+        private readonly IReplyRepo _replyRepo;
         public ReplyController(
             IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> repository,
             ILikeOfReplyRepo likeOfReplyRepo,
+            IReplyRepo replyRepo,
             IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> likeOfReplyRepoBase)
         {
             _repository = repository;
             _likeOfReplyRepo = likeOfReplyRepo;
+            _replyRepo = replyRepo;
             _likeOfReplyRepoBase = likeOfReplyRepoBase;
         }
 

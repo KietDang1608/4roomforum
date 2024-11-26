@@ -1,8 +1,10 @@
-﻿@{
+﻿@using _4roomforum.DTOs
+@{
     ViewData["Title"] = "Chi tiết chủ đề";
 
     Layout = "_Layout";
     var thread = ViewBag.Thread as _4roomforum.DTOs.ThreadDTO;
+    var posts = ViewBag.Posts as List<PostDTO>;
 }
 
 <div class="container mt-5">
@@ -10,16 +12,14 @@
         <div class="col-md-3">
             <h2 class="text-center text-primary">Chủ đề liên quan</h2>
             <ul class="list-group">
-                 
-                     <a href="#" class="list-group-item list-group-item-action bg-light">chủ đề liên quan 1</a>
-                 
+
+                <a href="#" class="list-group-item list-group-item-action bg-light">chủ đề liên quan 1</a>
+
             </ul>
         </div>
         <div class="col-md-9">
 
-            <h2 class="text-center ">@thread.ThreadTitle</h2>
-            <p>@thread.ThreadContent</p>
-            
+
         </div>
     </div>
 </div>
