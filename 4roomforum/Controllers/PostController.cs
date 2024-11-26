@@ -1,6 +1,7 @@
 using _4roomforum.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.DTOs;
+using Microsoft.AspNetCore.Authorization;
 //using PostService.DTOs;
 
 namespace _4roomforum.Controllers
@@ -14,6 +15,7 @@ namespace _4roomforum.Controllers
         }
         // GET: PostController (api/post)
         [HttpGet("Post/{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult> Index(int id, int page = 1, int pageSize = 5)
         {
             try
@@ -48,6 +50,11 @@ namespace _4roomforum.Controllers
                 return View(new List<PostDTO>());
             }
         }
-
+        [HttpGet("Post/CreatePost")]
+        [Authorize]
+        public IActionResult CreatePost()
+        {
+            return View();
+        }
     }
 }

@@ -8,7 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.AspNetCore.Authorization;
+
 using BCrypt.Net;
+
 
 namespace _4roomforum.Controllers
 {
@@ -108,7 +112,9 @@ namespace _4roomforum.Controllers
         }
 
         [HttpGet]
-        
+
+        [Authorize]
+
         public async Task<IActionResult> Profile()
         {
             // Lấy UserId từ claims
@@ -130,6 +136,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateUser(User updatedUser,IFormFile AvatarFile)
         {
             // Lấy thông tin người dùng hiện tại từ Claims
@@ -191,6 +198,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ChangePass()
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
@@ -211,6 +219,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ChangePass(User updatedUser)
         {
             var currentPassword = Request.Form["CurrentPassword"];
