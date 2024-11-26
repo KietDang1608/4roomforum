@@ -44,7 +44,7 @@ namespace _4roomforum.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userDTO.Email),
+                    new Claim(ClaimTypes.Name, userDTO.UserName),
                     new Claim(ClaimTypes.Email, userDTO.Email),
                     new Claim(ClaimTypes.Role, "User"),// Hoặc lấy từ userDTO.Role nếu có
                     new Claim("UserId", userDTO.UserId.ToString()) 
