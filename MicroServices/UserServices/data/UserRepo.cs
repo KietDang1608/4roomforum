@@ -1,6 +1,8 @@
 using System;
 using MicroServices.UserServices.Data;
 using UserServices.DTOs;
+using BCrypt.Net;
+
 namespace UserServices.Data;
 
 public class UserRepo : IUserRepo
@@ -59,7 +61,14 @@ public class UserRepo : IUserRepo
     {
         try{
         var user = _context.Users.FirstOrDefault(c => 
-        c.Email == userLogin.Email && c.Password == userLogin.Password);
+        c.Email == userLogin.Email);
+        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password);
+         if (!isPasswordValid)
+        {
+            throw new ArgumentException("Invalid email or password");
+        }
+        user.LastLogin=DateOnly.FromDateTime(DateTime.Now);
+        UpdateUser(user);
         return user;
         }
         catch (ArgumentException e){
