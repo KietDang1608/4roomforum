@@ -30,6 +30,7 @@ builder.Services.AddAuthentication(options =>
         }
     };
     options.LogoutPath = "/Login/SignOut";
+    options.AccessDeniedPath = "/Home/AccessDenied";
 
 
 });

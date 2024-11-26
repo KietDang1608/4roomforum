@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _4roomforum.Controllers
 {
     [Route("admin/[controller]")]
+    [Authorize(Roles="Admin")]
     public class AdminUsersController : Controller
     
     {
