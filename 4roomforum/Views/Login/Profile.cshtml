@@ -24,31 +24,27 @@
         <label asp-for="Email" class="control-label"></label>
         <input asp-for="Email" class="form-control" readonly />
     </div>
-    <div class="form-group">
-        <label asp-for="Password" class="control-label"></label>
-        <div class="input-group">
-            <input asp-for="Password" class="form-control" id="password" readonly />
-            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">
-                <i class="fas fa-eye" id="togglePasswordIcon"></i>
-            </button>
-        </div>
-    </div>
+    
+            <input asp-for="Password" class="form-control" id="password" type="hidden" readonly />
+        
     <div class="form-group">
         <label asp-for="JoinDate" class="control-label"></label>
-        <input asp-for="JoinDate" class="form-control" type="date" readonly />
+        <input asp-for="JoinDate" id="JoinDate" class="form-control" type="date" readonly />
     </div>
-    <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
-        <input asp-for="Status" class="form-control" readonly />
-    </div>
+
+    
+        <input asp-for="LastLogin" class="form-control" type="hidden" readonly />
+
+   
+        <input asp-for="Status" class="form-control" type="hidden" readonly />
+ 
         </div>
     <div class="form-group col-md-6 d-flex justify-content-start text-right">
-        <label class="control-label">Avatar</label>
         <input asp-for="Avatar" class="form-control" hidden />
-        <div style=" width="auto" height="284px">
-            <img id="avatarPreview" style="border: none;" src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" />
+        <div style=" width:"290px"; height:"300px">
+            <img id="avatarPreview" style="border: none; height:300px; width:290px; border-radius:50%; object-fit:cover;" src="@Url.Content("~/imgs/" + Model.Avatar)" alt="Avatar" class="img-thumbnail" />
         </div>
-        <input type="file" id="avatarInput" name="AvatarFile" class="form-control mt-2" style="display: none;" accept="image/*" onchange="previewAvatar(event)" />
+        <input type="file" id="avatarInput" name="AvatarFile" class="form-control mt-2" style="display: none; width: 92px; height: 38px;" accept="image/*" onchange="previewAvatar(event)" />
     </div>
 </div>
 </form>
@@ -76,7 +72,7 @@
     function toggleEditMode() {
         const editButton = document.getElementById('editButton');
         const form = document.getElementById('userForm');
-        const inputs = form.querySelectorAll('input[readonly]:not([id="password"])');
+        const inputs = form.querySelectorAll('input[readonly]:not([id="JoinDate"])');
         const avatarInput = document.getElementById('avatarInput');
 
         if (editButton.textContent === "Update Information") {

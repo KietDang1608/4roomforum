@@ -20,6 +20,7 @@ builder.Services.AddScoped<IBaseRepository<Post, PostDTO, CreatePostDTO, UpdateP
 builder.Services.AddScoped<ILikeOfPostRepo, LikeOfPostRepo>();
 
 builder.Services.AddScoped<IPostRepo, PostRepo>();
+builder.Services.AddScoped<IReplyRepo, ReplyRepo>();
 
 builder.Services.AddScoped<ILikeOfReplyRepo, LikeOfReplyRepo>();
 

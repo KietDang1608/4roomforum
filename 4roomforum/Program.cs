@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using _4roomforum.Services.Implements;
 using _4roomforum.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +30,7 @@ builder.Services.AddAuthentication(options =>
         }
     };
     options.LogoutPath = "/Login/SignOut";
+    options.AccessDeniedPath = "/Home/AccessDenied";
 
 
 });

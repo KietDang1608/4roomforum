@@ -2,11 +2,15 @@
 using _4roomforum.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace _4roomforum.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminCategoriesController : Controller
     {
+        
         private readonly ICategoryService _categoryService;
       
         public AdminCategoriesController(ICategoryService categoryService) {

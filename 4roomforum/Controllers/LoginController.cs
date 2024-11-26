@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Authorization;
+
+using BCrypt.Net;
+
+
 namespace _4roomforum.Controllers
 {
     public class LoginController : Controller
@@ -76,11 +81,13 @@ namespace _4roomforum.Controllers
                 ModelState.AddModelError(string.Empty, "Mật khẩu không trùng khớp");
                 return View();
             }
+
+            string hashedPassword= BCrypt.Net.BCrypt.HashPassword(password);
             UserDTO newUser = new UserDTO
             {
                 UserName = userName,
                 Email = email,
-                Password = password,
+                Password = hashedPassword,
                 Avatar = "voi.png",
                 RoleId = 2,
                 JoinDate = DateOnly.FromDateTime(DateTime.Now),
@@ -105,6 +112,9 @@ namespace _4roomforum.Controllers
         }
 
         [HttpGet]
+
+        [Authorize]
+
         public async Task<IActionResult> Profile()
         {
             // Lấy UserId từ claims
@@ -126,6 +136,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateUser(User updatedUser,IFormFile AvatarFile)
         {
             // Lấy thông tin người dùng hiện tại từ Claims
@@ -157,6 +168,7 @@ namespace _4roomforum.Controllers
                 UserName = updatedUser.UserName,
                 Password=updatedUser.Password,
                 JoinDate = updatedUser.JoinDate,
+                LastLogin=updatedUser.LastLogin,
                 Status = updatedUser.Status,
                 Avatar = updatedUser.Avatar
             };
@@ -186,6 +198,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ChangePass()
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
@@ -206,6 +219,7 @@ namespace _4roomforum.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ChangePass(User updatedUser)
         {
             var currentPassword = Request.Form["CurrentPassword"];
@@ -213,12 +227,15 @@ namespace _4roomforum.Controllers
             var confirmPassword = Request.Form["ConfirmPassword"];
             var userIdClaim =User.FindFirst("UserId")?.Value;
 
+            
             if(userIdClaim ==null || !int.TryParse(userIdClaim,out int userId))
             {
                 return RedirectToAction("SignIn","Login");
             }
             var user =await _userService.GetUserById(userId);
-            if(user ==null || user.Password != currentPassword )
+            string hashedPassword= BCrypt.Net.BCrypt.HashPassword(currentPassword);
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(currentPassword, user.Password);
+            if(user ==null || !isPasswordValid )
             {
                 TempData["SuccessMessage"] = "Incorrect Password";
                 return View();
@@ -229,8 +246,8 @@ namespace _4roomforum.Controllers
                 TempData["SuccessMessage"] = "NewPassword and ConfirmPassword are different";
                 return View();
             }
-
-            user.Password=newPassword;
+            string newHashedPassword= BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.Password=newHashedPassword;
             var isUpdated= await _userService.UpdateUser(userId,user);
             if (isUpdated)
             {
