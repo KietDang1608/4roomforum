@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PostService.Data;
 
@@ -11,9 +12,11 @@ using PostService.Data;
 namespace PostService.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241126021753_EntityUpdate")]
+    partial class EntityUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,11 +102,6 @@ namespace PostService.Migrations
                     b.Property<DateTime>("PostDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("post_date");
-
-                    b.Property<string>("PostTitle")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("post_title");
 
                     b.Property<int>("PostedBy")
                         .HasColumnType("int")
