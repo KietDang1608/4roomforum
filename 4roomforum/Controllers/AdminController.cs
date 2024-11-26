@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _4roomforum.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         // GET: AdminController

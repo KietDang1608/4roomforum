@@ -1,9 +1,11 @@
 ﻿using _4roomforum.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _4roomforum.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminThreads : Controller
     {
         private ILogger<HomeController> _logger;
