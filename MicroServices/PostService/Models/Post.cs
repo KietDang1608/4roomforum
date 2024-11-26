@@ -12,6 +12,8 @@ namespace PostService.Models
         public required int ThreadId { get; set; }
         [Column("posted_by")]
         public required int PostedBy { get; set; }
+        [Column("post_title")]
+        public required string PostTitle { get; set; }
         [Column("like")]
         public int Like { get; set; }
         [Column("post_content")]

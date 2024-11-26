@@ -1,4 +1,4 @@
-using _4roomforum.Services.Interfaces;
+﻿using _4roomforum.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +34,8 @@ namespace _4roomforum.Controllers
                 }
 
                 ViewBag.CurrentPage = posts.CurrentPage;
-                ViewBag.TotalPages = (int)Math.Ceiling((double)posts.TotalCount / posts.PageSize);
+                ViewBag.ThreadId = id;
+                ViewBag.TotalPages = posts.TotalPages;
                 ViewBag.PaginationPosts = posts.Items;
                 ViewBag.TotalPosts = posts.TotalCount;
 
@@ -50,11 +51,28 @@ namespace _4roomforum.Controllers
                 return View(new List<PostDTO>());
             }
         }
-        [HttpGet("Post/CreatePost")]
-        [Authorize]
-        public IActionResult CreatePost()
+        [HttpPost]
+        public async Task<ActionResult> AddPost(CreatePostDTO postDTO)
         {
-            return View();
+            try
+            {
+                bool check = await _postService.CreatePostAsync(postDTO);
+                if (check)
+                {
+                    TempData["SuccessMessage"] = "Đăng bài thành công :3";
+                    return RedirectToAction("Index", new {Id = postDTO.ThreadId});
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra. Vui lòng thử lại.";
+                    return RedirectToAction("Create");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return RedirectToAction("Create");
+            }
         }
     }
 }

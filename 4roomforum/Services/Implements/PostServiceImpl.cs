@@ -2,6 +2,8 @@
 using _4roomforum.DTOs;
 using PostService.DTOs;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 //using PostService.DTOs;
 namespace _4roomforum.Services.Implements
 {
@@ -71,6 +73,42 @@ namespace _4roomforum.Services.Implements
             {
                 _logger.LogError($"Unexpected error in getapost: {ex.Message}");
                 return null;
+            }
+        }
+
+        public async Task<bool> CreatePostAsync(CreatePostDTO postDTO)
+        {
+            try
+            {
+                var response = await _client.PostAsJsonAsync("api/post", postDTO);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation($"Success: {message}");
+                    return true;
+                }
+                else if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogWarning($"Bad Request: {error}");
+                }
+                else
+                {
+                    _logger.LogError($"Failed to create post. Status Code: {response.StatusCode}");
+                }
+
+                return false;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in CreatePostAsync: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in CreatePostAsync: {ex.Message}");
+                return false;
             }
         }
     }

@@ -52,7 +52,7 @@ namespace PostService.Controllers
         public async Task<ActionResult<PagedResult<PostDTO>>> GetPostsByThreadId(
             int threadId,
             int page,
-            int pageSize = 5)
+            int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
