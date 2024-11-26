@@ -8,21 +8,43 @@ namespace _4roomforum.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
-        public PostController (IPostService postService)
+        public PostController(IPostService postService)
         {
             _postService = postService;
         }
         // GET: PostController (api/post)
-        public async Task<ActionResult> Index()
+        [HttpGet("Post/{id}")]
+        public async Task<ActionResult> Index(int id, int page = 1, int pageSize = 5)
         {
             try
             {
-                var posts = await _postService.GetAllPost();
-                ViewBag.Posts = posts;
-                return View();
+                var posts = await _postService.GetPostsByThreadId(id, page, pageSize);
+
+
+                if (posts == null || !posts.Items.Any())
+                {
+                    ViewBag.CurrentPage = page;
+                    ViewBag.TotalPages = 0;
+                    ViewBag.PaginationPosts = new List<PostDTO>();
+                    ViewBag.TotalPosts = 0;
+
+                    return View(new List<PostDTO>());
+                }
+
+                ViewBag.CurrentPage = posts.CurrentPage;
+                ViewBag.TotalPages = (int)Math.Ceiling((double)posts.TotalCount / posts.PageSize);
+                ViewBag.PaginationPosts = posts.Items;
+                ViewBag.TotalPosts = posts.TotalCount;
+
+                return View(posts.Items);
             }
             catch (Exception ex)
             {
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = 0;
+                ViewBag.PaginationPosts = new List<PostDTO>();
+                ViewBag.TotalPosts = 0;
+
                 return View(new List<PostDTO>());
             }
         }

@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace _4roomforum.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         // GET: AdminController

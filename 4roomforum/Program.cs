@@ -19,8 +19,19 @@ builder.Services.AddAuthentication(options =>
 })
 .AddCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
+    options.LoginPath = "/Login/SignIn";
+    options.Events = new CookieAuthenticationEvents
+    {
+        OnRedirectToLogin = context =>
+        {
+            // Điều chỉnh URL chuyển hướng để không thêm `ReturnUrl`
+            context.Response.Redirect("/Login/SignIn");
+            return Task.CompletedTask;
+        }
+    };
+    options.LogoutPath = "/Login/SignOut";
+
+
 });
 
 var app = builder.Build();

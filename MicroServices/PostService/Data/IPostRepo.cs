@@ -1,4 +1,5 @@
-﻿using PostService.Models;
+﻿using PostService.DTOs;
+using PostService.Models;
 
 namespace PostService.Data
 {
@@ -6,7 +7,7 @@ namespace PostService.Data
     {
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<Post> GetPostByIdAsync(int id);
-        Task<IEnumerable<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize);
+        Task<PagedResult<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize);
         Task CreatePostAsync(Post post);
         Task UpdatePostAsync(Post post);
         Task DeletePostAsync(int id);
