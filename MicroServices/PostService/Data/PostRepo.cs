@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using PostService.DTOs;
 using PostService.Models;
 
 namespace PostService.Data
@@ -43,14 +44,20 @@ namespace PostService.Data
             return await _context.Posts.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize)
+        public async Task<PagedResult<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize)
         {
-            return await _context.Posts
-            .Where(p => p.ThreadId == threadId)
-            .OrderBy(p => p.Id) // Adjust ordering as needed
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+            int totalCount = await _context.Posts
+                .Where(p => p.ThreadId == threadId)
+                .CountAsync();
+
+            var posts = await _context.Posts
+                .Where(p => p.ThreadId == threadId)
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Post>(posts, totalCount, page, pageSize);
         }
 
         public async Task<bool> SaveChangesAsync()

@@ -4,7 +4,14 @@
 *@
 @{
     ViewData["Title"] = "Danh sách Bài viết";
-    var posts = ViewBag.Posts as List<PostDTO>;
+    var PaginationPosts = ViewBag.PaginationPosts as IEnumerable<PostDTO>;
+    var posts = ViewBag.AllPosts as IEnumerable<PostDTO>;
+    var CurrentPage = ViewBag.CurrentPage;
+    var TotalPages = ViewBag.TotalPages;
+
+    var TotalPosts = ViewBag.TotalPosts;
+
+
 }
 
 <div class="container mt-5">
@@ -18,9 +25,9 @@
 
     <h2 class="text-center text-success">Danh sách Bài viết</h2>
     <div class="row">
-        @if (posts != null && posts.Count > 0)
+        @if (PaginationPosts != null && TotalPosts > 0)
         {
-            foreach (var post in posts)
+            foreach (var post in PaginationPosts)
             {
                 <div class="col-md-12 mb-4">
                     <div class="card">
@@ -60,4 +67,36 @@
             <p class="text-center text-muted">Không có bài viết nào.</p>
         }
     </div>
+</div>
+
+@if (TotalPages > 1)
+{
+    <div class="d-flex justify-content-center align-items-center mt-4">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                <!-- Nút Previous -->
+                <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="?page=@(CurrentPage - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Danh sách các trang -->
+                @for (int i = 1; i <= TotalPages; i++)
+                {
+                    <li class="page-item @(i == CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i">@i</a>
+                    </li>
+                }
+
+                <!-- Nút Next -->
+                <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="?page=@(CurrentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
 </div>

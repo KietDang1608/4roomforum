@@ -7,7 +7,7 @@
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
         public IEnumerable<T> Items { get; set; }
-
+        public PagedResult() { }
         public PagedResult(IEnumerable<T> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = count;
