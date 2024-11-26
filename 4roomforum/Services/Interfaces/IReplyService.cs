@@ -5,7 +5,8 @@ namespace _4roomforum.Services.Interfaces
 {
     public interface IReplyService
     {
-        Task<IEnumerable<ReplyDTO>?> GetAllReplies(int PostId);
-        
+        Task<PagedResult<ReplyDTO>?> GetAllReplies(int PostId, int pageNumber, int pageSize);
+        Task<ReplyDTO> GetAReply(int id);
+        Task<bool> CreateReply(CreateReplyDTO createReplyDTO);
     }
 }

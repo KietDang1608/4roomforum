@@ -1,6 +1,8 @@
 ﻿using _4roomforum.DTOs;
 using _4roomforum.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PostService.DTOs;
 namespace _4roomforum.Controllers
 {
     public class ReplyController : Controller
@@ -23,52 +25,81 @@ namespace _4roomforum.Controllers
                 var post = (PostDTO)await _postService.GetPostById(PostId);
                 if (post == null)
                 {
-                    ViewBag.Message = "Post not found.";
-                    return View();
+                    TempData["Message"] = "Post not found.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
+
+                var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
 
                 // Lấy người đăng bài viết
                 var PostedBy = (UserDTO)await _userService.GetUserProfile(post.PostedBy);
                 if (PostedBy == null)
                 {
-                    ViewBag.Message = "User who posted not found.";
-                    return View();
+                    TempData["Message"] = "User who posted not found.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
 
-                var replies = await _replyService.GetAllReplies(PostId);
+                var replies = (PagedResult<ReplyDTO>?)await _replyService.GetAllReplies(PostId, page, pageSize);
                 if (replies == null)
                 {
-                    ViewBag.Message = "Replies not found.";
-                    return View();
+                    TempData["Message"] = "Replies not found.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
-                var TotalReplies = replies.Count();
-                int TotalPages = (int)Math.Ceiling((double)TotalReplies / pageSize);
-                var PaginationReplies = replies
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                
+                // Lấy thông tin người dùng 
+                ViewBag.GetUserReply = new Func<int, Task<UserDTO>>(async x => await _userService.GetUserProfile(x));
 
-                // Lấy thông tin người dùng từ danh sách replies
-                List<Task<UserDTO>> userTasks = PaginationReplies.Select(r => _userService.GetUserProfile(r.RepliedBy)).ToList();
-                var UsersReply = await Task.WhenAll(userTasks);
+                //Hàm lấy reply theo id
+                ViewBag.MyFunction = new Func<int, Task<ReplyDTO>>(async x => await _replyService.GetAReply(x));
 
                 // Gán dữ liệu vào ViewBag
                 ViewBag.CurrentPage = page;
-                ViewBag.TotalPages = TotalPages;
-                ViewBag.PaginationReplies = PaginationReplies;
-                ViewBag.AllReplies = PaginationReplies;
-                ViewBag.TotalReplies = TotalReplies;
+                ViewBag.TotalPages = replies.TotalPages;
+                ViewBag.PaginationReplies = replies.Items;
+                ViewBag.TotalReplies = replies.TotalCount;
+                ViewBag.PageSize = pageSize;
 
                 ViewBag.Post = post;
-                ViewBag.Users = UsersReply;
                 ViewBag.UserPost = PostedBy;
+
+                ViewBag.UserId = userId;
 
                 return View();
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "An error occurred while processing your request.";
-                return View();
+                TempData["Message"] = "An error occurred while processing your request. " + ex.Message;
+                return View("~/Views/Shared/Error.cshtml");
+            }
+        }
+
+        public async Task<ActionResult> Create(CreateReplyDTO createReplyDTO)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    bool success = await _replyService.CreateReply(createReplyDTO);
+
+                    if (success)
+                    {
+                        // Optionally, you can show a success message or redirect to another page
+                        TempData["Message"] = "Reply created successfully!";
+                        return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
+                    }
+                    else
+                    {
+                        // If reply creation fails, show an error message
+                        TempData["Message"] = "An error occurred while processing your request.";
+                        return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
+                    }
+                }
+                return RedirectToAction("SignIn", "Login");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "An error occurred while processing your request. " + ex.Message;
+                return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
             }
         }
 

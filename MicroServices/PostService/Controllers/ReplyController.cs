@@ -14,27 +14,30 @@ namespace PostService.Controllers
     public class ReplyController : ControllerBase
     {
 
+
         private readonly IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> _repository;
         private readonly IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> _likeOfReplyRepoBase;
         private readonly ILikeOfReplyRepo _likeOfReplyRepo;
+        private readonly IReplyRepo _replyRepo;
 
         public ReplyController(
             IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> repository,
             ILikeOfReplyRepo likeOfReplyRepo,
+            IReplyRepo replyRepo,
             IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> likeOfReplyRepoBase)
         {
             _repository = repository;
             _likeOfReplyRepo = likeOfReplyRepo;
+            _replyRepo = replyRepo;
             _likeOfReplyRepoBase = likeOfReplyRepoBase;
         }
 
 
         [HttpGet("get-all-by-post/{id}")]
-        public async Task<IActionResult> GetAllReplies(int id)
+        public async Task<IActionResult> GetAllReplies(int id, int pageNumber = 1, int pageSize = 10)
         {
-            var pagedResult = await _replyRepo.GetAllRepliesAsync(id);
+            var pagedResult = await _replyRepo.GetPagedAsync(pageNumber, pageSize, id);
             return Ok(pagedResult);
-
         }
 
         [HttpGet("{id}")]
