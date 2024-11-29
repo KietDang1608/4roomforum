@@ -51,7 +51,12 @@
                         <!-- Hidden fields -->
                         <input type="hidden" name="ThreadId" value="@ThreadId" />
                         <input type="hidden" name="PostedBy" value="@User.FindFirst("UserId")?.Value">
+                        <input type="hidden" name="IsCreatedByAdmin" value="false" />
 
+                        @if (User.IsInRole("2"))  // Kiểm tra nếu người dùng là admin
+                        {
+                            <input type="hidden" name="IsCreatedByAdmin" value="true" />
+                        }
                         <div class="mb-3">
                             <label for="postTitle" class="form-label">Tiêu đề bài viết</label>
                             <textarea class="form-control" id="postTitle" name="PostTitle" rows="4" placeholder="Tiêu đề" required></textarea>
@@ -77,16 +82,41 @@
         {
             foreach (var post in PaginationPosts)
             {
-                <div class="col-md-12 mb-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Tiêu đề: @post.PostTitle</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Người đăng: User@post.PostedBy</h6>
+                var isCurrentUserPost = post.PostedBy.ToString() == User.FindFirst("UserId")?.Value;
+                var isAdmin = User.IsInRole("2");
+                var isCreatedByAdmin = post.IsCreatedByAdmin;
+                <div id="post-@post.Id" class="col-md-12 mb-4">
+                    <div class="card @(isCurrentUserPost ? "border-primary" : "border-secondary")">
+                        <div class="card-header @(isCurrentUserPost ? "bg-light" : "") d-flex justify-content-between align-items-center">
+                            
+                            <div class="title-view-mode">
+                                <h5 class="card-title">Tiêu đề: @post.PostTitle</h5>
+                            </div>
+                            <div class="title-edit-mode d-none">
+                                <input type="text" class="form-control" value="@post.PostTitle">
+                            </div>
+
+                            @if (isCurrentUserPost)
+                            {
+                                <span class="badge bg-primary text-white fw-bold">Bài viết của bạn</span>
+                            }
                         </div>
                         <div class="card-body">
-                            <p class="card-text">@post.PostContent</p>
+
+                            <div class="card-text content-view-mode">
+                                <p>@post.PostContent</p>
+                            </div>
+                            <div class="content-edit-mode d-none">
+                                <textarea class="form-control">@post.PostContent</textarea>
+                                <button class="btn btn-success btn-sm mt-2" onclick="saveEdit(@post.Id)">Lưu</button>
+                                <button class="btn btn-secondary btn-sm mt-2" onclick="cancelEdit(@post.Id)">Hủy</button>
+                            </div>
+
+                            <small class="text-muted">Người đăng: @post.PostedBy</small><br />
                             <small class="text-muted">Ngày đăng: @post.PostDate.ToString("dd/MM/yyyy")</small>
-                            <small class="text-muted d-block">Được chỉnh sửa: @(post.IsEdited ? "Có" : "Không")</small>
+                            <small class="text-muted d-block">
+                                Được chỉnh sửa: @(post.IsEdited ? "Có" : "Không")
+                            </small>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="badge bg-info text-dark">Lượt like: @post.Like</span>
                                 <div>
@@ -98,17 +128,28 @@
                         <div class="card-footer">
                             <h6>Bình luận</h6>
                             <div class="list-group">
-                                <!-- Bình luận mẫu -->
                                 <div class="list-group-item">
                                     <p class="mb-1"><strong>User:</strong> Bình luận mẫu</p>
                                     <small class="text-muted">Ngày bình luận: 01/01/2024</small>
                                 </div>
-                                <!-- Có thể thêm các bình luận khác ở đây -->
+                            </div>
+                            <div class="mt-2">
+                                @if (isCurrentUserPost)
+                                {
+                                    <a href="javascript:void(0);" class="btn btn-warning btn-sm me-2" onclick="enableEdit(@post.Id)">Chỉnh sửa</a>
+                                }
+                                @if (isCurrentUserPost || (isAdmin && !isCreatedByAdmin))
+                                {
+                                    <form asp-controller="Post" asp-action="DeletePost" asp-route-id="@post.Id" asp-route-threadId="@post.ThreadId" asp-route-userId="@User.FindFirst("UserId")?.Value" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa bài viết này không?')">Xóa</button>
+                                    </form>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             }
+
         }
         else
         {
@@ -147,4 +188,105 @@
         </nav>
     </div>
 }
-</div>
+
+<script>
+    function enableEdit(postId) {
+        const titleViewMode = document.querySelector(`#post-${postId} .title-view-mode`);
+        const titleEditMode = document.querySelector(`#post-${postId} .title-edit-mode`);
+
+        const contentViewMode = document.querySelector(`#post-${postId} .content-view-mode`);
+        const contentEditMode = document.querySelector(`#post-${postId} .content-edit-mode`);
+
+        if (titleViewMode && titleEditMode && contentViewMode && contentEditMode) {
+            titleViewMode.classList.add('d-none');
+            titleEditMode.classList.remove('d-none');
+
+            contentViewMode.classList.add('d-none');
+            contentEditMode.classList.remove('d-none');
+        } else {
+            console.error(`Không tìm thấy phần tử với ID: post-${postId}`);
+        }
+    }
+
+    function cancelEdit(postId) {
+        const titleViewMode = document.querySelector(`#post-${postId} .title-view-mode`);
+        const titleEditMode = document.querySelector(`#post-${postId} .title-edit-mode`);
+
+        const contentViewMode = document.querySelector(`#post-${postId} .content-view-mode`);
+        const contentEditMode = document.querySelector(`#post-${postId} .content-edit-mode`);
+
+        if (titleViewMode && titleEditMode && contentViewMode && contentEditMode) {
+            titleEditMode.classList.add('d-none');
+            titleViewMode.classList.remove('d-none');
+
+            contentEditMode.classList.add('d-none');
+            contentViewMode.classList.remove('d-none');
+        } else {
+            console.error(`Không tìm thấy phần tử với ID: post-${postId}`);
+        }
+    }
+
+
+    function saveEdit(postId) {
+        const title = document.querySelector(`#post-${postId} input`).value;
+        const content = document.querySelector(`#post-${postId} textarea`).value;
+        const threadId = document.querySelector('input[name="ThreadId"]').value;
+        const userId = document.querySelector('input[name="PostedBy"]').value;
+
+        const updatePostDTO = {
+            PostTitle: title,
+            PostContent: content,
+            PostDate: new Date().toISOString(), // Lấy thời gian hiện tại, định dạng ISO 8601
+            IsEdited: true // Đánh dấu rằng bài viết đã chỉnh sửa
+        };
+        var json = JSON.stringify(updatePostDTO);
+
+        const url = `/Post/${postId}/${threadId}/${userId}`;
+
+        $.ajax({
+            url: url,
+            method: 'PUT',
+            contentType: 'application/json; charset=utf-8',
+            data: json,
+            success: function (data, textStatus, jqXHR) {
+                if (data.success) {
+                    alert(data.message);
+
+                    // Cập nhật nội dung bài viết trên giao diện
+                    const postElement = document.querySelector(`#post-${postId}`);
+                    postElement.querySelector('input').value = data.title;
+                    postElement.querySelector('textarea').value = data.content;
+
+                    // Nếu bạn muốn hiển thị thời gian cập nhật hoặc thông tin khác
+                    // const postDateElement = postElement.querySelector('.post-date');
+                    // postDateElement.textContent = new Date(data.updatedPost.PostDate).toLocaleString();
+
+                    const titleViewMode = document.querySelector(`#post-${postId} .title-view-mode`);
+                    const titleEditMode = document.querySelector(`#post-${postId} .title-edit-mode`);
+                    
+                    const contentViewMode = document.querySelector(`#post-${postId} .content-view-mode`);
+                    const contentEditMode = document.querySelector(`#post-${postId} .content-edit-mode`);
+
+                    titleViewMode.innerHTML = `<h5 class="card-title">Tiêu đề: ${data.title}</h5>`;
+                    contentViewMode.innerHTML = `<p>${data.content}</p>`;
+
+                    if (titleViewMode && titleEditMode && contentViewMode && contentEditMode) {
+                        titleEditMode.classList.add('d-none');
+                        titleViewMode.classList.remove('d-none');
+
+                        contentEditMode.classList.add('d-none');
+                        contentViewMode.classList.remove('d-none');
+                    } else {
+                        console.error(`Không tìm thấy phần tử với ID: post-${postId}`);
+                    }
+                } else {
+                    alert(data.message); // Hiển thị thông báo lỗi
+                }
+            },
+            error: function (err) {
+                console.error('Lỗi:', err);
+            }
+        });
+    }
+
+</script>

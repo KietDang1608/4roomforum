@@ -44,7 +44,7 @@ namespace PostService.Data
             return await _context.Posts.FindAsync(id);
         }
 
-        public async Task<PagedResult<Post>> getPostsByThreadIdAsync(int threadId, int page, int pageSize)
+        public async Task<PagedResult<Post>> getPostsByThreadIdAsync(int threadId, int page, int userId, int pageSize)
         {
             int totalCount = await _context.Posts
                 .Where(p => p.ThreadId == threadId)
@@ -52,13 +52,14 @@ namespace PostService.Data
 
             var posts = await _context.Posts
                 .Where(p => p.ThreadId == threadId)
-                .OrderBy(p => p.Id)
+                .OrderBy(p => p.PostedBy == userId ? 0 : 1)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             return new PagedResult<Post>(posts, totalCount, page, pageSize);
         }
+
 
         public async Task<bool> SaveChangesAsync()
         {

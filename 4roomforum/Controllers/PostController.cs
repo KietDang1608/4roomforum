@@ -9,19 +9,19 @@ namespace _4roomforum.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
-        public PostController(IPostService postService)
+        private readonly IUserService _userService;
+        public PostController(IPostService postService, IUserService userService)
         {
             _postService = postService;
+            _userService = userService;
         }
         // GET: PostController (api/post)
-        [HttpGet("Post/{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Index(int id, int page = 1, int pageSize = 5)
+        [HttpGet("Post/{id}/{userId}")]
+        public async Task<ActionResult> Index(int id, int userId, int page = 1)
         {
             try
             {
-                var posts = await _postService.GetPostsByThreadId(id, page, pageSize);
-
+                var posts = await _postService.GetPostsByThreadId(id, userId, page);
 
                 if (posts == null || !posts.Items.Any())
                 {
@@ -60,7 +60,60 @@ namespace _4roomforum.Controllers
                 if (check)
                 {
                     TempData["SuccessMessage"] = "Đăng bài thành công :3";
-                    return RedirectToAction("Index", new {Id = postDTO.ThreadId});
+                    return RedirectToAction("Index", new {Id = postDTO.ThreadId, userId = postDTO.PostedBy});
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra. Vui lòng thử lại.";
+                    return RedirectToAction("Create");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return RedirectToAction("Create");
+            }
+        }
+
+        [HttpPut("Post/Create")]
+        public void create()
+        {
+
+        }
+
+        [HttpPut("Post/{postId}/{threadId}/{userId}")]
+        public async Task<ActionResult> UpdatePost(int postId, int threadId, int userId, [FromBody] UpdatePostDTO postDTO)
+        {
+            try
+            {
+                bool check = await _postService.UpdatePostAsync(postId, postDTO);
+                if (check)
+                {
+                    return Json(new { success = true, message = "Cập nhật thành công!", title = postDTO.PostTitle, content = postDTO.PostContent });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra. Vui lòng thử lại.";
+                    return RedirectToAction("Create");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi: " + ex.Message;
+                return RedirectToAction("Create");
+            }
+        }
+
+        [HttpPost("Post/{id}/{threadId}/{userId}")]
+        public async Task<ActionResult> DeletePost(int id, int threadId, int userId)
+        {
+            try
+            {
+                bool check = await _postService.DeletePostAsync(id);
+                if (check)
+                {
+                    TempData["SuccessMessage"] = "Xóa bài thành công :3";
+                    return RedirectToAction("Index", new { Id = threadId, userId = userId });
                 }
                 else
                 {

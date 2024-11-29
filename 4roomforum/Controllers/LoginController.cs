@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Google;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -48,7 +49,7 @@ namespace _4roomforum.Controllers
                     new Claim(ClaimTypes.Name, userDTO.UserName),
                     new Claim(ClaimTypes.Email, userDTO.Email),
                     new Claim(ClaimTypes.Role, userDTO.RoleId.ToString()),// Hoặc lấy từ userDTO.Role nếu có
-                    new Claim("UserId", userDTO.UserId.ToString()) 
+                    new Claim("UserId", userDTO.UserId.ToString())
                 };
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -257,6 +258,68 @@ namespace _4roomforum.Controllers
             return View();
         }
 
+        [HttpGet("SignInGoogle")]
+        public IActionResult SignInGoogle()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+        [HttpGet("GoogleResponse")]
+    public async Task<IActionResult> GoogleResponse()
+    {
+        var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        if (!result.Succeeded)
+        return RedirectToAction("SignIn");
 
+        var claims = result.Principal.Identities
+        .FirstOrDefault()?.Claims.Select(claim => new
+        {
+            claim.Type,
+            claim.Value
+        });
+
+        var emailClaim = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+        if (emailClaim == null)
+        return RedirectToAction("SignIn");
+
+        var email = emailClaim.Value;
+        var user = await _userService.GetUserByEmail(email);
+        if (user == null)
+        {
+        // Create a new user if not exists
+         UserDTO newUser = new UserDTO
+            {
+                UserName = email,
+                Email = email,
+                Password = "123456",
+                Avatar = "voi.png",
+                RoleId = 2,
+                JoinDate = DateOnly.FromDateTime(DateTime.Now),
+                LastLogin = DateOnly.FromDateTime(DateTime.Now),
+                Status = 1
+            };
+        user = await _userService.RegisterUserAsync(newUser);
+        }
+
+        var userClaims = new List<Claim>
+        {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+        new Claim("UserId", user.UserId.ToString())
+        };
+
+        var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+        AllowRefresh = true,
+        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+        IsPersistent = true,
+        };
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+        return RedirectToAction("Index", "Home");
+    }
     }
 }

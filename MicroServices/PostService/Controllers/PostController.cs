@@ -48,18 +48,19 @@ namespace PostService.Controllers
             return Ok(post);
         }
 
-        [HttpGet("with_thread/{threadId}/{page}/{pageSize}")]
+        [HttpGet("with_thread/{threadId}/{userId}/{page}")]
         public async Task<ActionResult<PagedResult<PostDTO>>> GetPostsByThreadId(
             int threadId,
+            int userId,
             int page,
-            int pageSize)
+            int pageSize = 5)
         {
             //if (page <= 0 || pageSize <= 0)
             //{
             //    return BadRequest("Page and pageSize must be greater than 0.");
             //}
 
-            var pagedPosts = await _postRepo.getPostsByThreadIdAsync(threadId, page, 5);
+            var pagedPosts = await _postRepo.getPostsByThreadIdAsync(threadId, page, userId, pageSize);
 
             var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(pagedPosts.Items);
 
@@ -90,7 +91,6 @@ namespace PostService.Controllers
         // PUT: api/post/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO)
-        //updatePostDTO bo trong khi chon option la like hoac unlike
         {
             if (await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
             {

@@ -22,6 +22,8 @@ namespace PostService.Models
         public DateTime PostDate { get; set; } = DateTime.UtcNow;
         [Column("is_edited")]
         public bool IsEdited { get; set; } = false;
+        [Column("is_created_by_admin")]
+        public bool IsCreatedByAdmin { get; set; }
 
         [InverseProperty("Post")]
         public ICollection<Reply>? Replies { get; set; }

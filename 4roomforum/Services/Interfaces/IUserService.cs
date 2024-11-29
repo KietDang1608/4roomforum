@@ -8,5 +8,6 @@ namespace _4roomforum.Services.Interfaces
         Task<UserDTO?> RegisterUserAsync(UserDTO userDTO);
         Task<bool> UpdateUser(int userId, UserDTO userUpdateDto);
         Task<UserDTO> GetUserById(int userId);
+        Task<UserDTO> GetUserByEmail(string email);
     }
 }
