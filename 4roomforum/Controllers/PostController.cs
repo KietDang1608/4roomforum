@@ -51,7 +51,9 @@ namespace _4roomforum.Controllers
                 return View(new List<PostDTO>());
             }
         }
+        
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddPost(CreatePostDTO postDTO)
         {
             try
