@@ -157,5 +157,34 @@ namespace _4roomforum.Services.Implements
                 return null;
             }
         }
+
+        public async Task<UserDTO> GetUserByEmail(string email)
+        {
+            try
+            {
+                var response = await _client.GetAsync($"api/user/email/{email}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var user = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    return user;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to retrieve user. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetUserByEmail: {ex.Message}");
+                return null;
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetUserByEmail: {ex.Message}");
+                return null;
+            }
+        }
     }
 }
