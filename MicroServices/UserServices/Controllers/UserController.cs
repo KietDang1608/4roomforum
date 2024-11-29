@@ -37,6 +37,18 @@ namespace UserServices.Controllers
             }
             return NotFound();
         }
+
+        [HttpGet("email/{email}")]
+        public ActionResult<UserDTO> GetUserByEmail(string email)
+        {
+            var user = _repo.GetUserByEmail(email);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+            return Ok(_mapper.Map<UserDTO>(user));
+        }
+
         [HttpPost]
         public ActionResult<UserDTO> AddUser(UserDTO user){
             var catModel = _mapper.Map<User>(user);
