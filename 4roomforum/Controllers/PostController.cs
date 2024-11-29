@@ -59,6 +59,7 @@ namespace _4roomforum.Controllers
             try
             {
                 bool check = await _postService.CreatePostAsync(postDTO);
+                
                 if (check)
                 {
                     TempData["SuccessMessage"] = "Đăng bài thành công :3";
