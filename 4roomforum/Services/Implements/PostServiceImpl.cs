@@ -22,7 +22,7 @@ namespace _4roomforum.Services.Implements
         {
             try
             {
-                var response = await _client.GetAsync($"api/post/with_thread/{id}/{page}");
+                var response = await _client.GetAsync($"api/post/with_thread/{id}/{page}/{pageSize}");
                 if (response.IsSuccessStatusCode)
                 {
                     var posts = await response.Content.ReadFromJsonAsync<PagedResult<PostDTO>>();
