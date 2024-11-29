@@ -10,6 +10,7 @@
         public required string PostContent { get; set; }
         public DateTime PostDate { get; set; } 
         public bool IsEdited { get; set; }
+        public bool IsCreatedByAdmin { get; set; }
     }
 
     public class CreatePostDTO
@@ -18,6 +19,7 @@
         public required int PostedBy { get; set; }
         public required string PostTitle { get; set; }
         public required string PostContent { get; set; }
+        public bool IsCreatedByAdmin { get; set; }
     }
 
     public class UpdatePostDTO
