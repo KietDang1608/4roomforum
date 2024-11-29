@@ -54,16 +54,16 @@ namespace PostService.Controllers
             int page,
             int pageSize)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return BadRequest("Page and pageSize must be greater than 0.");
-            }
+            //if (page <= 0 || pageSize <= 0)
+            //{
+            //    return BadRequest("Page and pageSize must be greater than 0.");
+            //}
 
-            var pagedPosts = await _postRepo.getPostsByThreadIdAsync(threadId, page, pageSize);
+            var pagedPosts = await _postRepo.getPostsByThreadIdAsync(threadId, page, 5);
 
             var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(pagedPosts.Items);
 
-            var pagedResult = new PagedResult<PostDTO>(postDTOs, pagedPosts.TotalCount, pagedPosts.CurrentPage, pagedPosts.PageSize);
+            var pagedResult = new PagedResult<PostDTO>(postDTOs, pagedPosts.TotalCount, pagedPosts.CurrentPage, 5);
 
             return Ok(pagedResult);
         }
