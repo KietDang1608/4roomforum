@@ -48,7 +48,7 @@ namespace _4roomforum.Controllers
                     new Claim(ClaimTypes.Name, userDTO.UserName),
                     new Claim(ClaimTypes.Email, userDTO.Email),
                     new Claim(ClaimTypes.Role, userDTO.RoleId.ToString()),// Hoặc lấy từ userDTO.Role nếu có
-                    new Claim("UserId", userDTO.UserId.ToString()) 
+                    new Claim("UserId", userDTO.UserId.ToString())
                 };
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

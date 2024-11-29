@@ -26,7 +26,12 @@
             <div class="list-group">
                 @foreach (var thread in threads)
                 {
-                    <a class="list-group-item list-group-item-action bg-light" asp-controller="Post" asp-action="Index" asp-route-id="@thread.ThreadId">
+                    <a 
+                        class="list-group-item list-group-item-action bg-light" 
+                        asp-controller="Post" 
+                        asp-action="Index" 
+                        asp-route-id="@thread.ThreadId"
+                        asp-route-userId="@User.FindFirst("UserId")?.Value">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@thread.ThreadTitle</h5>
                             <small>Ngày tạo: @thread.CreatedDate</small>
