@@ -48,7 +48,7 @@ namespace PostService.Controllers
             return Ok(post);
         }
 
-        [HttpGet("with_thread/{threadId}/{page}")]
+        [HttpGet("with_thread/{threadId}/{page}/{pageSize}")]
         public async Task<ActionResult<PagedResult<PostDTO>>> GetPostsByThreadId(
             int threadId,
             int page,
@@ -63,7 +63,7 @@ namespace PostService.Controllers
 
             var postDTOs = _mapper.Map<IEnumerable<PostDTO>>(pagedPosts.Items);
 
-            var pagedResult = new PagedResult<PostDTO>(postDTOs, pagedPosts.TotalCount, pagedPosts.CurrentPage, pagedPosts.PageSize);
+            var pagedResult = new PagedResult<PostDTO>(postDTOs, pagedPosts.TotalCount, pagedPosts.CurrentPage, pageSize);
 
             return Ok(pagedResult);
         }
