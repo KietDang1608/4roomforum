@@ -51,12 +51,15 @@ namespace _4roomforum.Controllers
                 return View(new List<PostDTO>());
             }
         }
+        
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddPost(CreatePostDTO postDTO)
         {
             try
             {
                 bool check = await _postService.CreatePostAsync(postDTO);
+                
                 if (check)
                 {
                     TempData["SuccessMessage"] = "Đăng bài thành công :3";
