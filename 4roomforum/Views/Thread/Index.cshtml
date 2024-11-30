@@ -31,7 +31,7 @@
                         asp-controller="Post" 
                         asp-action="Index" 
                         asp-route-id="@thread.ThreadId"
-                        asp-route-userId="@User.FindFirst("UserId")?.Value">
+                        asp-route-userId="@((int.TryParse(User.FindFirst("UserId")?.Value, out var userId) ? userId : -1))">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@thread.ThreadTitle</h5>
                             <small>Ngày tạo: @thread.CreatedDate</small>
