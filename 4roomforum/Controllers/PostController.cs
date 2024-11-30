@@ -15,7 +15,6 @@ namespace _4roomforum.Controllers
             _postService = postService;
             _userService = userService;
         }
-        // GET: PostController (api/post)
         [HttpGet("Post/{id}/{userId}")]
         public async Task<ActionResult> Index(int id, int userId, int page = 1)
         {

@@ -49,4 +49,9 @@ public class ThreadRepo : IThreadRepo
     {
         return (_context.SaveChanges() >= 0);
     }
+
+    public IEnumerable<Threads> GetThreadsByCategoryId(int categoryId)
+    {
+        return _context.Threads.Where(h => h.CategoryID == categoryId).ToList();
+    }
 }

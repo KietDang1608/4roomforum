@@ -7,7 +7,6 @@ namespace _4roomforum.Controllers
 {
     public class ThreadController : Controller
     {
-
         private readonly IThreadService _threadService;
 
         public ThreadController(IThreadService threadService)
@@ -15,36 +14,46 @@ namespace _4roomforum.Controllers
             _threadService = threadService;
         }
 
-        public async Task<ActionResult> Index()
+        [HttpGet ("Thread/{id}")]
+        public async Task<ActionResult> Index( int id)
         {
             try
             {
                 var hotThread = await _threadService.GetHotThreads();
                 ViewBag.HotThreads = hotThread;
-                var threads = await _threadService.GetAllThreads();
+                var threads = await _threadService.GetThreadsByCategoryId(id);
                 ViewBag.Threads = threads;
-
 
                 return View();
             }
+            // try
+            // {
+            //     var hotThread = await _threadService.GetHotThreads();
+            //     ViewBag.HotThreads = hotThread;
+            //     var threads = await _threadService.GetAllThreads();
+            //     ViewBag.Threads = threads;
+
+
+            //     return View();
+            // }
             catch (Exception ex)
             {
                 return View(new List<ThreadDTO>());
             }
         }
-        [HttpGet("Thread/{id}")]
-        public async Task<ActionResult> ThreadDetail(int id)
-        {
-            var thread = await _threadService.GetThreadById(id);
-            ViewBag.Thread = thread;
-            if (thread != null)
-            {
-                return View(thread);
-            }
-            return NotFound();
+        // [HttpGet("Thread/{id}")]
+        // public async Task<ActionResult> ThreadDetail(int id)
+        // {
+        //     var thread = await _threadService.GetThreadById(id);
+        //     ViewBag.Thread = thread;
+        //     if (thread != null)
+        //     {
+        //         return View(thread);
+        //     }
+        //     return NotFound();
 
 
-        }
+        // }
 
     }
 }

@@ -106,5 +106,35 @@ namespace _4roomforum.Services.Implements
             }
         }
 
+        public async Task<IEnumerable<ThreadDTO>> GetThreadsByCategoryId(int categoryId)
+        {
+            try
+            {
+                var url = $"api/thread/getThreadByCategory/{categoryId}";
+                var response = await _client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var threads = await response.Content.ReadFromJsonAsync<IEnumerable<ThreadDTO>>();
+                    return threads ?? new List<ThreadDTO>();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get threads with category ID {categoryId}. Status Code: {response.StatusCode}");
+                    return new List<ThreadDTO>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetThreadsByCategoryId for category ID {categoryId}: {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetThreadsByCategoryId for category ID {categoryId}: {ex.Message}");
+                return new List<ThreadDTO>();
+            }
+        }
+
     }
 }

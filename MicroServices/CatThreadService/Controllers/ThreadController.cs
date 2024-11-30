@@ -100,5 +100,15 @@ namespace CatThreadService.Controllers
 
             return Ok(_mapper.Map<IEnumerable<ThreadDTO>>(hotThreads));
         }
+
+        [HttpGet("getThreadByCategory/{id}")]
+        public ActionResult<IEnumerable<ThreadDTO>> GetThreadByCategory(int id)
+        {
+            var threads = _repo.GetThreadsByCategoryId(id);
+
+            return Ok(_mapper.Map<IEnumerable<ThreadDTO>>(threads));
+        }
     }
+
+
 }
