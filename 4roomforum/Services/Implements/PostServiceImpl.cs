@@ -19,7 +19,49 @@ namespace _4roomforum.Services.Implements
             _client = httpClient;
             _client.BaseAddress = new Uri("http://localhost:5003/");
         }
-        public async Task<PagedResult<PostDTO>> GetPostsByThreadId(int id, int userId, int page)
+        public async Task<LikeResult> LikePost(int postId, int userId)
+        {
+            try
+            {
+                var response = await _client.GetAsync($"api/post/like/{postId}/{userId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    if (message.StartsWith("Liked post"))
+                    {
+                        return new LikeResult
+                        {
+                            IsSuccessful = true,
+                            IsLiked = true
+                        };
+                    }
+                    else if (message.StartsWith("Unliked post"))
+                    {
+                        return new LikeResult
+                        {
+                            IsSuccessful = true,
+                            IsLiked = false
+                        };
+                    }
+                }
+                return new LikeResult
+                {
+                    IsSuccessful = false,
+                    IsLiked = null,
+                    ErrorMessage = "Failed to process the request."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new LikeResult
+                {
+                    IsSuccessful = false,
+                    IsLiked = null,
+                    ErrorMessage = ex.Message
+                };
+            }        
+        }
+        public async Task<PagedResult<PostDTO>> GetPostsByThreadId(int id, int page, int pageSize)
         {
             try
             {
@@ -77,6 +119,7 @@ namespace _4roomforum.Services.Implements
                 return null;
             }
         }
+
 
         public async Task<bool> CreatePostAsync(CreatePostDTO postDTO)
         {

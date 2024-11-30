@@ -15,6 +15,51 @@ namespace _4roomforum.Controllers
             _postService = postService;
             _userService = userService;
         }
+        [HttpPut]
+        public async Task<IActionResult> LikeOrUnlikePost(int postId, int userId)
+        {
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "userId");
+                 int userIdNew = int.Parse(userIdClaim.Value);
+                
+                var result = await _postService.LikePost(postId, userId);
+                if (result.IsSuccessful)
+                {
+                    if (result.IsLiked == true)
+                    {
+                        ViewBag.Message = $"You liked post {postId}.";
+                    }
+                    else if (result.IsLiked == false)
+                    {
+                        ViewBag.Message = $"You unliked post {postId}.";
+                    }
+                    return Json(new
+                    {
+                        success = true,
+                        isLiked = result.IsLiked,
+                        message = ViewBag.Message
+                    });
+
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        error = result.ErrorMessage
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    error = $"An error occurred: {ex.Message}"
+                });
+            }
+        }
         // GET: PostController (api/post)
         [HttpGet("Post/{id}/{userId}")]
         public async Task<ActionResult> Index(int id, int userId, int page = 1)

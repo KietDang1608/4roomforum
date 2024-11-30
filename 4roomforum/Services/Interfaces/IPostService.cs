@@ -9,6 +9,7 @@ namespace _4roomforum.Services.Interfaces
     {
         Task<PagedResult<PostDTO>> GetPostsByThreadId(int threadId, int userId, int page);
         Task<PostDTO> GetPostById(int id);
+        Task<LikeResult> LikePost(int postId, int userId);
         Task<bool> CreatePostAsync(CreatePostDTO postDTO);
 
         Task<IEnumerable<PostDTO>> GetAllPostsAsync();
