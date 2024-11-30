@@ -10,11 +10,16 @@ namespace _4roomforum.Controllers
     public class HomeController : Controller
     {
         private ICategoryService _categoryService;
+        private IPostService _postService;
+        private IThreadService _threadService;
 
-        public HomeController(ICategoryService categoryService)
+        public HomeController(ICategoryService categoryService, IPostService postService, IThreadService threadService)
         {
             _categoryService = categoryService;
+            _postService = postService;
+            _threadService = threadService;
         }
+        
         
         // public void GetAllUser()
         // {
@@ -43,6 +48,10 @@ namespace _4roomforum.Controllers
             try{
                 var categories = await _categoryService.GetAllCategory();
                 ViewBag.Categories = categories;
+                var hotThread = await _threadService.GetHotThreads();
+                ViewBag.HotThreads = hotThread;
+                var posts = await _postService.GetAllPostsAsync();
+                ViewBag.Posts = posts;
             }
             catch (Exception ex)
             {
@@ -55,8 +64,6 @@ namespace _4roomforum.Controllers
         {
             return View();
         }
-
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
