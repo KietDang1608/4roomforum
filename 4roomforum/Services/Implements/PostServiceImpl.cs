@@ -114,6 +114,39 @@ namespace _4roomforum.Services.Implements
             }
         }
 
+        public async Task<IEnumerable<PostDTO>> GetAllPostsAsync()
+{
+    try
+    {
+        // Gọi API "api/post"
+        var response = await _client.GetAsync("api/post");
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Deserialize dữ liệu từ response
+            var posts = await response.Content.ReadFromJsonAsync<IEnumerable<PostDTO>>();
+            return posts ?? Enumerable.Empty<PostDTO>();
+        }
+        else
+        {
+            _logger.LogError($"Failed to get all posts. Status Code: {response.StatusCode}");
+            return Enumerable.Empty<PostDTO>();
+        }
+    }
+    catch (HttpRequestException ex)
+    {
+        _logger.LogError($"Request error in GetAllPosts: {ex.Message}");
+        return Enumerable.Empty<PostDTO>();
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"Unexpected error in GetAllPosts: {ex.Message}");
+        return Enumerable.Empty<PostDTO>();
+    }
+}
+
+
+
         public async Task<bool> DeletePostAsync(int id)
         {
             try
@@ -192,5 +225,6 @@ namespace _4roomforum.Services.Implements
                 return false;
             }
         }
+
     }
 }

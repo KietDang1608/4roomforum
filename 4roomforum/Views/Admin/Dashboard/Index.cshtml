@@ -8,9 +8,10 @@
 
 <!-- Include Chart.js from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 <div class="container">
-    <div class="row">
+    @* <div class="row">
         <!-- Selection for Year and Month -->
         <div class="col-md-12">
             <div class="card">
@@ -54,10 +55,34 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> *@
+
+<div class="row mt-4">
+    @if (Model != null)
+    {
+        foreach (var post in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.PostTitle</h5>
+                        <p class="card-text">@post.PostContent</p>
+                        <span class="badge bg-info text-dark">Likes: @post.Like</span>
+                         <small class="text-muted">Ngày đăng: @post.PostDate.ToString("dd/MM/yyyy")</small>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No posts available.</p>
+    }
+</div>
+
 
         <!-- Amount of Posts in Year and Month -->
-        <div class="col-md-12">
+        @* <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     Posts Overview
@@ -66,10 +91,10 @@
                     <canvas id="postsOverviewChart"></canvas>
                 </div>
             </div>
-        </div>
+        </div> *@
 
         <!-- Top Users -->
-        <div class="col-md-6">
+        @* <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     Top Users
@@ -78,7 +103,7 @@
                     <canvas id="topUsersChart"></canvas>
                 </div>
             </div>
-        </div>
+        </div> *@
 
         <!-- Posts with Most Interactions -->
         <div class="col-md-12">
@@ -95,7 +120,7 @@
 </div>
 
 <script>
-    document.getElementById('timePeriod').addEventListener('change', function() {
+    @* document.getElementById('timePeriod').addEventListener('change', function() {
         var value = this.value;
         document.getElementById('yearSelection').style.display = value === 'year' ? 'block' : 'none';
         document.getElementById('monthSelection').style.display = value === 'month' ? 'block' : 'none';
@@ -197,28 +222,54 @@
                 }
             }
         }
-    });
+    }); *@
+
+var chartLabels = @Html.Raw(Json.Serialize(ViewBag.ChartLabels));
+var chartData = @Html.Raw(Json.Serialize(ViewBag.ChartData));
+var chartTitles = @Html.Raw(Json.Serialize(ViewBag.ChartTitles));
 
     // Data for Most Interacted Posts Chart
     var mostInteractedPostsCtx = document.getElementById('mostInteractedPostsChart').getContext('2d');
     var mostInteractedPostsChart = new Chart(mostInteractedPostsCtx, {
         type: 'bar',
         data: {
-            labels: ['Post1', 'Post2', 'Post3', 'Post4', 'Post5'], // Static data for demonstration
+            labels: chartLabels, // Static data for demonstration
             datasets: [{
                 label: 'Number of Interactions',
-                data: [300, 250, 200, 150, 100], // Static data for demonstration
+                data: chartData, // Static data for demonstration
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
             }]
         },
         options: {
+            plugins: {
+                // Plugin để vẽ text trên đỉnh cột
+                tooltip: {
+                    enabled: false, // Ẩn tooltip mặc định
+                },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'start',
+                    formatter: function(value, context) {
+                        // Hiển thị tiêu đề bài viết
+                        return chartTitles[context.dataIndex];
+                    },
+                    font: {
+                        size: 10,
+                    },
+                    color: '#000',
+                    clamp: true
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels] // Thêm plugin ChartDataLabels
+
     });
 </script>
+
