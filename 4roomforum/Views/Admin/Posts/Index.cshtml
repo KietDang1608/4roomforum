@@ -6,10 +6,10 @@
     var listPostDetails = ViewBag.ListPostDetails as IEnumerable<_4roomforum.DTOs.PostDetailDTO>;
 }
 
-<form class="form-inline my-2 my-lg-0" method="get" action="/Admin/Posts/Index">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm">
+<form class="form-inline my-2 my-lg-0" method="get" action="/Admin/Posts/Search">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchString">
     
-    <select>
+    <select name="seachTerm">
         <option value="thread" selected>Thread ID</option>
         <option value="username">User</option>
         <option value="post_title">Post Title</option>
