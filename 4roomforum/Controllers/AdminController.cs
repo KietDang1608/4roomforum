@@ -5,7 +5,7 @@ using _4roomforum.DTOs;
 
 namespace _4roomforum.Controllers
 {
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "1")]
     public class AdminController : Controller
     {
         // GET: AdminController
