@@ -71,45 +71,15 @@ namespace PostService.Controllers
             }
         }
 
-        [HttpPut("{id}-{option}")]
-        public async Task<IActionResult> UpdateReply(int id, UpdateReplyDTO? updateReplyDTO, string option)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReply(int id, UpdateReplyDTO updateReplyDTO)
         {
             try
             {
-                switch (option)
+                if (await _repository.UpdateAsync(id, updateReplyDTO))
                 {
-                    case "edit":
-                        if (await _repository.UpdateAsync(id, updateReplyDTO, CustomUpdate: null))
-                        {
-                            return Ok($"Reply {id} is updated!");
-                        }
-                        break;
-                    case "upvote":
-                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.UpvoteAmount++))
-                        {
-                            return Ok($"Reply {id} is updated!");
-                        }
-                        break;
-                    case "downvote":
-                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.DownvoteAmount++))
-                        {
-                            return Ok($"Reply {id} is updated!");
-                        }
-                        break;
-                    case "unupvote":
-                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.UpvoteAmount--))
-                        {
-                            return Ok($"Reply {id} is updated!");
-                        }
-                        break;
-                    case "undownvote":
-                        if (await _repository.UpdateAsync(id, DTOs: null, CustomUpdate: Item => Item.DownvoteAmount--))
-                        {
-                            return Ok($"Reply {id} is updated!");
-                        }
-                        break;
+                    return Ok($"Reply {id} is updated!");
                 }
-
                 return BadRequest("Cannot update reply");
             }
             catch (DbUpdateException dbEx)
@@ -162,9 +132,12 @@ namespace PostService.Controllers
                     await _likeOfReplyRepoBase.AddAsync(new CreateLikeOfReplyDTO(replyId, userId));
                     existingLike = await _likeOfReplyRepo.GetLikeOfReplyAndUser(replyId, userId);
                 }
+                if (vote == 0 && await _likeOfReplyRepoBase.DeleteAsync(existingLike.Id))
+                {
+                    return Ok($"Reset like selection reply {replyId}");
+                }
                 UpdateLikeOfReplyDTO likeOfReplyDTO = new UpdateLikeOfReplyDTO(userId, vote);
-
-                if (await _likeOfReplyRepoBase.UpdateAsync(existingLike.Id, likeOfReplyDTO, CustomUpdate: null))
+                if (await _likeOfReplyRepoBase.UpdateAsync(existingLike.Id, likeOfReplyDTO))
                     return Ok($"Liked reply {replyId}");
             }
             catch (Exception ex)
@@ -172,6 +145,19 @@ namespace PostService.Controllers
                 return BadRequest(ex.Message);
             }
             return BadRequest("Failed to interact with reply.");
+        }
+
+        [HttpGet("get-all-react/{id}")]
+        public async Task<IActionResult> GetAllReaction(int id)
+        {
+            try
+            {
+                var reaction = await _likeOfReplyRepo.LikeFromAReply(id);
+                return Ok(reaction);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
