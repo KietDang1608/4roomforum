@@ -1,6 +1,5 @@
 ﻿using _4roomforum.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using PostService.DTOs;
 //using PostService.DTOs;
 
 namespace _4roomforum.Services.Interfaces
