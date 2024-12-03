@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace _4roomforum.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "1")]
     public class AdminThreads : Controller
     {
         private ILogger<HomeController> _logger;
