@@ -190,7 +190,7 @@ namespace _4roomforum.Controllers
                     return Json(new { success = false, message = "Invalid data." });
                 }
                 return Json(new { success = true, message = "Reply updated successfully."
-                    , updatedContent = updateReplyDTO.ReplyContent
+                    , updatedContent = updateReplyDTO.ReplyContent, isEdited = true
                 });               
             }
             catch (Exception ex) {
@@ -210,14 +210,15 @@ namespace _4roomforum.Controllers
 
                 var AllReaction = (IEnumerable<LikeOfReplyDTO>)await _replyService.GetAllReaction(replyId);
                 int CountLike = AllReaction.Where(r => r.Vote == 1).Count();
+                Console.WriteLine("so like: " + CountLike);
                 int CountDislike = AllReaction.Where(r => r.Vote == -1).Count();
-
+                Console.WriteLine("so dislike: " + CountDislike);
                 return Json(new
                 {
                     success = true,
-                    ReactType = vote,
-                    Like = CountLike,
-                    DisLike = CountDislike,
+                    react_type = vote,
+                    like = CountLike,
+                    dis_like = CountDislike,
                     message = "React to reply successfully!"
                 });
             }

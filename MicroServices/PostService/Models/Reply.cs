@@ -19,13 +19,16 @@ namespace PostService.Models
         public string ReplyContent { get; set; }
 
         [Column("reply_date")]  // Tên cột là "reply_date"
-        public DateTime ReplyDate { get; set; } = DateTime.Now;
+        public DateTime ReplyDate { get; set; } = DateTime.UtcNow;
 
         [Column("upvote_amount")]  // Tên cột là "upvote_amount"
         public int UpvoteAmount { get; set; } = 0;
 
         [Column("downvote_amount")]  // Tên cột là "downvote_amount"
         public int DownvoteAmount { get; set; } = 0;
+
+        [Column("is_edited")]
+        public bool IsEdited {  get; set; } = false;
 
         [Column("reply_to_reply"), ForeignKey("ReplyToReply2")]  // Tên cột là "reply_to_reply"
         public int? ReplyToReply { get; set; }

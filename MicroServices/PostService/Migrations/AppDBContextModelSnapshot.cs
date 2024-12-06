@@ -135,6 +135,10 @@ namespace PostService.Migrations
                         .HasColumnType("int")
                         .HasColumnName("downvote_amount");
 
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_edited");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int")
                         .HasColumnName("post_id");
