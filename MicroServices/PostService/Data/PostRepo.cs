@@ -87,6 +87,32 @@ namespace PostService.Data
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<bool> IncreaseLikeCountAsync(int postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+            if (post == null) return false;
+
+            post.Like += 1; 
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<bool> DecreaseLikeCountAsync(int postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+            if (post == null) return false;
+
+            if (post.Like > 0) 
+            {
+                post.Like -= 1; 
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 
 }
