@@ -3,7 +3,6 @@ using _4roomforum.Services.Implements;
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PostService.DTOs;
 
 namespace _4roomforum.Controllers
 {
