@@ -13,7 +13,7 @@ namespace PostService.Controllers
     [ApiController]
     public class ReplyController : ControllerBase
     {
-
+    
 
         private readonly IBaseRepository<Reply, ReplyDTO, CreateReplyDTO, UpdateReplyDTO> _repository;
         private readonly IBaseRepository<LikeOfReply, LikeOfReplyDTO, CreateLikeOfReplyDTO, UpdateLikeOfReplyDTO> _likeOfReplyRepoBase;
@@ -51,9 +51,13 @@ namespace PostService.Controllers
         {
             try
             {
-                if (await _repository.AddAsync(createReplyDTO))
+                var newResponse = await _repository.AddAsync1(createReplyDTO);  
+                if (newResponse != null)
                 {
-                    return Ok("Reply is created");
+                    var replyDto = new ReplyDTO { ReplyId = 1 };
+
+                    return CreatedAtAction(nameof(GetReply), new { id = newResponse }, replyDto);
+                    //return Ok("Reply is created");
                 }
                 return BadRequest("Cannot create reply!");
             }

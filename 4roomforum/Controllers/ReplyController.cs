@@ -52,7 +52,7 @@ namespace _4roomforum.Controllers
                     TempData["Message"] = "Replies not found.";
                     return View("~/Views/Shared/Error.cshtml");
                 }
-
+                var sortReplies = replies.Items.OrderByDescending(r => r.ReplyDate).ToList();
                 // Lấy thông tin người dùng 
                 ViewBag.GetUserReply = new Func<int, Task<UserDTO>>(async x => await _userService.GetUserProfile(x));
 
@@ -86,13 +86,22 @@ namespace _4roomforum.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    bool success = await _replyService.CreateReply(createReplyDTO);
+                    //bool success = await _replyService.CreateReply(createReplyDTO);
+                    int? replyId = await _replyService.CreateReply1(createReplyDTO);
 
-                    if (success)
+                  
+                    if (replyId != null)
                     {
-                        await _commentSocket.Clients.All.SendAsync("ReceiveComment", createReplyDTO.PostId, createReplyDTO.ReplyContent, User.Identity.Name, createReplyDTO.ReplyToReply);
+                        if (replyId.HasValue)
+                        {
+                            await _commentSocket.Clients.All.SendAsync("ReceiveComment", createReplyDTO.PostId, createReplyDTO.ReplyContent, User.Identity.Name, createReplyDTO.ReplyToReply, replyId);
+                            TempData["Message"] = "Reply created successfully!";
+                            return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
+                        }
+                        
+    
                         // Optionally, you can show a success message or redirect to another page
-                        TempData["Message"] = "Reply created successfully!";
+                        TempData["Message"] = "Error!";
                         return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
                     }
                     else

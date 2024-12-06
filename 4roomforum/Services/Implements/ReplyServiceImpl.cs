@@ -2,6 +2,7 @@
 using _4roomforum.Services.Interfaces;
 using PostService.DTOs;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace _4roomforum.Services.Implements
 {
@@ -26,7 +27,7 @@ namespace _4roomforum.Services.Implements
                 {
                     var replies = await response.Content.ReadFromJsonAsync<PagedResult<ReplyDTO>>();
                     return replies;
-                }
+                }   
                 else
                 {
                     _logger.LogError($"Failed to get replies. Status Code: {response.StatusCode}");
@@ -81,6 +82,7 @@ namespace _4roomforum.Services.Implements
                 var response = await _client.PostAsJsonAsync("api/reply", createReplyDTO);
                 if (response.IsSuccessStatusCode)
                 {
+
                     return true;
                 }
                 else
@@ -101,5 +103,56 @@ namespace _4roomforum.Services.Implements
             }
         }
 
+        public async Task<int?> CreateReply1(CreateReplyDTO createReplyDTO)
+        {
+            try
+            {
+                var response = await _client.PostAsJsonAsync("api/reply", createReplyDTO);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Giả sử phản hồi trả về ID của reply mới được tạo
+                    //var createdReply = await response.Content.ReadFromJsonAsync<ReplyDTO>();
+                    var locationHeader = response.Headers.Location;
+                    if (locationHeader != null)
+                    {
+                        // Sử dụng Regular Expression để trích xuất ID từ URL (phần cuối cùng của URL)
+                        var match = Regex.Match(locationHeader.AbsoluteUri, @"/(\d+)$");
+
+                        if (match.Success)
+                        {
+                            // Trích xuất ID
+                            var replyId = int.Parse(match.Groups[1].Value);
+                            _logger.LogInformation($"Created reply with ID: {replyId}");
+                            return replyId;
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Could not extract reply ID from Location header.");
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogError("Location header is null or missing.");
+                        return null;
+                    }
+                }
+                else
+                {
+                    _logger.LogError($"Failed to create reply. Status Code: {response.StatusCode}");
+                    return null; // Hoặc throw exception nếu bạn muốn
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in CreateReply: {ex.Message}");
+                return null; // Hoặc throw exception nếu bạn muốn
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in CreateReply: {ex.Message}");
+                return null; // Hoặc throw exception nếu bạn muốn
+            }
+        }
     }
 }

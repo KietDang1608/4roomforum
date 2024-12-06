@@ -5,9 +5,9 @@ namespace _4roomforum.Sockett
 {
     public class CommentSocket : Hub
     {
-        public async Task ReceiveComment(int postId, string replyContent, string userName, int replyToReply)
+        public async Task ReceiveComment(int postId, string replyContent, string userName, int replyToReply,int? replyId)
         {
-            await Clients.All.SendAsync("ReceiveComment", postId, replyContent, userName,replyToReply );
+            await Clients.All.SendAsync("ReceiveComment", postId, replyContent, userName,replyToReply, replyId );
         }
     }
 }

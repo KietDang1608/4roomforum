@@ -10,13 +10,13 @@ connection.start().catch(function (err) {
 });
 
 // Lắng nghe sự kiện 'ReceiveComment' từ server
-connection.on("ReceiveComment", async function (postId, replyContent, userName, replyToReply) {
+connection.on("ReceiveComment", async function (postId, replyContent, userName, replyToReply, replyId) {
     // Lấy thời gian hiện tại cho bình luận
     var currentTime = new Date().toLocaleString();
- 
+    
     let replyTo = '';
     let user = '';
-    console.log(replyToReply);
+    console.log(replyId);
     if (replyToReply != null) {
         
         replyTo = await getReplyById(replyToReply);
@@ -66,7 +66,7 @@ connection.on("ReceiveComment", async function (postId, replyContent, userName, 
                                 <span>-10</span>
                             </div>
                             <div class="p-2">
-                                <button class="comment-for-reply" value='["${postId}", "${userName}", "${replyToReply}"]'>
+                                <button class="comment-for-reply" value='["${postId}", "${userName}", "${replyId}"]'>
                                     <i class="fa-solid fa-comment"></i>
                                 </button>
                             </div>
@@ -78,21 +78,21 @@ connection.on("ReceiveComment", async function (postId, replyContent, userName, 
     `;
 
     // Thêm bình luận mới vào container
-    document.getElementById("commentsContainer").innerHTML += commentHtml;
+    document.getElementById("commentsContainer").insertAdjacentHTML('afterbegin', commentHtml);
     addReplyEventListeners();
 });
 function addReplyEventListeners() {
     var elements = document.querySelectorAll(".comment-for-reply");
 
     elements.forEach(function (element) {
-        element.addEventListener('click', function () {
+        element.addEventListener('click', function () { 
         
             var value = JSON.parse(this.value);
             
          
             document.querySelector('.sticky-form').style.display = 'block';
    
-            document.querySelector('.form-label').innerHTML = "You're replying to " + value[1] + "'s Comment";
+            document.querySelector('.form-label1').innerHTML = "You're replying to " + value[1] + "'s Comment";
 
             //var replyID = getReplyId(value[0]);
             //console.log(replyID);
@@ -100,32 +100,32 @@ function addReplyEventListeners() {
         });
     });
 }
-async function getReplyId(postId) {
-    try {
-        const response = await fetch(`/Reply/GetReplyIdNew?PostId=${postId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+//async function getReplyId(postId) {
+//    try {
+//        const response = await fetch(`/Reply/GetReplyIdNew?PostId=${postId}`, {
+//            method: "GET",
+//            headers: {
+//                "Content-Type": "application/json"
+//            }
+//        });
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch the latest reply ID.");
-        }
+//        if (!response.ok) {
+//            throw new Error("Failed to fetch the latest reply ID.");
+//        }
 
-        const result = await response.json();
+//        const result = await response.json();
 
-        if (result.replyId) {
-            console.log("Latest Reply ID:", result.replyId);
-        } else {
-            console.log("No reply found.");
-        }
+//        if (result.replyId) {
+//            console.log("Latest Reply ID:", result.replyId);
+//        } else {
+//            console.log("No reply found.");
+//        }
 
-        return result.ReplyId;
-    } catch (error) {
-        console.log("Error:", error.message);
-    }
-}
+//        return result.ReplyId;
+//    } catch (error) {
+//        console.log("Error:", error.message);
+//    }
+//}
 async function getReplyById(replyId) {
     try {
         const response = await fetch(`Reply/GetReplyById?ReplyId=${replyId}`);
@@ -161,13 +161,15 @@ async function getUserNameById(userId) {
 // Gửi bình luận khi form được submit
 document.getElementById("replyForm").addEventListener("submit", function (event) {
     event.preventDefault();
-
+   
     fetch("/Reply/Create", {
         method: "POST",
         body: new FormData(document.getElementById("replyForm"))
     }).then(function (response) {
         if (response.ok) {
             document.getElementById("replyForm").reset();
+            document.querySelector('.sticky-form').style.display = 'none';
         }
+       
     });
 });
