@@ -17,6 +17,7 @@ namespace _4roomforum.Controllers
             _postService = postService;
             _userService = userService;
         }
+
         [HttpPost]
         public async Task<IActionResult> LikeOrUnlikePost(int postId)
         {

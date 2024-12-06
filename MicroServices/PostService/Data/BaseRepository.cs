@@ -60,7 +60,7 @@ namespace PostService.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UpdateAsync(int id, D3? DTOs = null, Action<T>? CustomUpdate = null)
+        public async Task<bool> UpdateAsync(int id, D3 DTOs)
         {
             var Item = await _dbSet.FindAsync(id);
             if (Item == null)
@@ -71,9 +71,6 @@ namespace PostService.Data
             {
                 _mapper.Map(DTOs, Item);
             }
-            CustomUpdate?.Invoke(Item);
-            //// Gọi UpdateAsync với customUpdate để tăng giá trị upvote
-            ///await repository.UpdateAsync(id, DTOs: null, customUpdate: item => item.Upvote++);
             _dbSet.Update(Item);
             return await _context.SaveChangesAsync() > 0;
         }

@@ -10,4 +10,6 @@ public interface IThreadRepo
     void UpdateThread(Threads thread);
     void DeleteThread(int id);
     bool SaveChanges();
+
+    IEnumerable<Threads> GetThreadsByCategoryId(int categoryId);
 }

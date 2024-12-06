@@ -317,8 +317,12 @@ namespace _4roomforum.Controllers
         IsPersistent = true,
         };
 
+        
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
+        if (userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "1")
+        {
+            return RedirectToAction("Index", "Admin");
+        }
         return RedirectToAction("Index", "Home");
     }
     }

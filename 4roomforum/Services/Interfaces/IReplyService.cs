@@ -1,5 +1,4 @@
 using _4roomforum.DTOs;
-using PostService.DTOs;
 
 namespace _4roomforum.Services.Interfaces
 {
@@ -8,5 +7,9 @@ namespace _4roomforum.Services.Interfaces
         Task<PagedResult<ReplyDTO>?> GetAllReplies(int PostId, int pageNumber, int pageSize);
         Task<ReplyDTO> GetAReply(int id);
         Task<bool> CreateReply(CreateReplyDTO createReplyDTO);
+        Task<bool> DeleteReply(int id);
+        Task<bool> UpdateReply(int id, UpdateReplyDTO updateReplyDTO);
+        Task<bool> ReactToReply(int replyId, int userId, int vote);
+        Task<IEnumerable<LikeOfReplyDTO>> GetAllReaction(int ReplyId);
     }
 }

@@ -90,13 +90,13 @@ namespace PostService.Controllers
 
         // PUT: api/post/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO)
+        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO updatePostDTO)
         {
-            if (await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
+            if (await _basePostRepo.UpdateAsync(id, updatePostDTO))
             {
                 return Ok($"Post {id} is updated!");
             }
-            return BadRequest("Cannot create post!");
+            return BadRequest("Cannot update post!");
         }
 
         // DELETE: api/post/{id}

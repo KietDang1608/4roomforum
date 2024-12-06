@@ -52,10 +52,19 @@ namespace PostService.Data
 
             var posts = await _context.Posts
                 .Where(p => p.ThreadId == threadId)
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            if (userId > 0)
+            {
+                posts = await _context.Posts
+                .Where(p => p.ThreadId == threadId)
                 .OrderBy(p => p.PostedBy == userId ? 0 : 1)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+            }
 
             return new PagedResult<Post>(posts, totalCount, page, pageSize);
         }
