@@ -24,6 +24,11 @@
         @TempData["Message"]
     </div>
 }
+@{
+    var scriptUrl = "https://cdn.jsdelivr.net/npm/@microsoft/signalr@6.0.0/dist/browser/signalr.min.js";
+}
+<script src="@scriptUrl"></script>
+
 
 
 <div class="container mt-4">
@@ -70,6 +75,8 @@
     {
         foreach (ReplyDTO r in PaginationReplies)
         {
+            <div id="commentsContainer"></div>
+
             <!-- Bình luận -->
             <div class="row mb-4">
                 <div class="col-md-2 text-center">
@@ -220,7 +227,7 @@
         element.addEventListener('click', function () {
             // Lấy giá trị JSON từ nút được nhấn
             var value = JSON.parse(this.value);
-
+            console.log(value);
             // Hiển thị form
             document.querySelector('.sticky-form').style.display = 'block';
 
@@ -258,7 +265,10 @@
         }, false);
     })();
 </script>
+<!-- Thêm jQuery vào trang -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script src="~/js/Comment.js"></script>
 
 <style>
     /* Sticky form at the bottom */

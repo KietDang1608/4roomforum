@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using _4roomforum.Services.Implements;
 using _4roomforum.Services.Interfaces;
+using _4roomforum.Sockett;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +13,7 @@ builder.Services.AddScoped<IPostService, PostServiceImpl>();
 builder.Services.AddScoped<IReplyService, ReplyServiceImpl>();
 builder.Services.AddHttpClient<CategoryServiceImpl>();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -52,7 +54,7 @@ app.UseRouting();
 
 app.UseAuthentication(); // Add this line
 app.UseAuthorization();
-
+app.MapHub<CommentSocket>("/comment");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
