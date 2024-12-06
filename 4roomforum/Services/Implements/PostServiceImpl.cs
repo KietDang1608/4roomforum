@@ -23,45 +23,52 @@ namespace _4roomforum.Services.Implements
         {
             try
             {
-                var response = await _client.GetAsync($"api/post/like/{postId}/{userId}");
+                var response = await _client.PutAsync($"api/post/like/{postId}/{userId}", null);
                 if (response.IsSuccessStatusCode)
                 {
-                    var message = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var responseObject = JsonSerializer.Deserialize<JsonElement>(content);
+
+                    var message = responseObject.GetProperty("message").GetString();
+                    var likeCount = responseObject.GetProperty("likeCount").GetInt32();
+
                     if (message.StartsWith("Liked post"))
                     {
-                        return new LikeResult
-                        {
-                            IsSuccessful = true,
-                            IsLiked = true
-                        };
+                        return new LikeResult(
+                            true,
+                            true,
+                            likeCount,
+                            "Successfully liked the post."
+                        );
                     }
                     else if (message.StartsWith("Unliked post"))
                     {
-                        return new LikeResult
-                        {
-                            IsSuccessful = true,
-                            IsLiked = false
-                        };
+                        return new LikeResult(
+                            true,
+                            false,
+                            likeCount,
+                            "Successfully unliked the post."
+                        );
                     }
                 }
-                return new LikeResult
-                {
-                    IsSuccessful = false,
-                    IsLiked = null,
-                    ErrorMessage = "Failed to process the request."
-                };
+                return new LikeResult(
+                    false,
+                    null,
+                    0,
+                    "Failed to process the request."
+                );
             }
             catch (Exception ex)
             {
-                return new LikeResult
-                {
-                    IsSuccessful = false,
-                    IsLiked = null,
-                    ErrorMessage = ex.Message
-                };
-            }        
+                return new LikeResult(
+                    false,
+                    null,
+                    0,
+                    ex.Message
+                );
+            }
         }
-        public async Task<PagedResult<PostDTO>> GetPostsByThreadId(int id, int page, int pageSize)
+        public async Task<PagedResult<PostDTO>> GetPostsByThreadId(int id, int userId, int page)
         {
             try
             {
@@ -158,35 +165,35 @@ namespace _4roomforum.Services.Implements
         }
 
         public async Task<IEnumerable<PostDTO>> GetAllPostsAsync()
-{
-    try
-    {
-        // Gọi API "api/post"
-        var response = await _client.GetAsync("api/post");
+        {
+            try
+            {
+                // Gọi API "api/post"
+                var response = await _client.GetAsync("api/post");
 
-        if (response.IsSuccessStatusCode)
-        {
-            // Deserialize dữ liệu từ response
-            var posts = await response.Content.ReadFromJsonAsync<IEnumerable<PostDTO>>();
-            return posts ?? Enumerable.Empty<PostDTO>();
+                if (response.IsSuccessStatusCode)
+                {
+                    // Deserialize dữ liệu từ response
+                    var posts = await response.Content.ReadFromJsonAsync<IEnumerable<PostDTO>>();
+                    return posts ?? Enumerable.Empty<PostDTO>();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get all posts. Status Code: {response.StatusCode}");
+                    return Enumerable.Empty<PostDTO>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetAllPosts: {ex.Message}");
+                return Enumerable.Empty<PostDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetAllPosts: {ex.Message}");
+                return Enumerable.Empty<PostDTO>();
+            }
         }
-        else
-        {
-            _logger.LogError($"Failed to get all posts. Status Code: {response.StatusCode}");
-            return Enumerable.Empty<PostDTO>();
-        }
-    }
-    catch (HttpRequestException ex)
-    {
-        _logger.LogError($"Request error in GetAllPosts: {ex.Message}");
-        return Enumerable.Empty<PostDTO>();
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError($"Unexpected error in GetAllPosts: {ex.Message}");
-        return Enumerable.Empty<PostDTO>();
-    }
-}
 
 
 
@@ -268,6 +275,36 @@ namespace _4roomforum.Services.Implements
                 return false;
             }
         }
+        public async Task<bool> CheckLikeStatus(int postId, int userId)
+        {
+            try
+            {
+                var response = await _client.GetAsync($"api/post/checkLike/{postId}/{userId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var content = await response.Content.ReadAsStringAsync();
+                    return bool.Parse(content); 
+                }
+                else
+                {
+                    _logger.LogError($"Failed to check like status. Status Code: {response.StatusCode}");
+                    return false; 
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in CheckLikeStatus: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in CheckLikeStatus: {ex.Message}");
+                return false;
+            }
+        }
+
 
     }
 }

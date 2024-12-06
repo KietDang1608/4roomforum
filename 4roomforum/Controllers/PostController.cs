@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using _4roomforum.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 //using PostService.DTOs;
 
 namespace _4roomforum.Controllers
@@ -10,56 +11,54 @@ namespace _4roomforum.Controllers
     {
         private readonly IPostService _postService;
         private readonly IUserService _userService;
+        private readonly IReplyService _replyService;
         public PostController(IPostService postService, IUserService userService)
         {
             _postService = postService;
             _userService = userService;
         }
-        [HttpPut]
-        public async Task<IActionResult> LikeOrUnlikePost(int postId, int userId)
+        [HttpPost]
+        public async Task<IActionResult> LikeOrUnlikePost(int postId)
         {
             try
             {
-                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "userId");
-                 int userIdNew = int.Parse(userIdClaim.Value);
-                
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+
+                int userId = Convert.ToInt32(userIdClaim);
+
+
                 var result = await _postService.LikePost(postId, userId);
+
                 if (result.IsSuccessful)
                 {
-                    if (result.IsLiked == true)
-                    {
-                        ViewBag.Message = $"You liked post {postId}.";
-                    }
-                    else if (result.IsLiked == false)
-                    {
-                        ViewBag.Message = $"You unliked post {postId}.";
-                    }
                     return Json(new
                     {
                         success = true,
-                        isLiked = result.IsLiked,
-                        message = ViewBag.Message
+                        isLiked = result.IsLiked ?? false,
+                        totalLikes = result.TotalLikes,
+                        message = result.IsLiked == true ? $"You liked post {postId}." : $"You unliked post {postId}."
                     });
-
                 }
                 else
                 {
                     return Json(new
                     {
                         success = false,
-                        error = result.ErrorMessage
+                        errorMessage = result.ErrorMessage
                     });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new
                 {
                     success = false,
-                    error = $"An error occurred: {ex.Message}"
+                    errorMessage = $"An error occurred: {ex.Message}"
                 });
             }
         }
+
+
         // GET: PostController (api/post)
         [HttpGet("Post/{id}/{userId}")]
         public async Task<ActionResult> Index(int id, int userId, int page = 1)
@@ -96,7 +95,7 @@ namespace _4roomforum.Controllers
                 return View(new List<PostDTO>());
             }
         }
-        
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddPost(CreatePostDTO postDTO)
@@ -104,11 +103,11 @@ namespace _4roomforum.Controllers
             try
             {
                 bool check = await _postService.CreatePostAsync(postDTO);
-                
+
                 if (check)
                 {
                     TempData["SuccessMessage"] = "Đăng bài thành công :3";
-                    return RedirectToAction("Index", new {Id = postDTO.ThreadId, userId = postDTO.PostedBy});
+                    return RedirectToAction("Index", new { Id = postDTO.ThreadId, userId = postDTO.PostedBy });
                 }
                 else
                 {
@@ -176,7 +175,7 @@ namespace _4roomforum.Controllers
             }
         }
 
-       
+
 
     }
 }

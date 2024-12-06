@@ -45,7 +45,9 @@ namespace _4roomforum.Controllers
                     TempData["Message"] = "Replies not found.";
                     return View("~/Views/Shared/Error.cshtml");
                 }
-                
+
+                var isLiked = await _postService.CheckLikeStatus(PostId, int.Parse(userId)); 
+                ViewBag.IsLikedByUser = isLiked;
                 // Lấy thông tin người dùng 
                 ViewBag.GetUserReply = new Func<int, Task<UserDTO>>(async x => await _userService.GetUserProfile(x));
 
@@ -60,6 +62,7 @@ namespace _4roomforum.Controllers
                 ViewBag.PageSize = pageSize;
 
                 ViewBag.Post = post;
+                ViewBag.TotalLike = post.Like;
                 ViewBag.UserPost = PostedBy;
 
                 ViewBag.UserId = userId;

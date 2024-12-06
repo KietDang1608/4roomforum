@@ -15,6 +15,6 @@ namespace _4roomforum.Services.Interfaces
         Task<IEnumerable<PostDTO>> GetAllPostsAsync();
         Task<bool> UpdatePostAsync(int id, UpdatePostDTO postDTO);
         Task<bool> DeletePostAsync(int id);
-
+        Task<bool> CheckLikeStatus(int postId, int userId);
     }
 }
