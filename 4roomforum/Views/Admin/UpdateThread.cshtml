@@ -1,0 +1,41 @@
+@model _4roomforum.Models.Threads
+
+@{
+    ViewData["Title"] = "Update Thread";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-5">
+    <h1>@ViewBag.Message</h1>
+    <h2>Edit Thread</h2>
+    <form method="post" action="@Url.Action("UpdateThread", "AdminThreads")">
+        <input type="hidden" name="ThreadId" value="@Model.ThreadId" />
+
+        <div class="mb-3">
+            <label for="CategoryID" class="form-label">Category ID</label>
+            <input type="text" class="form-control" id="CategoryID" name="CategoryID" value="@Model.CategoryID" placeholder="Enter category ID" required>
+        </div>
+        <div class="mb-3">
+            <label for="ThreadTitle" class="form-label">Thread Title</label>
+            <input type="text" class="form-control" id="ThreadTitle" name="ThreadTitle" value="@Model.ThreadTitle" placeholder="Enter title" required>
+        </div>
+        <div class="mb-3">
+            <label for="ThreadContent" class="form-label">Thread Content</label>
+            <input type="text" class="form-control" id="ThreadContent" name="ThreadContent" value="@Model.ThreadContent" placeholder="Enter content" required>
+        </div>
+        <div class="mb-3">
+            <label for="IsPinned" class="form-label">IsPinned</label>
+            <input type="number" class="form-control" id="IsPinned" name="IsPinned" value="@Model.IsPinned" placeholder="Enter content" required>
+        </div>
+        <div class="mb-3">
+            <label for="IsClosed" class="form-label">IsClosed</label>
+            <input type="number" class="form-control" id="IsClosed" name="IsClosed" value="@Model.IsClosed" placeholder="Enter content" required>
+        </div>
+
+         <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+          <input type="hidden" name="CreatedDate" value="@Model.CreatedDate" />
+           <input type="hidden" name="ViewCount" value="@Model.ViewCount" />
+
+        <button type="submit" class="btn btn-primary">Update Thread</button>
+    </form>
+</div>

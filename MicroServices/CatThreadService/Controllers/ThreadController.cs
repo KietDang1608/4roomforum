@@ -108,6 +108,40 @@ namespace CatThreadService.Controllers
 
             return Ok(_mapper.Map<IEnumerable<ThreadDTO>>(threads));
         }
+
+        [HttpPut("{id}")]
+        public ActionResult<ThreadDTO> UpdateThread(int id,Threads thread)
+        {
+            try
+            {
+                
+                var thr = _repo.GetThreadById(id);
+                if (thr == null)
+                {
+                    return NotFound(new { message = "Thread not found" });
+                }
+                thr.CategoryID = thread.CategoryID;
+                thr.ThreadTitle = thread.ThreadTitle;
+                thr.ThreadContent = thread.ThreadContent;
+                thr.CreatedBy = thread.CreatedBy;
+                thr.CreatedDate = thread.CreatedDate;
+                thr.ViewCount = thread.ViewCount;
+                thr.IsPinned = thread.IsPinned;
+                thr.IsClosed = thread.IsClosed;
+                _repo.UpdateThread(thr);
+                return Ok(new { message = "Thread Update successfully" });
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new { message = "Thread not found" });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = "An error while update thread" });
+            }
+
+        }
     }
 
 
