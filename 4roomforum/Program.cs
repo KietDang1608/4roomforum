@@ -12,6 +12,8 @@ builder.Services.AddScoped<IThreadService, ThreadServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<IPostService, PostServiceImpl>();
 builder.Services.AddScoped<IReplyService, ReplyServiceImpl>();
+builder.Services.AddScoped<EmailService, EmailServiceImpl>();
+builder.Services.AddScoped<OTPService, OTPServiceImpl>();
 builder.Services.AddHttpClient<CategoryServiceImpl>();
 
 builder.Services.AddAuthentication(options =>

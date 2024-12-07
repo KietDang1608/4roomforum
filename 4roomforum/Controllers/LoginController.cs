@@ -20,11 +20,15 @@ namespace _4roomforum.Controllers
     public class LoginController : Controller
     {
         private readonly IUserService _userService;
+        private readonly EmailService _emailService;
+        private readonly OTPService _otpService;
 
     // Constructor nhận IUserService từ Dependency Injection
-        public LoginController(IUserService userService)
+        public LoginController(IUserService userService , EmailService emailService , OTPService otpService)
         {
             _userService = userService;
+            _emailService = emailService;
+            _otpService = otpService;
         }
         // GET: LoginController
         [HttpGet]
@@ -324,6 +328,40 @@ namespace _4roomforum.Controllers
             return RedirectToAction("Index", "Admin");
         }
         return RedirectToAction("Index", "Home");
+    }
+    [HttpPut]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return BadRequest("Email is required.");
+        }
+
+        var otp = _otpService.GenerateAndStoreOTP(email);
+        // Simulate sending OTP (e.g., via email)
+        Console.WriteLine($"Generated OTP for {email}: {otp}");
+        
+        await _emailService.SendOTPAsync(email, otp);
+
+        return Ok();
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> VerifyOTP(string email, string otp)
+    {
+        
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(otp))
+        {
+            return BadRequest("Email and OTP are required.");
+        }
+
+        var isOtpValid = _otpService.ValidateOTP(email, otp);
+        if (isOtpValid)
+        {
+            return Ok();
+        }
+        return BadRequest("Invalid OTP.");
+
     }
     }
 }

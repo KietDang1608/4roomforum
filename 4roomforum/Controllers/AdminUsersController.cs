@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace _4roomforum.Controllers
 {
     [Route("admin/[controller]")]
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="1")]
     public class AdminUsersController : Controller
     
     {
