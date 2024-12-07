@@ -33,5 +33,7 @@ namespace PostService.Data
             var List = _mapper.Map<IEnumerable<ReplyDTO>>(items);
             return new PagedResult<ReplyDTO>(List, count, pageNumber, pageSize);
         }
+
+
     }
 }

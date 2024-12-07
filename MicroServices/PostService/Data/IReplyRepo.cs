@@ -7,5 +7,6 @@ namespace PostService.Data
     {
         Task<IEnumerable<ReplyDTO>> GetAllRepliesAsync(int PostId);
         Task<PagedResult<ReplyDTO>> GetPagedAsync(int pageNumber, int pageSize, int PostId);
+       
     }
 }

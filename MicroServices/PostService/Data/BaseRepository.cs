@@ -48,7 +48,23 @@ namespace PostService.Data
             await _dbSet.AddAsync(Item);
             return await _context.SaveChangesAsync() > 0;
         }
+        public async Task<int?> AddAsync1(D2 DTOs)
+        {
+            var reply = _mapper.Map<T>(DTOs);
 
+            await _dbSet.AddAsync(reply);
+
+            var response = await _context.SaveChangesAsync();
+            if (response > 0)
+            {
+                if (reply is Reply concreteReply)
+                {
+                    return concreteReply.ReplyId;
+                }
+            }
+            return null;
+
+        }
         public async Task<bool> DeleteAsync(int id)
         {
             var Item = await _dbSet.FindAsync(id);
@@ -74,5 +90,7 @@ namespace PostService.Data
             _dbSet.Update(Item);
             return await _context.SaveChangesAsync() > 0;
         }
+
+
     }
 }
