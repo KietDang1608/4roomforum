@@ -71,7 +71,7 @@
     <div class="border-bottom mb-4">
         <div class="d-flex flex-row justify-content-end">
             <div class="p-2">
-                <i class="fa-regular fa-heart like-button @(ViewBag.IsLikedByUser ? "liked" : "")" style="cursor: pointer;" onclick="toggleLike(this)"></i>
+                <i class="fa-solid fa-heart like-button @(ViewBag.IsLikedByUser ? "liked" : "")" style="cursor: pointer;" onclick="toggleLike(this)"></i>
                 <!--<i class="fa-regular fa-heart"></i>-->
                 <span id="likeCount">@TotalLike</span>
             </div>
@@ -550,7 +550,7 @@
         window.open(fbUrl, 'facebook-share-dialog', 'width=800,height=600');
     });
 </script>
-//Made by Hung bi noi
+//Made by Huy
 <script> 
     async function toggleLike(element) {
         const postId = "@post.Id";
@@ -677,7 +677,7 @@
         background-color: darkgray;
     }
 
-    .like-button .liked {
+    .like-button.liked{
         color: red;
     }
 </style>
