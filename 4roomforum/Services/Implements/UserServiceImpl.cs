@@ -15,6 +15,33 @@ namespace _4roomforum.Services.Implements
             _client.BaseAddress = new Uri("http://localhost:5002/");
         }
 
+        public async Task<IEnumerable<UserDTO>> GetAllUsers() {
+
+            try
+            {
+                var response = await _client.GetAsync("api/user");
+                if (response.IsSuccessStatusCode)
+                {
+                    var users = await response.Content.ReadFromJsonAsync<IEnumerable<UserDTO>>();
+                    return users ?? new List<UserDTO>();
+                }
+                else
+                {
+                    _logger.LogError($"Failed to retrieve users. Status Code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in GetAllUsers: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in GetAllUsers: {ex.Message}");
+                return null;
+            }
+        }
         public async Task<UserDTO> Login(string email, string password)
         {
             try
