@@ -44,9 +44,9 @@ The project follows a **microservices** architecture, consisting of three main s
 ## Collaborators
 Below are the GitHub profiles of the project team members:
 
-- [Dang Tuan Kiet](https://github.com/contributor1)
-- [Nguyen Viet Khoi](https://github.com/contributor2)
-- [Huynh Duc Huy](https://github.com/contributor3)
-- [Huynh Tuan Dat](https://github.com/contributor1)
-- [Nguyen Minh Huu](https://github.com/contributor2)
-- [Do Phuoc Hung](https://github.com/contributor3)
+- [Dang Tuan Kiet](https://github.com/KietDang1608)
+- [Nguyen Viet Khoi](https://github.com/VieetKhooii)
+- [Huynh Duc Huy](https://github.com/baypro089)
+- [Huynh Tuan Dat](https://github.com/axy888)
+- [Nguyen Minh Huu](https://github.com/kuzo19032003)
+- [Do Phuoc Hung](https://github.com/dophuochung2428)
