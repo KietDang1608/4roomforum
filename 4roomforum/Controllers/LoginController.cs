@@ -170,6 +170,7 @@ namespace _4roomforum.Controllers
                 Password=updatedUser.Password,
                 JoinDate = updatedUser.JoinDate,
                 LastLogin=updatedUser.LastLogin,
+                RoleId=updatedUser.RoleId,
                 Status = updatedUser.Status,
                 Avatar = updatedUser.Avatar
             };
@@ -177,7 +178,7 @@ namespace _4roomforum.Controllers
             var isUpdated = await _userService.UpdateUser(userId, userUpdateDto);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, updatedUser.Email),
+                new Claim(ClaimTypes.Name, updatedUser.UserName),
                 new Claim(ClaimTypes.Email, updatedUser.Email),
                 new Claim(ClaimTypes.Role, "User"), // Giữ nguyên hoặc lấy từ updatedUser nếu có thay đổi
                 new Claim("UserId", userId.ToString())
