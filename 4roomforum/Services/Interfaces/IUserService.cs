@@ -9,5 +9,7 @@ namespace _4roomforum.Services.Interfaces
         Task<bool> UpdateUser(int userId, UserDTO userUpdateDto);
         Task<UserDTO> GetUserById(int userId);
         Task<UserDTO> GetUserByEmail(string email);
+
+        Task<IEnumerable<UserDTO>> GetAllUsers();
     }
 }
