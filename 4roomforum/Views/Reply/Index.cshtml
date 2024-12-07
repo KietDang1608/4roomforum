@@ -66,7 +66,7 @@
     <div class="border-bottom mb-4">
         <div class="d-flex flex-row justify-content-end">
             <div class="p-2">
-                <i class="fa-solid fa-heart like-button @(ViewBag.IsLikedByUser ? "liked" : "")" style="cursor: pointer;" onclick="toggleLike(this)"></i>
+                <i class="fa-regular fa-heart like-button @(ViewBag.IsLikedByUser ? "liked" : "")" style="cursor: pointer;" onclick="toggleLike(this)"></i>
                 <!--<i class="fa-regular fa-heart"></i>-->
                 <span id="likeCount">@TotalLike</span>
             </div>
@@ -524,10 +524,12 @@
                     console.log("Class sau khi thay đổi:", likeButton.find('i').attr('class'));
                 } else {
                     alert(response.message); // Thông báo lỗi từ server
+                    window.location.href = "@Url.Action("SignIn", "Login")";
                 }
             },
             error: function (xhr) {
                 alert("Something went wrong. Please try again later."); // Xử lý lỗi kết nối
+                window.location.href = "@Url.Action("SignIn", "Login")";
             }
         });
     });
@@ -544,8 +546,7 @@
 //Made by Hung bi noi
 <script> 
     async function toggleLike(element) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('PostId');
+        const postId = "@post.Id";
         const likeCountElement = document.getElementById('likeCount');
 
         try {
@@ -573,6 +574,7 @@
             }
         } catch (error) {
             console.error('Error:', error);
+            window.location.href = "@Url.Action("SignIn", "Login")";
         }
     }
 </script>
@@ -665,7 +667,7 @@
         background-color: darkgray;
     }
 
-    .like-button.liked {
+    .like-button .liked {
         color: red;
     }
 </style>

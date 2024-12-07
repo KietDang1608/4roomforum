@@ -152,7 +152,7 @@ namespace _4roomforum.Services.Implements
         {
             try
             {
-                if (vote != -1 && vote != 1 && vote != 0)
+                if (vote != -1 && vote != 1 && vote != 0 && userId == null)
                 {
                     _logger.LogError($"Failed to react to reply ID: {replyId}. Invalid value: {vote}");
                     return false;

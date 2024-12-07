@@ -47,9 +47,6 @@ namespace _4roomforum.Controllers
                     return View();
                 }
 
-                var isLiked = await _postService.CheckLikeStatus(PostId, int.Parse(userId)); 
-                ViewBag.IsLikedByUser = isLiked;
-
                 // Lấy thông tin người dùng 
                 ViewBag.GetUserReply = new Func<int, Task<UserDTO>>(async x => await _userService.GetUserProfile(x));
 
@@ -105,12 +102,15 @@ namespace _4roomforum.Controllers
                     ViewBag.UserId = int.Parse(userId);
                     ViewBag.UserRole = int.Parse(UserRole);
                     ViewBag.LoginStatus = true;
+                    var isLiked = (bool)await _postService.CheckLikeStatus(PostId, int.Parse(userId));
+                    ViewBag.IsLikedByUser = isLiked;
                 }
                 else
                 {
                     ViewBag.UserId = null;
                     ViewBag.UserRole = null;
                     ViewBag.LoginStatus = false;
+                    ViewBag.IsLikedByUser = false;
                 }
 
                 return View();
@@ -184,7 +184,6 @@ namespace _4roomforum.Controllers
             }
         }
 
-        [HttpPost]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateReplyDTO updateReplyDTO)
         {
             try
@@ -195,13 +194,14 @@ namespace _4roomforum.Controllers
                 }
                 return Json(new { success = true, message = "Reply updated successfully."
                     , updatedContent = updateReplyDTO.ReplyContent, isEdited = true
-                });               
+                });
             }
             catch (Exception ex) {
                 return Json(new { success = false, message = $"Something went wrong! Info: {ex.Message}" });
             }
         }
 
+        [Authorize]
         public async Task<ActionResult> React(int replyId, int userId, int vote)
         {
             try
@@ -214,9 +214,7 @@ namespace _4roomforum.Controllers
 
                 var AllReaction = (IEnumerable<LikeOfReplyDTO>)await _replyService.GetAllReaction(replyId);
                 int CountLike = AllReaction.Where(r => r.Vote == 1).Count();
-                Console.WriteLine("so like: " + CountLike);
                 int CountDislike = AllReaction.Where(r => r.Vote == -1).Count();
-                Console.WriteLine("so dislike: " + CountDislike);
                 return Json(new
                 {
                     success = true,

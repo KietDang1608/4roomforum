@@ -18,7 +18,9 @@ namespace _4roomforum.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+
+        
+        [Authorize]
         public async Task<IActionResult> LikeOrUnlikePost(int postId)
         {
             try
@@ -26,7 +28,6 @@ namespace _4roomforum.Controllers
                 var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
 
                 int userId = Convert.ToInt32(userIdClaim);
-
 
                 var result = await _postService.LikePost(postId, userId);
 
