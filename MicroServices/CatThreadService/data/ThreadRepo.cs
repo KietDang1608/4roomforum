@@ -31,7 +31,31 @@ public class ThreadRepo : IThreadRepo
 
     void IThreadRepo.UpdateThread(Threads thread)
     {
-        throw new NotImplementedException();
+        if (thread == null)
+        {
+            throw new ArgumentNullException(nameof(thread));
+        }
+
+      
+        var existingThread = _context.Threads.Find(thread.ThreadId);
+
+       
+        if (existingThread == null)
+        {
+            throw new InvalidOperationException("Thread not found");
+        }
+
+       
+        existingThread.CategoryID = thread.CategoryID;
+        existingThread.ThreadTitle = thread.ThreadTitle;
+        existingThread.ThreadContent = thread.ThreadContent;
+        existingThread.CreatedBy = thread.CreatedBy;
+        existingThread.CreatedDate = thread.CreatedDate;
+        existingThread.ViewCount = thread.ViewCount;
+        existingThread.IsPinned = thread.IsPinned;
+        existingThread.IsClosed = thread.IsClosed;
+      
+        _context.SaveChanges();
     }
 
     void IThreadRepo.DeleteThread(int id)

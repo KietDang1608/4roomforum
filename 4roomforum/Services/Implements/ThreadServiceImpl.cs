@@ -1,4 +1,5 @@
 ﻿using _4roomforum.DTOs;
+using _4roomforum.Models;
 using _4roomforum.Services.Interfaces;
 using System.Threading;
 
@@ -133,6 +134,60 @@ namespace _4roomforum.Services.Implements
             {
                 _logger.LogError($"Unexpected error in GetThreadsByCategoryId for category ID {categoryId}: {ex.Message}");
                 return new List<ThreadDTO>();
+            }
+        }
+
+        //dùng cho admin
+        public Threads getThreadById(int threadID)
+        {
+            try
+            {
+                var url = $"api/thread/{threadID}";
+                var response = _client.GetAsync(url).GetAwaiter().GetResult();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var thread = response.Content.ReadFromJsonAsync<Threads>().GetAwaiter().GetResult();
+                    if (thread == null)
+                    {
+                        _logger.LogWarning($"Thread with ID {threadID} returned null.");
+                    }
+                    return thread;
+                }
+                else
+                {
+                    _logger.LogError($"Failed to get thread with ID {threadID}. Status Code: {response.StatusCode}");
+                    return null;
+                }
+                }
+                catch (HttpRequestException ex)
+                {
+                    _logger.LogError($"Request error in GetThreadById for thread ID {threadID}: {ex.Message}");
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Unexpected error in GetThreadById for thread ID {threadID}: {ex.Message}");
+                    return null;
+                }
+        }
+
+        public async Task<bool> EditThread(Threads thread)
+        {
+            try
+            {
+                var response = await _client.PutAsJsonAsync($"api/thread/{thread.ThreadId}", thread);
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Request error in EditThread: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error in EditThread: {ex.Message}");
+                return false;
             }
         }
 
