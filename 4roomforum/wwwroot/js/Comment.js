@@ -59,11 +59,11 @@ connection.on("ReceiveComment", async function (postId, replyContent, userName, 
                         <div class="d-flex flex-row justify-content-start">
                             <div class="p-2">
                                 <i class="fa-solid fa-thumbs-up"></i>
-                                <span>10</span> 
+                                <span>0</span> 
                             </div>
                             <div class="p-2">
                                 <i class="fa-regular fa-thumbs-down"></i>
-                                <span>-10</span>
+                                <span>0</span>
                             </div>
                             <div class="p-2">
                                 <button class="comment-for-reply" value='["${postId}", "${userName}", "${replyId}"]'>

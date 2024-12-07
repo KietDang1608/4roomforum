@@ -57,7 +57,7 @@
             @if (post.IsEdited)
             {
                 <span>(Edited)</span>
-            }
+            }   
         </p>
     </div>
 
@@ -98,8 +98,8 @@
                     @{
                         var user = await GetAUser(r.RepliedBy) as UserDTO;
                     }
-                    <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center mx-auto" style="width: 70%; height: auto; max-width: 160px; max-height: 160px;">
-                        <img class="img-fluid rounded-circle" src="@user.Avatar" alt="Avatar">
+                    <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center mx-auto" style="width: 160px;height: 160px;">
+                        <img class="img-fluid rounded-circle" src="/imgs/@user.Avatar" alt="Avatar">
                     </div>
                     <p class="mt-3 fw-bold">
                         @user.UserName
