@@ -134,10 +134,7 @@ namespace _4roomforum.Controllers
         {
             try
             {
-                bool success = await _replyService.CreateReply(createReplyDTO);
 
-                if (success)
-                {
                     //bool success = await _replyService.CreateReply(createReplyDTO);
                     int? replyId = await _replyService.CreateReply1(createReplyDTO);
 
@@ -155,22 +152,7 @@ namespace _4roomforum.Controllers
                         // Optionally, you can show a success message or redirect to another page
                         TempData["Message"] = "Error!";
                         return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
-                    }
-                    else
-                    {
-                        // If reply creation fails, show an error message
-                        TempData["Message"] = "An error occurred while processing your request.";
-                        return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
-                    }
 
-                    // Optionally, you can show a success message or redirect to another page
-                    TempData["Message"] = "Reply created successfully!";
-
-                    var replies = (PagedResult<ReplyDTO>?)await _replyService.GetAllReplies(createReplyDTO.PostId, 1, 1);
-                    int TotalReplies = replies.TotalCount;
-                    int PageSize = 5;
-                    int newReplyPage = (int)Math.Ceiling(TotalReplies / (double)PageSize);
-                    return RedirectToAction("Index", new { PostId = createReplyDTO.PostId, page = newReplyPage });
                 }
                 else
                 {
