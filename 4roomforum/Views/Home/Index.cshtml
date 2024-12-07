@@ -46,7 +46,10 @@
                     {
                         break;
                     }
-                    <a asp-controller="Post" asp-action="Index" asp-route-id="@thread.ThreadId" class="list-group-item list-group-item-action bg-light">
+                    <a asp-controller="Post"
+                       asp-action="Index"
+                       asp-route-id="@thread.ThreadId"
+                       asp-route-userId="@((int.TryParse(User.FindFirst("UserId")?.Value, out var userId) ? userId : -1))" class="list-group-item list-group-item-action bg-light">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@thread.ThreadTitle</h5>
                             <small>@thread.CreatedDate</small>

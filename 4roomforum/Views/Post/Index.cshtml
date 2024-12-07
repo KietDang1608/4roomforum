@@ -129,13 +129,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <h6>Bình luận</h6>
-                            <div class="list-group">
-                                <div class="list-group-item">
-                                    <p class="mb-1"><strong>User:</strong> Bình luận mẫu</p>
-                                    <small class="text-muted">Ngày bình luận: 01/01/2024</small>
-                                </div>
-                            </div>
+                            
                             <div class="mt-2">
                                 @if (isCurrentUserPost)
                                 {
@@ -270,7 +264,8 @@
                     const contentViewMode = document.querySelector(`#post-${postId} .content-view-mode`);
                     const contentEditMode = document.querySelector(`#post-${postId} .content-edit-mode`);
 
-                    titleViewMode.innerHTML = `<h5 class="card-title">Tiêu đề: ${data.title}</h5>`;
+                    const url = `@Url.Action("Index", "Reply")?PostId=${postId}`;
+                    titleViewMode.innerHTML =` <h5 class="card-title"><a href="${url}">Tiêu đề: ${data.title}</a></h5>`;
                     contentViewMode.innerHTML = `<p>${data.content}</p>`;
 
                     if (titleViewMode && titleEditMode && contentViewMode && contentEditMode) {
