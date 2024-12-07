@@ -52,6 +52,7 @@ The project follows a **microservices** architecture, consisting of three main s
 *  Use ```cd <your_project_directory>/MicroServices/UserServices``` and type ```dotnet run``` to run the **UserService**
 *  Use ```cd <your_project_directory>/MicroServices/CatThreadService``` and type ```dotnet run``` to run the **CatThreadService**
 *  Use ```cd <your_project_directory>/4roomforum``` and type ```dotnet run``` to run the main project
+*  Run 4 services in 4 terminal at the same time to access the website
 *  To access the website, please visit the following link:
 
 ```
