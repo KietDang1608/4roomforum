@@ -39,14 +39,25 @@
                     </form>
                 </div>
             </div>
+            <div class="row justify-content-center mt-3" style="justify-content: left !important;">
+                <div class="col-md-6">
+                    <a asp-action="SignInGoogle" asp-controller="Login" class="btn btn-danger btn-block">
+                        <i class="fab fa-google"></i> Sign in with Google
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
+            <img src="/imgs/wallpaperflare.com_wallpaper.jpg" class="img-fluid" alt="Sign In Image">
         </div>
     </div>
+
 </div>
 <script>
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const toggleIcon = document.getElementById('toggleIcon');
-        
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             toggleIcon.classList.remove('fa-eye');

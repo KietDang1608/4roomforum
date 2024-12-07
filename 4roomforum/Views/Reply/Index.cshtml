@@ -1,6 +1,5 @@
 ﻿
 @{
-    ViewBag.Title = "Forum Post Details";
     var PaginationReplies = ViewBag.PaginationReplies as IEnumerable<ReplyDTO>;
     var CurrentPage = ViewBag.CurrentPage;
     var TotalPages = ViewBag.TotalPages;
@@ -16,13 +15,25 @@
     var pageSize = ViewBag.PageSize;
 
     var UserId = ViewBag.UserId;
+    var UserRole = ViewBag.UserRole;
+    var LoginStatus = ViewBag.LoginStatus;
+
+    var GetLikeReply = ViewBag.GetLikeReply as Func<int, int>;
+    var GetDisLikeReply = ViewBag.GetDisLikeReply as Func<int, int>;
+    var TotalLike = ViewBag.TotalLike;
+
+    var CheckReaction = ViewBag.CheckReaction as Func<(int replyId, int userId), Task<String>>;
+
+    ViewBag.Title = post.PostTitle;
 }
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-danger">
-        @TempData["Message"]
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Info: </strong>  @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
 }
 @{
     var scriptUrl = "https://cdn.jsdelivr.net/npm/@microsoft/signalr@6.0.0/dist/browser/signalr.min.js";
@@ -34,14 +45,18 @@
 <div class="container mt-4">
     <!-- Tiêu đề bài viết -->
     <div class="border-bottom mb-3 pb-2">
-        <h1 class="fw-bold">[Tiêu đề bài viết]</h1>
+        <h1 class="fw-bold">@post.PostTitle</h1>
         <p class="text-muted">
             Posted by
             <span class="text-primary fw-semibold">@PostedBy.UserName</span>
+            @if(PostedBy.RoleId == 1)
+            {
+                <strong>#ADMIN</strong>
+            }
             at <span>@post.PostDate</span>
             @if (post.IsEdited)
             {
-                <span>(Đã chỉnh sửa)</span>
+                <span>(Edited)</span>
             }
         </p>
     </div>
@@ -56,17 +71,17 @@
     <div class="border-bottom mb-4">
         <div class="d-flex flex-row justify-content-end">
             <div class="p-2">
-                <i class="fa-solid fa-heart"><a href="#"></a></i>
+                <i class="fa-regular fa-heart like-button @(ViewBag.IsLikedByUser ? "liked" : "")" style="cursor: pointer;" onclick="toggleLike(this)"></i>
                 <!--<i class="fa-regular fa-heart"></i>-->
-                <span>1000</span>
-            </div>      
+                <span id="likeCount">@TotalLike</span>
+            </div>
             <div class="p-2">
                 <button id="openFormButtonAtPost"><i class="fa-solid fa-comment "></i></button>
                 <!--<i class="fa-regular fa-comment"></i>-->
                 <span>@TotalReplies</span>
             </div>
             <div class="p-2">
-                <i class="fa-solid fa-share"><a href="#"></a></i>
+                <button id="shareButton"><i class="fa-solid fa-share"></i></button>
             </div>            
         </div>
     </div>
@@ -79,21 +94,42 @@
 
             <!-- Bình luận -->
             <div class="row mb-4">
-                <div class="col-md-2 text-center">
-                    <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center mx-auto" style="width: 60px; height: 60px;">
-                        <strong>KCC</strong>
+                <div class="col-md-2 pt-3 text-center">
+                    @{
+                        var user = await GetAUser(r.RepliedBy) as UserDTO;
+                    }
+                    <div class="bg-warning text-dark rounded-circle d-flex justify-content-center align-items-center mx-auto" style="width: 70%; height: auto; max-width: 160px; max-height: 160px;">
+                        <img class="img-fluid rounded-circle" src="@user.Avatar" alt="Avatar">
                     </div>
-                    <p class="mt-2 fw-bold">
-                        @{
-                            var user = await GetAUser(r.RepliedBy) as UserDTO;
-                        }
+                    <p class="mt-3 fw-bold">
                         @user.UserName
+                        @if (user.RoleId == 1)
+                        {
+                            <strong>#ADMIN</strong>
+                        }
                     </p>
                 </div>
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header bg-light">
-                            <strong>@r.ReplyDate</strong>
+                        <div class="card-header bg-light d-flex align-items-center justify-content-between">
+                            <strong class="post-time">Posted at @r.ReplyDate.ToString("M/d/yyyy, h:mm:ss tt") 
+                                @(r.IsEdited ? " (Edited)" : "") 
+                            </strong>
+                            @if (LoginStatus)
+                            {
+                                @if (UserRole == 1 || r.RepliedBy == UserId)
+                                {
+                                    <button class="more-option-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item edit-button" href="#" data-id="@r.ReplyId">Edit</a></li>
+                                        <li>
+                                            <a class="dropdown-item delete-button" href="#" data-reply-id="@r.ReplyId" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete</a>
+                                        </li>
+                                    </ul>
+                                }                               
+                            }
                         </div>
                         <div class="card-body">
                             <!-- Bình luận được phản hồi -->
@@ -114,15 +150,27 @@
                         </div>
                         <div class="card-footer">
                             <div class="d-flex flex-row justify-content-start">
+                                @{
+                                    int Like = GetLikeReply(r.ReplyId);
+                                    int DisLike = GetDisLikeReply(r.ReplyId);
+                                    string check = "No selection";
+                                    bool isLoggedIn = LoginStatus;
+                                    if (isLoggedIn)
+                                    {
+                                        check = await CheckReaction((r.ReplyId, UserId));
+                                    }
+                                }
                                 <div class="p-2">
-                                    <i class="fa-solid fa-thumbs-up"></i>
-                                    <!--<i class="fa-regular fa-thumbs-up"></i>-->
-                                    <span>10</span>
+                                    <button class="like-btn" data-reply-id="@r.ReplyId">
+                                        <i class="@(isLoggedIn && check.Equals("Like") ? "fa-solid" : "fa-regular") fa-thumbs-up"></i>
+                                    </button>
+                                    <span class="like-count">@Like</span>
                                 </div>
                                 <div class="p-2">
-                                    <i class="fa-regular fa-thumbs-down"></i>
-                                    <!--<i class="fa-solid fa-thumbs-down"></i>-->
-                                    <span>-10</span>
+                                    <button class="dislike-btn" data-reply-id="@r.ReplyId">
+                                        <i class="@(isLoggedIn && check.Equals("Dislike") ? "fa-solid" : "fa-regular") fa-thumbs-down"></i>
+                                    </button>
+                                    <span class="dislike-count">@DisLike</span>
                                 </div>
                                 <div class="p-2">
                                     <button class="comment-for-reply" value='@Html.Raw($"[\"{r.ReplyId}\", \"{user.UserName}\"]")'>
@@ -205,8 +253,29 @@
     </div>
 </div>
 
+<!-- Modal Xác Nhận -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS (without Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     // Close the form when the close button is clicked
     document.getElementById('closeForm').addEventListener('click', function () {
@@ -247,7 +316,7 @@
         document.querySelector('.sticky-form').style.display = 'none';
     });
 
-    // Validation
+    //=====================================Validation=========================================
     (function () {
         'use strict';
         var form = document.getElementById('replyForm');
@@ -264,6 +333,257 @@
             form.classList.add('was-validated'); // Add Bootstrap validation style
         }, false);
     })();
+
+    //===================================Dropdown menu=============================================
+    const dropdownButtons = document.querySelectorAll('.more-option-btn');  // Sử dụng querySelectorAll để chọn tất cả các nút
+    const dropdownMenus = document.querySelectorAll('.dropdown-menu');  // Giả sử bạn có nhiều menu dropdown
+
+    dropdownButtons.forEach((dropdownButton, index) => {
+        const dropdownMenu = dropdownMenus[index];  // Lấy dropdown menu tương ứng với nút
+
+        // Tạo đối tượng dropdown từ Bootstrap cho mỗi nút
+        const dropdown = new bootstrap.Dropdown(dropdownButton);
+
+        // Thêm sự kiện click vào nút để hiển thị dropdown
+        dropdownButton.addEventListener('click', () => {
+            // Kiểm tra nếu dropdown hiện tại đang mở
+            if (dropdownMenu.classList.contains('show')) {
+                dropdown.hide();  // Ẩn dropdown nếu nó đang mở
+            } else {
+                dropdown.show();  // Hiển thị dropdown nếu nó chưa mở
+            }
+        });
+    });
+
+    //=================================Hiển thị box confirm=========================================================
+    const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+    let currentReplyId = null; // Lưu trữ ID của mục cần xóa
+
+    // Lắng nghe sự kiện click trên tất cả các nút Delete
+    document.querySelectorAll(".delete-button").forEach((deleteButton) => {
+        deleteButton.addEventListener("click", (e) => {
+            //e.preventDefault();
+            currentReplyId = deleteButton.getAttribute("data-reply-id"); // Lấy ID từ data attribute
+        });
+    });
+
+    // Xử lý khi người dùng xác nhận xóa
+    confirmDeleteButton.addEventListener("click", () => {
+        if (currentReplyId) {
+            // Tạo và gửi form ẩn để gửi yêu cầu POST
+            const form = document.createElement("form");
+            form.method = "post";
+            form.action = "@Url.Action("Delete", "Reply")";
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "id";
+            hiddenInput.value = currentReplyId;
+
+            form.appendChild(hiddenInput);
+            document.body.appendChild(form);
+            console.log(form);
+            form.submit();
+        }
+    });
+
+    //===================================Ajax cho edit comment===========================================================
+    $(document).ready(function () {
+        // Sự kiện click vào nút "Edit"
+        let originalText = null
+
+        $(document).on('click', '.edit-button', function (e) {
+            e.preventDefault(); // Ngăn chuyển trang
+            const button = $(this);
+            const replyId = button.data('id'); // Lấy ReplyId từ thuộc tính data-id
+            const cardBody = button.closest('.card').find('.card-body');
+            const replyContent = cardBody.find('p.mt-3'); // Vị trí chứa nội dung bình luận
+            const currentText = replyContent.text(); // Lấy nội dung hiện tại
+            originalText = currentText;
+            // Thay thế nội dung bằng textarea
+            replyContent.replaceWith(`
+                <div class="edit-reply-form">
+                    <textarea class="form-control mb-2 edit-reply-textarea">${currentText}</textarea>
+                    <button class="btn btn-primary btn-sm save-reply-btn" data-id="${replyId}">Save</button>
+                    <button class="btn btn-secondary btn-sm cancel-reply-btn">Cancel</button>
+                </div>
+            `);
+        });
+
+        // Sự kiện click vào nút "Save"
+        $(document).on('click', '.save-reply-btn', function () {
+            const button = $(this);
+            const replyId = button.data('id');
+            const editForm = button.closest('.edit-reply-form');
+            const updatedContent = editForm.find('.edit-reply-textarea').val(); // Lấy nội dung mới
+            const currentDate = new Date().toISOString(); // Lấy thời gian hiện tại
+
+            // Gửi AJAX để cập nhật nội dung
+            $.ajax({
+                url: '@Url.Action("Update", "Reply")/' + replyId, // Endpoint xử lý chỉnh sửa
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    ReplyContent: updatedContent,
+                    ReplyDate: currentDate
+                }),
+                success: function (response) {
+                    // Nếu cập nhật thành công, hiển thị nội dung mới
+                    if (response.success) {
+                        const cardBody = button.closest('.card').find('.card-body');
+                        const cardHeader = button.closest('.card').find('.card-header .post-time');
+
+                        // Thay thế nội dung chỉnh sửa
+                        editForm.replaceWith(`<p class="mt-3">${response.updatedContent}</p>`);
+
+                        // Cập nhật thời gian hiển thị
+                        const formattedDate = new Date(currentDate).toLocaleString(); // Format ngày
+                        cardHeader.text(`Posted at ${formattedDate} (Edited)`); // Hiển thị ngày cập nhật mới
+
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Error: Something went wrong.');
+                }
+            });
+        });
+
+        // Sự kiện click vào nút "Cancel"
+        $(document).on('click', '.cancel-reply-btn', function () {
+            const editForm = $(this).closest('.edit-reply-form');
+
+            // Khôi phục nội dung cũ
+            editForm.replaceWith(`<p class="mt-3">${originalText}</p>`);
+        });
+    });
+
+    //============================Ajax cho Reaction==================================
+
+    $(document).on('click', '.like-btn, .dislike-btn', function () {
+        let button = $(this);
+        let replyId = button.data('reply-id');
+        let isLike = button.hasClass('like-btn');
+        let isDislike = button.hasClass('dislike-btn');
+        let vote = 0;
+
+        // Lấy trạng thái hiện tại của nút Like và Dislike
+        let currentLikeStatus = $(`.like-btn[data-reply-id='${replyId}'] i`).hasClass('fa-solid');
+        let currentDislikeStatus = $(`.dislike-btn[data-reply-id='${replyId}'] i`).hasClass('fa-solid');
+
+        // Xử lý logic vote dựa trên nút được click và trạng thái hiện tại
+        if (isLike) {
+            if (currentLikeStatus) {
+                // Đang Like -> Hủy Like
+                vote = 0;
+            } else {
+                // Chưa Like -> Thêm Like (và có thể hủy Dislike nếu đang Dislike)
+                vote = 1;
+            }
+        } else if (isDislike) {
+            if (currentDislikeStatus) {
+                // Đang Dislike -> Hủy Dislike
+                vote = 0;
+            } else {
+                // Chưa Dislike -> Thêm Dislike (và có thể hủy Like nếu đang Like)
+                vote = -1;
+            }
+        }
+
+        $.ajax({
+            url: '/Reply/React', // Đổi "ControllerName" thành tên controller thực tế
+            type: 'POST',
+            data: {
+                replyId: replyId,
+                userId: "@UserId", // Truyền `userId` theo cách thích hợp
+                vote: vote
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Lấy các phần tử Like và Dislike liên quan đến replyId
+                    let likeButton = $(`.like-btn[data-reply-id='${replyId}']`);
+                    let dislikeButton = $(`.dislike-btn[data-reply-id='${replyId}']`);
+                    let likeIcon = likeButton.find('i');
+                    let dislikeIcon = dislikeButton.find('i');
+                    let likeCount = $(`.like-btn[data-reply-id='${replyId}']`).siblings('.like-count');
+                    let dislikeCount = $(`.dislike-btn[data-reply-id='${replyId}']`).siblings('.dislike-count');
+
+                    console.log("Class trước khi thay đổi:", likeButton.find('i').attr('class'));
+
+                    // Cập nhật số lượng Like và Dislike
+                    likeCount.text(response.like);
+                    console.log("Updated Like Count:", response.Like);
+                    dislikeCount.text(response.dis_like);
+                    console.log("Updated Dislike Count:", response.DisLike);
+
+                    // Reset trạng thái nút
+                    likeIcon.removeClass('fa-solid').addClass('fa-regular');
+                    dislikeIcon.removeClass('fa-solid').addClass('fa-regular');
+
+                    // Cập nhật trạng thái nút dựa trên loại phản ứng
+                    if (response.react_type === 1) {
+                        likeIcon.removeClass('fa-regular').addClass('fa-solid');
+                    } else if (response.react_type === -1) {
+                        dislikeIcon.removeClass('fa-regular').addClass('fa-solid');
+                    }
+
+                    console.log("Class sau khi thay đổi:", likeButton.find('i').attr('class'));
+                } else {
+                    alert(response.message); // Thông báo lỗi từ server
+                    window.location.href = "@Url.Action("SignIn", "Login")";
+                }
+            },
+            error: function (xhr) {
+                alert("Something went wrong. Please try again later."); // Xử lý lỗi kết nối
+                window.location.href = "@Url.Action("SignIn", "Login")";
+            }
+        });
+    });
+
+    //============================share bài lên facebook===============================
+    document.getElementById('shareButton').addEventListener('click', function () {
+        var url = window.location.href; // Lấy URL của trang hiện tại
+        var fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+
+        // Mở cửa sổ chia sẻ Facebook
+        window.open(fbUrl, 'facebook-share-dialog', 'width=800,height=600');
+    });
+</script>
+//Made by Hung bi noi
+<script> 
+    async function toggleLike(element) {
+        const postId = "@post.Id";
+        const likeCountElement = document.getElementById('likeCount');
+
+        try {
+            const response = await fetch(`/Post/LikeOrUnlikePost?postId=${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const result = await response.json();
+            if (result.success) {
+
+                likeCountElement.textContent = result.totalLikes;
+
+
+                // Đổi trạng thái icon
+                if (result.isLiked) {
+                    element.classList.add('liked');
+                } else {
+                    element.classList.remove('liked');
+                }
+            } else {
+                console.error('Failed to like the post.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            window.location.href = "@Url.Action("SignIn", "Login")";
+        }
+    }
 </script>
 <!-- Thêm jQuery vào trang -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -309,6 +629,56 @@
     .comment-for-reply:hover {
         border-radius: 5px;
         background-color: darkgray;
+    }
+
+    .more-option-btn{
+        border: none;
+        background-color: inherit;
+    }
+
+    .more-option-btn:hover {
+        border-radius: 5px;
+        background-color: darkgray;
+    }
+
+    .like-btn{
+        border: none;
+        background-color: inherit;
+    }
+
+    .like-btn:hover {
+        border-radius: 5px;
+        background-color: darkgray;
+    }
+
+    .dislike-btn{
+        border: none;
+        background-color: inherit;
+    }
+
+    .dislike-btn:hover {
+        border-radius: 5px;
+        background-color: darkgray;
+    }
+
+    img {
+        object-fit: cover; /* Đảm bảo ảnh không bị méo và phủ hết vùng chứa */
+        width: 100%; /* Chiều rộng của ảnh sẽ 100% với chiều rộng của div */
+        height: 100%; /* Chiều cao của ảnh sẽ 100% với chiều cao của div */
+    }
+
+    #shareButton{
+        border: none;
+        background-color: inherit;
+    }
+
+    #shareButton:hover{
+        border-radius: 5px;
+        background-color: darkgray;
+    }
+
+    .like-button .liked {
+        color: red;
     }
 </style>
 

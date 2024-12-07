@@ -90,7 +90,7 @@
                         <div class="card-header @(isCurrentUserPost ? "bg-light" : "") d-flex justify-content-between align-items-center">
                             
                             <div class="title-view-mode">
-                                <h5 class="card-title">Tiêu đề: @post.PostTitle</h5>
+                                <h5 class="card-title"><a href="@Url.Action("Index", "Reply", new { PostId = post.Id })">Tiêu đề: @post.PostTitle</a></h5>
                             </div>
                             <div class="title-edit-mode d-none">
                                 <input type="text" class="form-control" value="@post.PostTitle">
@@ -120,7 +120,10 @@
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="badge bg-info text-dark">Lượt like: @post.Like</span>
                                 <div>
-                                    <button class="btn btn-outline-primary btn-sm me-2">Like</button>
+                                    <!--<button class="btn btn-outline-primary btn-sm like-btn"
+                                            data-post-id="@post.Id">
+
+                                    </button>    -->
                                     <button class="btn btn-outline-secondary btn-sm">Bình luận</button>
                                 </div>
                             </div>

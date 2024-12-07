@@ -9,6 +9,7 @@
         public DateTime ReplyDate { get; set; }
         public int UpvoteAmount { get; set; }
         public int DownvoteAmount { get; set; }
+        public bool IsEdited { get; set; }
         public int? ReplyToReply { get; set; }
     }
 
@@ -24,6 +25,7 @@
     {
         public string ReplyContent { get; set; }
         public DateTime ReplyDate { get; set; }
+        public bool IsEdited { get; set; } = true;
     }
 
 }

@@ -90,13 +90,13 @@ namespace PostService.Controllers
 
         // PUT: api/post/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO? updatePostDTO)
+        public async Task<ActionResult> UpdatePost(int id, [FromBody] UpdatePostDTO updatePostDTO)
         {
-            if (await _basePostRepo.UpdateAsync(id, updatePostDTO, CustomUpdate: null))
+            if (await _basePostRepo.UpdateAsync(id, updatePostDTO))
             {
                 return Ok($"Post {id} is updated!");
             }
-            return BadRequest("Cannot create post!");
+            return BadRequest("Cannot update post!");
         }
 
         // DELETE: api/post/{id}
@@ -121,14 +121,34 @@ namespace PostService.Controllers
                 {
                     if (await _likeOfPostRepoBase.AddAsync(new CreateLikeOfPostDTO(postId, userId)))
                     {
-                        return Ok($"Liked post {postId}");
+                        var isUpdated = await _postRepo.IncreaseLikeCountAsync(postId);
+                        if (isUpdated)
+                        {
+                            var post = await _postRepo.GetPostByIdAsync(postId);
+                            if (post != null)
+                            {
+                                return Ok(new { message = $"Liked post {postId}", likeCount = post.Like });
+                            }
+                            return BadRequest("Post not found after like.");
+                        }
+                        return BadRequest("Failed to update like count.");
                     }
                 }
                 else
                 {
                     if (await _likeOfPostRepoBase.DeleteAsync(existingLike.Id))
                     {
-                        return Ok($"Unliked post {postId}");
+                        var isUpdated = await _postRepo.DecreaseLikeCountAsync(postId);
+                        if (isUpdated)
+                        {
+                            var post = await _postRepo.GetPostByIdAsync(postId);
+                            if (post != null)
+                            {
+                                return Ok(new { message = $"Unliked post {postId}", likeCount = post.Like });
+                            }
+                            return BadRequest("Post not found after unlike.");
+                        }
+                        return BadRequest("Failed to update like count.");
                     }
                 }
             }
@@ -138,6 +158,29 @@ namespace PostService.Controllers
             }
             return BadRequest("Failed to interact with post.");
         }
+        [HttpGet("checkLike/{postId}/{userId}")]
+        public async Task<ActionResult<bool>> CheckLike(int postId, int userId)
+        {
+            try
+            {
+                var isLiked = await _likeOfPostRepo.GetFromPostAndUser(postId, userId);
+
+                if (isLiked != null)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
     }
 
 }

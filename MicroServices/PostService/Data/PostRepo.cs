@@ -52,10 +52,19 @@ namespace PostService.Data
 
             var posts = await _context.Posts
                 .Where(p => p.ThreadId == threadId)
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            if (userId > 0)
+            {
+                posts = await _context.Posts
+                .Where(p => p.ThreadId == threadId)
                 .OrderBy(p => p.PostedBy == userId ? 0 : 1)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+            }
 
             return new PagedResult<Post>(posts, totalCount, page, pageSize);
         }
@@ -77,6 +86,32 @@ namespace PostService.Data
                 _context.Posts.Update(existingPost);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<bool> IncreaseLikeCountAsync(int postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+            if (post == null) return false;
+
+            post.Like += 1; 
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<bool> DecreaseLikeCountAsync(int postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+            if (post == null) return false;
+
+            if (post.Like > 0) 
+            {
+                post.Like -= 1; 
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Google;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -169,6 +170,7 @@ namespace _4roomforum.Controllers
                 Password=updatedUser.Password,
                 JoinDate = updatedUser.JoinDate,
                 LastLogin=updatedUser.LastLogin,
+                RoleId=updatedUser.RoleId,
                 Status = updatedUser.Status,
                 Avatar = updatedUser.Avatar
             };
@@ -176,7 +178,7 @@ namespace _4roomforum.Controllers
             var isUpdated = await _userService.UpdateUser(userId, userUpdateDto);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, updatedUser.Email),
+                new Claim(ClaimTypes.Name, updatedUser.UserName),
                 new Claim(ClaimTypes.Email, updatedUser.Email),
                 new Claim(ClaimTypes.Role, "User"), // Giữ nguyên hoặc lấy từ updatedUser nếu có thay đổi
                 new Claim("UserId", userId.ToString())
@@ -257,6 +259,72 @@ namespace _4roomforum.Controllers
             return View();
         }
 
+        [HttpGet("SignInGoogle")]
+        public IActionResult SignInGoogle()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+        [HttpGet("GoogleResponse")]
+    public async Task<IActionResult> GoogleResponse()
+    {
+        var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        if (!result.Succeeded)
+        return RedirectToAction("SignIn");
 
+        var claims = result.Principal.Identities
+        .FirstOrDefault()?.Claims.Select(claim => new
+        {
+            claim.Type,
+            claim.Value
+        });
+
+        var emailClaim = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+        if (emailClaim == null)
+        return RedirectToAction("SignIn");
+
+        var email = emailClaim.Value;
+        var user = await _userService.GetUserByEmail(email);
+        if (user == null)
+        {
+        // Create a new user if not exists
+         UserDTO newUser = new UserDTO
+            {
+                UserName = email,
+                Email = email,
+                Password = "123456",
+                Avatar = "voi.png",
+                RoleId = 2,
+                JoinDate = DateOnly.FromDateTime(DateTime.Now),
+                LastLogin = DateOnly.FromDateTime(DateTime.Now),
+                Status = 1
+            };
+        user = await _userService.RegisterUserAsync(newUser);
+        }
+
+        var userClaims = new List<Claim>
+        {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+        new Claim("UserId", user.UserId.ToString())
+        };
+
+        var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+        AllowRefresh = true,
+        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+        IsPersistent = true,
+        };
+
+        
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+        if (userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "1")
+        {
+            return RedirectToAction("Index", "Admin");
+        }
+        return RedirectToAction("Index", "Home");
+    }
     }
 }

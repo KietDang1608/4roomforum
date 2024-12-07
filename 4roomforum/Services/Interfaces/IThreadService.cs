@@ -8,5 +8,6 @@ namespace _4roomforum.Services.Interfaces
         Task<IEnumerable<ThreadDTO>> GetHotThreads();
         Task<ThreadDTO> GetThreadById(int threadID);
         
+        Task<IEnumerable<ThreadDTO>> GetThreadsByCategoryId(int categoryId);
     }
 }

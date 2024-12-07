@@ -12,7 +12,7 @@ namespace PostService.Data
         Task<D1> GetByIdAsync(int id);
         Task<bool> AddAsync(D2 DTOs);
         Task<int?> AddAsync1(D2 DTOs);
-        Task<bool> UpdateAsync(int id, D3? DTOs = null, Action<T>? CustomUpdate = null);
+        Task<bool> UpdateAsync(int id, D3 DTOs);
         Task<bool> DeleteAsync(int id);
     }
 

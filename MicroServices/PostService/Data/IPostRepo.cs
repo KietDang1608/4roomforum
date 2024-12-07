@@ -11,5 +11,7 @@ namespace PostService.Data
         Task CreatePostAsync(Post post);
         Task UpdatePostAsync(Post post);
         Task DeletePostAsync(int id);
+        Task<bool> IncreaseLikeCountAsync(int postId);
+        Task<bool> DecreaseLikeCountAsync(int postId);
     }
 }
