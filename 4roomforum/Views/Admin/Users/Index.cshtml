@@ -12,9 +12,9 @@
             <h2>User Management</h2>
         </div>
         <div class="col">
-            <form asp-controller="AdminUsers" asp-action="Search" method="post">
+            <form asp-controller="AdminUsers" asp-action="Search" method="POST">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search users" >
+					<input type="text" class="form-control" placeholder="Search users" name="searchData">
 					<button class="btn btn-primary" type="submit">Search</button>
 				</div>
             </form>
